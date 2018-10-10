@@ -12,6 +12,10 @@ app.debug = True
 def index():
     return render_template('index.html')
 
+@app.route('/post')
+def post():
+
+    return render_template('result.html')
 
 @app.route('/hello/<name>')
 def hello(name=''):
