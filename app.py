@@ -10,7 +10,7 @@ app.debug = True
 
 @app.route('/')
 def index():
-    return u'テスト'
+    return render_template('index.html')
 
 
 @app.route('/hello/<name>')
