@@ -1,0 +1,52 @@
+
+
+
+/*default*/
+body{
+    font-size: 20px;
+    background-color: #ebffff;
+}
+
+header{
+    padding: 20px 20px;
+    font-size: 60px;
+    background-color: #ffeae4;
+    margin: -8px -8px 0;
+}
+
+article{
+    background-color: white;
+    padding: 20px 10px 50px;
+    margin: 20px 5px;
+    height: 100%;
+}
+
+footer{
+    background-color: #808080;
+    font-size: 15px;
+    color: white;
+    padding: 15px 10px;
+    margin: 0 -8px;
+}
+
+
+/*index.css*/
+button.post_button{
+    font-size: 30px;
+}
+
+span.post_recommend{
+    font-size: 30px;
+    padding-left: 10px;
+}
+
+span.red{
+    color: red;
+}
+
+
+/*result.css*/
+div.post_text{
+    font-size: 30px;
+}
+
