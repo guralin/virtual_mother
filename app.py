@@ -4,6 +4,8 @@
 import os
 from flask import Flask, render_template
 
+import twitter
+
 app = Flask(__name__)
 app.debug = True
 
@@ -20,7 +22,7 @@ def post():
         access_token_key="1049129656379535360-LkXoFhHwr56IEH4TKS0LiE1sTK6VOj",
         access_token_secret="epwTxvBOiqijuDyeuyBdsRk8KyY8JA8PzGpVOD6jLRBIv"
         )
-    api.PostUpdate("Flaskから初めての投稿")
+    api.PostUpdate("Flaskから3回めの投稿")
 
     return render_template('result.html')
 
