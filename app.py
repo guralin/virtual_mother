@@ -11,10 +11,12 @@ app = Flask(__name__)
 app.debug = True
 
 
+# 投稿する
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# 投稿結果
 @app.route('/post')
 def post():
      
@@ -23,7 +25,7 @@ def post():
         access_token_key="1049129656379535360-LkXoFhHwr56IEH4TKS0LiE1sTK6VOj",
         access_token_secret="epwTxvBOiqijuDyeuyBdsRk8KyY8JA8PzGpVOD6jLRBIv"
         )
-    post_text = "Flaskから3回めの投稿" + str(datetime.now())
+    post_text = "只今の時刻は「" + str(datetime.now()) + "」です (^_^)/"
     api.PostUpdate(post_text)
 
     return render_template('result.html',post_text=post_text)
