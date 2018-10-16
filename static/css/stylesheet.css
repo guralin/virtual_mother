@@ -37,16 +37,21 @@ button.post_button{
 
 span.post_recommend{
     font-size: 30px;
-    padding-left: 10px;
+    padding-left: 15px;
 }
 
 span.red{
     color: red;
+    font-weight: bold;
 }
 
 
 /*result.css*/
 div.post_text{
     font-size: 30px;
+    padding-left: 15px;
 }
+
+
+/*END*/
 
