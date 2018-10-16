@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import os
+import twitter
 from datetime import datetime
 
 api = twitter.Api(consumer_key="U84inIJFauv3RUFedHOwzPGLs",
@@ -11,7 +12,6 @@ api = twitter.Api(consumer_key="U84inIJFauv3RUFedHOwzPGLs",
     )
 
 # 「起きて！！！」とTwitterに投稿する
-def morning():
-    morning_call = "起きて！" + "\n「" + str(datetime.now()) + "」だよ！！！"
-    api.PostUpdate(morning_call)
+morning_call = "起きて！" + "\n「" + str(datetime.now()) + "」だよ！！！"
+api.PostUpdate(morning_call)
 
