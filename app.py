@@ -9,10 +9,10 @@ import twitter
 app = Flask(__name__)
 app.debug = True
 
-api = twitter.Api(consumer_key="U84inIJFauv3RUFedHOwzPGLs",
-    consumer_secret="VtbtEHaQz2hV3CTachsa29R4JOsLbVkTpxUoTbuSaPmSm5vhOa",
-    access_token_key="1049129656379535360-LkXoFhHwr56IEH4TKS0LiE1sTK6VOj",
-    access_token_secret="epwTxvBOiqijuDyeuyBdsRk8KyY8JA8PzGpVOD6jLRBIv"
+api = twitter.Api(consumer_key= os.environ.get("CONSUMER_KEY"),
+    consumer_secret=os.environ.get("CONSUMER_SECRET"),
+    access_token_key=os.environ.get("ACCESS_TOKEN"),
+    access_token_secret=os.environ.get("ACCESS_TOKEN_SECRET")
     )
 
 
