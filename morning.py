@@ -5,12 +5,12 @@ import os
 import twitter
 from datetime import datetime
 
-api = twitter.Api(consumer_key="U84inIJFauv3RUFedHOwzPGLs",
-    consumer_secret="VtbtEHaQz2hV3CTachsa29R4JOsLbVkTpxUoTbuSaPmSm5vhOa",
-    access_token_key="1049129656379535360-LkXoFhHwr56IEH4TKS0LiE1sTK6VOj",
-    access_token_secret="epwTxvBOiqijuDyeuyBdsRk8KyY8JA8PzGpVOD6jLRBIv"
-    )
 
+api = twitter.Api(consumer_key= os.environ["CONSUMER_KEY"],
+    consumer_secret=os.environ["CONSUMER_SECRET"],
+    access_token_key=os.environ["ACCESS_TOKEN"],
+    access_token_secret=os.environ["ACCESS_TOKEN_SECRET"]
+    )
 # 「起きて！！！」とTwitterに投稿する
 morning_call = "起きて！" + "\n「" + str(datetime.now()) + "」だよ！！！"
 api.PostUpdate(morning_call)
