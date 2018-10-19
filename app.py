@@ -29,6 +29,7 @@ def post():
     return render_template('result.html',post_text=post_text)
 
 
+
 @app.route('/hello/<name>')
 def hello(name=''):
     if name == '':
