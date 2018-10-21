@@ -14,6 +14,11 @@ api = twitter.Api(consumer_key= os.environ.get("CONSUMER_KEY"),
     access_token_key=os.environ.get("ACCESS_TOKEN"),
     access_token_secret=os.environ.get("ACCESS_TOKEN_SECRET")
     )
+
+hour = datetime.now().hour
+minute = datetime.now().minute
+time = "{0}時{1}分".format(hour, minute)
+
 # 投稿する
 @app.route('/')
 def index():
@@ -22,9 +27,9 @@ def index():
 # 投稿結果
 @app.route('/post')
 def post():
-    post_text = ("只今の時刻は「{0} 」です (^_^)/".format(datetime.now()))
+    post_text = "只今の時刻は「{0}」です (^_^)/".format(time)
     api.PostUpdate(post_text)
-    return render_template('result.html',post_text=post_text)
+    return render_template('post.html',post_text=post_text)
 
 @app.route('/hello/<name>')
 def hello(name=''):
