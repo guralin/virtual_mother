@@ -20,5 +20,3 @@ class Posts():
         api.PostUpdate(self.post_text)
         return self.post_text
 
-display = Posts()
-print(display.twitter_upload())
