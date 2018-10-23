@@ -20,8 +20,8 @@ def index_do():
 # 投稿結果
 @app.route('/post')
 def post_do():
-    do = post.Post()
-    return render_template('post.html', post_text=do.post_text())
+    do = post.Posts()
+    return render_template('post.html', post_text=do.twitter_upload())
 
 """
 @app.route('/hello/<name>')
