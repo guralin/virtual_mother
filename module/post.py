@@ -13,11 +13,12 @@ api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
     access_token_secret=os.environ.get("ACCESS_TOKEN_SECRET")
     )
 
-class Post():
+class Posts():
     def __init__(self):
-        post_text = "現在の時刻は「{0}」です (^_^)y".format(time)
-        api.PostUpdate(post_text)
-    def post_text(self):
-        post_text = "現在の時刻は「{0}」です (^_^)y".format(time)
-        return post_text
+        self.post_text = "現在の時刻は「{0}」です (^_^)y".format(time)
+    def twitter_upload(self):
+        api.PostUpdate(self.post_text)
+        return self.post_text
 
+display = Posts()
+print(display.twitter_upload())
