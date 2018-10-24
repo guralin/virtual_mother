@@ -4,7 +4,8 @@
 from datetime import datetime
 hour = datetime.now().hour
 minute = datetime.now().minute
-time = "{0}時{1}分".format(hour, minute)
+second = datetime.now().second
+time = "{0}時{1}分{2}秒".format(hour, minute,second)
 
 import twitter, os
 api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
