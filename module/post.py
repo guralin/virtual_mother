@@ -20,4 +20,8 @@ class Posts():
     def twitter_upload(self):
         api.PostUpdate(self.post_text)
         return self.post_text
+    def send_reply(self, reply_name):
+        self.reply_post = "@{0} {1}".format(reply_name, self.post_text)
+        api.PostUpdate(self.reply_post)
+        return self.reply_post
 
