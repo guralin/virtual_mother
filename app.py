@@ -2,8 +2,7 @@
 # coding: utf-8
 
 import os
-
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 app = Flask(__name__)
 app.debug = True
 
@@ -22,6 +21,17 @@ def index_do():
 def post_do():
     do = post.Posts()
     return render_template('post.html', post_text=do.twitter_upload())
+
+@app.route('/reply', methods=['GET','POST'])
+def do_post_reply():
+    do = post.Posts()
+    if request.method == 'POST':
+        result = request.form
+    reply_name = result["reply_name"] 
+    post_text = do.send_reply(reply_name)
+    return render_template('post.html',post_text=post_text)
+
+
 
 """
 @app.route('/hello/<name>')
