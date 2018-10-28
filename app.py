@@ -14,7 +14,11 @@ from module import reply
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+# このやり方は気に入らない人がいるかも
+db_uri = os.environ.get('DATABASE_URL') or "postgresql:///flasknote"
+app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+# FSADeprecationWarning を消すため
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
 # モデル作成
