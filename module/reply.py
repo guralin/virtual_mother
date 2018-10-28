@@ -14,8 +14,7 @@ class Reply():
     def __init__(self):
         hour = datetime.now().hour
         minute = datetime.now().minute
-        second = datetime.now().second
-        time = "{0}時{1}分{2}秒".format(hour, minute,second)
+        time = "{0}時{1}分".format(hour, minute)
         self.post_text = "現在の時刻は「{0}」です (^_^)y".format(time)
     def send_reply(self, reply_name):
         self.reply_post = "@{0} {1}".format(reply_name, self.post_text)
