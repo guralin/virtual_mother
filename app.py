@@ -2,9 +2,10 @@
 # coding: utf-8
 
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,g
 app = Flask(__name__)
 app.debug = True
+import sqlite3
 
 from module import index
 from module import post
@@ -31,7 +32,28 @@ def do_post_reply():
     post_text = do.send_reply(reply_name)
     return render_template('post.html',post_text=post_text)
 
+@app.route('/dbtest')
+def hello_world():
+    entries =get_db().execute('select title, body from entries').fetchall()
+    return render_template('dbtest.html', entries=entries)
 
+
+# Database
+def connect_db():
+    db_path = os.path.join(app.root_path, 'flasknote.db')
+    rv = sqlite3.connect(db_path)
+    rv.row_factory = sqlite3.Row
+    return rv
+
+def get_db():
+    if not hasattr(g, 'sqlite_db'):
+        g.sqlite_db = connect_db()
+    return g.sqlite_db
+
+@app.teardown_appcontext
+def close_db(error):
+    if hasattr(g, 'sqlite_db'):
+        g.sqlite_db.close()
 
 """
 @app.route('/hello/<name>')
