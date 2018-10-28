@@ -1,0 +1,12 @@
+<html>
+<body>
+<ul class="entries">
+{% for entry in entries %}
+    <li>
+        {{ entry.title | safe }}
+        {{ entry.body | safe }}
+    </li>
+{% endfor %}
+</ul>
+<body>
+</html>
