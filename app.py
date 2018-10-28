@@ -2,13 +2,26 @@
 # coding: utf-8
 
 import os
-from flask import Flask, render_template, request,g
+from flask import Flask, render_template, request,g, redirect, url_for
 app = Flask(__name__)
 app.debug = True
 import sqlite3
+from flask_sqlalchemy import SQLAlchemy
 
 from module import index
 from module import post
+
+
+db_uri = "sqlite:///" + os.path.join(app.root_path, 'flasknote.db') # 追加
+app.config['SQLALCHEMY_DATABASE_URI'] = db_uri # 追加
+db = SQLAlchemy(app) # 追加
+
+
+class Entry(db.Model): # 追加
+    __tablename__ = "entries" # 追加
+    id = db.Column(db.Integer, primary_key=True) # 追加
+    title = db.Column(db.String(), nullable=False) # 追加
+    body = db.Column(db.String(), nullable=False) # 追加
 
 
 # 投稿する
@@ -34,7 +47,7 @@ def do_post_reply():
 
 @app.route('/dbtest')
 def hello_world():
-    entries =get_db().execute('select title, body from entries').fetchall()
+    entries = Entry.query.all()
     return render_template('dbtest.html', entries=entries)
 
 
@@ -67,6 +80,14 @@ def hello(name=''):
 def debug():
     return render_template('notemplate.html')
 
+@app.route('/dbpost', methods=['POST'])
+def add_entry():
+    entry = Entry()
+    entry.title = request.form['title']
+    entry.body = request.form['body']
+    db.session.add(entry)
+    db.session.commit()
+    return redirect(url_for('hello_world'))
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
