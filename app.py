@@ -5,14 +5,15 @@ import os
 from flask import Flask, render_template, request,g, redirect, url_for
 app = Flask(__name__)
 app.debug = True
-import sqlite3
 from flask_sqlalchemy import SQLAlchemy
 
 from module import index
 from module import post
 
 
-db_uri = "sqlite:///" + os.path.join(app.root_path, 'flasknote.db') # 追加
+db_uri = os.environ.get('DATABASE_URL') or "postgresql:///flasknote"# 追加
+#db_uri = "postgresql:///flasknote"# 追加
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri # 追加
 db = SQLAlchemy(app) # 追加
 
