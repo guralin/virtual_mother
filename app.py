@@ -8,28 +8,29 @@ app.debug = True
 
 from module import index
 from module import post
+from module import reply
 
 
 # 投稿する
 @app.route('/')
-def index_do():
+def do_index():
     do = index.Index()
     return render_template('index.html')
 
 # 投稿結果
+# 普通の投稿
 @app.route('/post')
-def post_do():
+def do_post():
     do = post.Posts()
-    return render_template('post.html', post_text=do.twitter_upload())
-
+    return render_template('post.html', post_text=do.post_twitter())
+# リプライ
 @app.route('/reply', methods=['GET','POST'])
-def do_post_reply():
-    do = post.Posts()
+def do_reply():
+    do = reply.Reply()
     if request.method == 'POST':
         result = request.form
     reply_name = result["reply_name"] 
-    post_text = do.send_reply(reply_name)
-    return render_template('post.html',post_text=post_text)
+    return render_template('post.html',post_text=do.send_reply(reply_name))
 
 
 
