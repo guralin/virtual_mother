@@ -12,14 +12,14 @@
 <br>
 <br>
 <br>
-    <span class="post_recommend">Twitterに投稿しよう (^<span class="red">_</span>^)/ →<button onclick="location.href='post'" class="post_button">投稿する</button></span>
+    <span class="post_recommend">Twitterに投稿しよう (^<span class="red">_</span>^)/ →
+    <button onclick="location.href='post'" class="post_button">投稿する</button></span>
 
-<form action="/reply" method="POST" >
-    <span class="post_recommend">
-    <p>Twitterユーザー名：＠
-    <input type="text" name="reply_name" ></p></span>
-    <p class="post_button"><input type="submit" value="submit" ></p>
-</form>
+    <form action="/reply" method="POST">
+        <p class="post_recommend">Twitterユーザー名：＠
+        <input type="text" name="reply_name" class="reply_name">
+        <input type="submit" value="replyを送る" class="post_button"></p>
+    </form>
 
 <br>
 <br>

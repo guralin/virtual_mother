@@ -31,11 +31,11 @@ footer{
 
 
 /*index.css*/
-button.post_button{
+.post_button{
     font-size: 30px;
 }
 
-span.post_recommend{
+.post_recommend{
     font-size: 30px;
     padding-left: 15px;
 }
@@ -45,9 +45,13 @@ span.red{
     font-weight: bold;
 }
 
+input.reply_name{
+    height:40px;
+}
+
 
 /*result.css*/
-div.post_text{
+.post_text{
     font-size: 30px;
     padding-left: 15px;
 }
