@@ -9,6 +9,26 @@ from flask_sqlalchemy import SQLAlchemy
 
 from module import index
 from module import post
+from module import reply
+
+######################
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+db = SQLAlchemy(app)
+
+# モデル作成
+class User(db.Model):
+    user_id = db.Column(db.Integer, primary_key=True)
+    user_name = db.Column(db.String(80), unique=True)
+
+    def __init__(self, user_name):
+        self.user_name = user_name
+
+    def __repr__(self):
+        return '<User %r>' % self.user_name
+######################
 
 
 db_uri = os.environ.get('DATABASE_URL') or "postgresql:///flasknote"# 追加
@@ -27,22 +47,24 @@ class Entry(db.Model): # 追加
 
 # 投稿する
 @app.route('/')
-def index_do():
+def do_index():
     do = index.Index()
     return render_template('index.html')
 
 # 投稿結果
+# 普通の投稿
 @app.route('/post')
-def post_do():
+def do_post():
     do = post.Posts()
-    return render_template('post.html', post_text=do.twitter_upload())
-
+    return render_template('post.html', post_text=do.post_twitter())
+# リプライ
 @app.route('/reply', methods=['GET','POST'])
-def do_post_reply():
-    do = post.Posts()
+def do_reply():
+    do = reply.Reply()
     if request.method == 'POST':
         result = request.form
     reply_name = result["reply_name"] 
+
     post_text = do.send_reply(reply_name)
     return render_template('post.html',post_text=post_text)
 
@@ -69,6 +91,21 @@ def close_db(error):
     if hasattr(g, 'sqlite_db'):
         g.sqlite_db.close()
 
+    return render_template('post.html',post_text=do.send_reply(reply_name))
+
+##########################
+# ユーザー登録
+@app.route('/register', methods=['GET','POST'])
+def do_register():
+    if request.method == 'POST':
+        user_name= request.form['user_name']
+    # ユーザー追加
+    reg = User(user_name)
+    db.session.add(reg)
+    db.session.commit()
+    return render_template('register.html')
+
+##########################
 """
 @app.route('/hello/<name>')
 def hello(name=''):
