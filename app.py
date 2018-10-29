@@ -23,6 +23,7 @@ db = SQLAlchemy(app)
 
 # モデル作成
 class User(db.Model):
+    __tablename__ = "morning_call_twitter"
     user_id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(80), unique=True)
 
