@@ -23,7 +23,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
 # モデル作成
-class User(db.Model):
+class Register(db.Model):
     __tablename__ = "morning_call_twitter"
     user_id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(80), unique=True)
@@ -64,8 +64,8 @@ def do_register():
     if request.method == 'POST':
         user_name = request.form['user_name']
     # ユーザー追加
-    reg = User(user_name)
-    db.session.add(reg)
+    do = Register(user_name)
+    db.session.add(do)
     db.session.commit()
     return render_template('register.html',user_name=user_name)
 
