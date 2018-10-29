@@ -9,6 +9,7 @@ app.debug = True
 from module import index
 from module import post
 from module import reply
+import psycopg2
 
 ######################
 from flask_sqlalchemy import SQLAlchemy
