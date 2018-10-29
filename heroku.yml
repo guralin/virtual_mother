@@ -1,0 +1,7 @@
+build:
+  languages:
+    - python
+  packages:
+    - psycopg2
+run:
+  web: gunicorn web:app --log-file=-
