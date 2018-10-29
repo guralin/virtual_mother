@@ -1,7 +1,7 @@
 #!/bin/env python
 # coding: utf-8
 
-import os
+import os, sys
 from flask import Flask, render_template, request
 app = Flask(__name__)
 app.debug = True
@@ -19,8 +19,9 @@ db = SQLAlchemy(app)
 
 # モデル作成
 class User(db.Model):
+    __tablename__ = 'morning_call_twitter'
     user_id = db.Column(db.Integer, primary_key=True)
-    user_name = db.Column(db.String(80), unique=True)
+    user_name = db.Column(db.String, unique=True)
 
     def __init__(self, user_name):
         self.user_name = user_name
@@ -43,25 +44,31 @@ def do_post():
     do = post.Posts()
     return render_template('post.html', post_text=do.post_twitter())
 # リプライ
-@app.route('/reply', methods=['GET','POST'])
+@app.route('/reply', methods=['POST'])
 def do_reply():
     do = reply.Reply()
     if request.method == 'POST':
-        result = request.form
-    reply_name = result["reply_name"] 
+        result = request.form["reply_name"]
+    reply_name = result 
     return render_template('post.html',post_text=do.send_reply(reply_name))
 
 ##########################
 # ユーザー登録
-@app.route('/register', methods=['GET','POST'])
+@app.route('/register', methods=['POST'])
 def do_register():
     if request.method == 'POST':
-        user_name= request.form['user_name']
+        user_name = request.form['user_name']
     # ユーザー追加
+    __tablename__ = 'morning_call_twitter'
     reg = User(user_name)
     db.session.add(reg)
-    db.session.commit()
-    return render_template('register.html')
+    try:
+        db.session.commit()
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno)
+    return render_template('register.html',user_name=user_name)
 
 ##########################
 """
