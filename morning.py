@@ -45,9 +45,10 @@ users = db.session.query(do).all()
 for user in users:
     user = str(user).split("'")
     user = user[1]
-    morning_call = "@{0}\n起きて！\n「{1} 」だよ！！！".format(user,datetime.now())
+    now_hour_and_minute = "{0:%H}時{0:%M}分".format(datetime.now())
+    morning_call = "@{0}\n もう{1}よ！\n 起きなさい！".format(user,now_hour_and_minute)
+    print(morning_call)
     api.PostUpdate(morning_call)
-    print(user)
 
 
 
