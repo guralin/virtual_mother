@@ -25,9 +25,20 @@ header span.title{
     font-size: 50px;
     color: black;
 }
+header a{
+    text-decoration: none;
+    color: black;
+}
+header a:hover{
+    text-decoration: none;
+}
 
 .twitter_url{
     margin: 0% 1%;
+}
+
+.go_home{
+    margin: 0% 1.5% -1%;
 }
 
 article{
@@ -80,10 +91,14 @@ input.form{
 }
 
 
-/*result.css*/
+/*post.css*//*register.css*/
 .post_text{
     font-size: 30px;
     padding-left: 15px;
+    margin: 1% 2%;
+}
+.post_text span{
+    font-size: 37px;
 }
 
 
