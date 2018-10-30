@@ -21,8 +21,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 # FSADeprecationWarning を消すため
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
-
-# モデル作成
+# モデル
 class Register(db.Model):
     __tablename__ = "morning_call_twitter"
     user_id = db.Column(db.Integer, primary_key=True)
