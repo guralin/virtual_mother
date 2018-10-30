@@ -7,11 +7,27 @@ body{
     background-color: #ebffff;
 }
 
+a{
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
 header{
     padding: 20px 20px;
-    font-size: 60px;
+    color: #4a4a4a;
     background-color: #ffeae4;
     margin: -8px -8px 0;
+}
+header span.title{
+    font-size: 50px;
+    color: black;
+}
+
+.twitter_url{
+    margin: 0% 1%;
 }
 
 article{
@@ -19,6 +35,14 @@ article{
     padding: 20px 10px 50px;
     margin: 20px 5px;
     height: 100%;
+}
+
+h2{
+    font-size: 40px;
+    margin: 1% 2%;
+    padding: 0 15px;
+    border-left: solid 10px red;
+    color: #4a4a4a;
 }
 
 footer{
@@ -31,13 +55,13 @@ footer{
 
 
 /*index.css*/
-.post_button{
+.button{
     font-size: 30px;
+    border-radius: 10px;
+    border-color: #fff;
 }
-
-.post_recommend{
-    font-size: 30px;
-    padding-left: 15px;
+.button:hover{
+    background-color: #ddd;
 }
 
 span.red{
@@ -45,8 +69,14 @@ span.red{
     font-weight: bold;
 }
 
-input.reply_name{
-    height:40px;
+.explain{
+    font-size: 30px;
+    margin: 1% 3%;
+    padding: 0 15px;
+}
+
+input.form{
+    height: 40px;
 }
 
 
