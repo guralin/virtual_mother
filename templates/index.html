@@ -7,30 +7,31 @@
     <link rel="stylesheet" href="../static/css/stylesheet.css">
 </head>
 <body>
-    <header>バーチャルお母さん</header>
+    <header>
+        <span class="title">バーチャルお母さん</span>
+    </header>
     <article>
+<p class="twitter_url"><a href="https://twitter.com/virtual_mother/">公式Twitterアカウント @virtual_mother</a></p>
 <br>
 <br>
+    <h2>現在の時刻をツイートしてみよう (^<span class="red">_</span>^)/
+    <button onclick="location.href='post'" class="button">投稿する</button></h2>
 <br>
-    <span class="post_recommend">Twitterに投稿しよう (^<span class="red">_</span>^)/ →
-    <button onclick="location.href='post'" class="post_button">投稿する</button></span>
-
+<br>
+    <h2>友達に現在の時刻を教えてあげよう</h2>
     <form action="/reply" method="POST">
-        <p class="post_recommend">Twitterユーザー名：＠
-        <input type="text" name="reply_name" class="reply_name">
-        <input type="submit" value="replyを送る" class="post_button"></p>
+        <p class="explain">友達のTwitterユーザー名：＠
+        <input type="text" name="reply_name" class="form">
+        <input type="submit" value="投稿する" class="button"></p>
     </form>
-
+<br>
+    <h2>AM7:00目覚まし時計に自分のユーザー名を登録しよう</h2>
     <form action="/register" method="POST">
-<p>ユーザー名を登録しましょう！！！</p>
-        <p class="post_recommend">Twitterユーザー名：＠
-        <input type="text" name="user_name" class="reply_name">
-        <input type="submit" value="ユーザー名を登録する" class="post_button"></p>
+        <p class="explain">自分のTwitterユーザー名：＠
+        <input type="text" name="user_name" class="form">
+        <input type="submit" value="登録する" class="button"></p>
     </form>
 
-<br>
-<br>
-<br>
 <br>
 <br>
 <br>
