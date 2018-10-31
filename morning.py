@@ -29,18 +29,19 @@ class Register(db.Model):
     __tablename__ = "morning_call_twitter"
     user_id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(80), unique=True)
+
+    def __repr__(self): #←必要だった(読み出す時？)
+        return '<User %r>' % self.user_name
 ####################################
 
-# 「@~　起きて！！！　「〜時〜分」だよ」とTwitterに投稿する
+# 「＠〜　もう〜時〜分よ！　起きなさい！」とTwitterに投稿する
 do = Register
 users = db.session.query(do).all()
 
 for user in users:
-    user = str(user).split("'")
-    user = user[1]
+    user_name = str(user).split("'")[1]
     now_hour_and_minute = "{0:%H}時{0:%M}分".format(datetime.now())
-    morning_call = "@{0}\n もう{1}よ！\n 起きなさい！".format(user,now_hour_and_minute)
-    print(morning_call)
+    morning_call = "@{0}\n もう{1}よ！\n 起きなさい！".format(user_name, now_hour_and_minute)
     api.PostUpdate(morning_call)
 
 
