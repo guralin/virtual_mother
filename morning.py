@@ -16,11 +16,10 @@ api = twitter.Api(consumer_key= os.environ["CONSUMER_KEY"],
     access_token_secret=os.environ["ACCESS_TOKEN_SECRET"]
     )
 
-# ===データベース関連===
-import psycopg2
+# ###データベース関連###############
 from flask_sqlalchemy import SQLAlchemy
-# このやり方は気に入らない人がいるかも
-db_uri = os.environ.get('DATABASE_URL') or "postgresql:///flasknote"
+
+db_uri = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 # FSADeprecationWarning を消すため
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -30,13 +29,7 @@ class Register(db.Model):
     __tablename__ = "morning_call_twitter"
     user_id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(80), unique=True)
-
-    def __init__(self):
-        pass
-
-    def __repr__(self):
-        return '<User %r>' % self.user_name
-
+####################################
 
 # 「@~　起きて！！！　「〜時〜分」だよ」とTwitterに投稿する
 do = Register
