@@ -56,7 +56,7 @@ def do_register():
     db.session.commit()
     return render_template('register.html',user_name=user_name)
 
-
+# デバッグ
 @app.route('/debug')
 def debug():
     return render_template('notemplate.html')
