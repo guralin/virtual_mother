@@ -10,14 +10,21 @@ api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
     access_token_secret=os.environ.get("ACCESS_TOKEN_SECRET")
     )
 
-class Reply():
+class Twitter():
     def __init__(self):
         hour = datetime.now().hour
         minute = datetime.now().minute
         time = "{0}時{1}分".format(hour, minute)
         self.post_text = "現在の時刻は「{0}」です (^_^)y".format(time)
-    def send_reply(self, reply_name):
-        self.reply_post = "@{0} {1}".format(reply_name, self.post_text)
-        api.PostUpdate(self.reply_post)
-        return self.reply_post
+
+class Posts(Twitter):
+    def post(self):
+        api.PostUpdate(self.post_text)
+        return self.post_text
+
+class Replies(Twitter):
+    def reply(self, reply_name):
+        self.reply_text = "@{0} {1}".format(reply_name, self.post_text)
+        api.PostUpdate(self.reply_text)
+        return self.reply_text
 
