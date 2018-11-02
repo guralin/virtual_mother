@@ -3,24 +3,16 @@
 
 import os
 
-from flask import Flask, render_template, request
+from flask import Flask
 app = Flask(__name__)
 app.debug = True
 
-# ===Twitter関連===
-import twitter
-from datetime import datetime
-api = twitter.Api(consumer_key= os.environ["CONSUMER_KEY"],
-    consumer_secret=os.environ["CONSUMER_SECRET"],
-    access_token_key=os.environ["ACCESS_TOKEN"],
-    access_token_secret=os.environ["ACCESS_TOKEN_SECRET"]
-    )
+from module import twitter
 
-# ===データベース関連===
-import psycopg2
+#####データベース関連###############
 from flask_sqlalchemy import SQLAlchemy
-# このやり方は気に入らない人がいるかも
-db_uri = os.environ.get('DATABASE_URL') or "postgresql:///flasknote"
+
+db_uri = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 # FSADeprecationWarning を消すため
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -31,23 +23,15 @@ class Register(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(80), unique=True)
 
-    def __init__(self):
-        pass
-
-    def __repr__(self):
+    def __repr__(self): #←必要だった(読み出す時？)
         return '<User %r>' % self.user_name
+####################################
 
-
-# 「@~　起きて！！！　「〜時〜分」だよ」とTwitterに投稿する
+# データを取得
 do = Register
 users = db.session.query(do).all()
 
-for user in users:
-    user = str(user).split("'")
-    user = user[1]
-    morning_call = "@{0}\n起きて！\n「{1} 」だよ！！！".format(user,datetime.now())
-    api.PostUpdate(morning_call)
-    print(user)
-
-
+# tweetする
+post = twitter.MorningCalls()
+post.call(users)
 

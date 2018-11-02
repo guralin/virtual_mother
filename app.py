@@ -7,16 +7,12 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 app.debug = True
 
-from module import index
-from module import post
-from module import reply
+from module import twitter
 
 #####################################
-import psycopg2
 from flask_sqlalchemy import SQLAlchemy
 
-# このやり方は気に入らない人がいるかも
-db_uri = os.environ.get('DATABASE_URL') or "postgresql:///flasknote"
+db_uri = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 # FSADeprecationWarning を消すため
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -29,61 +25,47 @@ class Register(db.Model):
 
     def __init__(self, user_name):
         self.user_name = user_name
-
-    def __repr__(self):
-        return '<User %r>' % self.user_name
 #####################################
 
 
-# 投稿する
+# index
 @app.route('/')
 def do_index():
-    do = index.Index()
     return render_template('index.html')
 
-# 投稿結果
-# 普通の投稿
+# 投稿
 @app.route('/post')
 def do_post():
-    do = post.Posts()
-    return render_template('post.html', post_text=do.post_twitter())
+    do = twitter.Posts()
+    post_text = do.post()
+    return render_template('post.html', post_text=post_text)
+
 # リプライ
 @app.route('/reply', methods=['POST'])
 def do_reply():
-    do = reply.Reply()
-    if request.method == 'POST':
-        result = request.form
-    reply_name = result["reply_name"] 
-    return render_template('post.html',post_text=do.send_reply(reply_name))
-
+    reply_name = request.form["reply_name"] # index.htmlのフォームから取得
+    do = twitter.Replies()
+    post_text = do.reply(reply_name)
+    return render_template('post.html',post_text=post_text)
 
 # ユーザー登録
 @app.route('/register', methods=['POST'])
 def do_register():
-    if request.method == 'POST':
-        user_name = request.form['user_name']
-    # ユーザー追加
+    user_name = request.form['user_name'] # index.htmlのフォームから取得
     do = Register(user_name)
     db.session.add(do)
     db.session.commit()
     return render_template('register.html',user_name=user_name)
 
 
-"""
-@app.route('/hello/<name>')
-def hello(name=''):
-    if name == '':
-        name = u'ななしさん'
-    return render_template('hello.html', name=name)
-"""
-
+# デバッグ
 @app.route('/debug')
 def debug():
     return render_template('notemplate.html')
-
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(port=port)
 
-# 以上
+
+
