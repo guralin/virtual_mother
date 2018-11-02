@@ -7,14 +7,7 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 app.debug = True
 
-# ===Twitter関連===
-import twitter
-from datetime import datetime
-api = twitter.Api(consumer_key= os.environ["CONSUMER_KEY"],
-    consumer_secret=os.environ["CONSUMER_SECRET"],
-    access_token_key=os.environ["ACCESS_TOKEN"],
-    access_token_secret=os.environ["ACCESS_TOKEN_SECRET"]
-    )
+from module import twitter
 
 # ###データベース関連###############
 from flask_sqlalchemy import SQLAlchemy
@@ -38,11 +31,6 @@ class Register(db.Model):
 do = Register
 users = db.session.query(do).all()
 
-for user in users:
-    user_name = str(user).split("'")[1]
-    now_hour_and_minute = "{0:%H}時{0:%M}分".format(datetime.now())
-    morning_call = "@{0}\n もう{1}よ！\n 起きなさい！".format(user_name, now_hour_and_minute)
-    api.PostUpdate(morning_call)
-
-
+post = twitter.MorningCalls()
+post.call(users)
 
