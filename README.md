@@ -1,11 +1,10 @@
 # バーチャルお母さん
 
-## チーム名:hoge2 
-- エレベーターピッチ: <https://docs.google.com/document/d/1zB2Ckr_j1sWsCza-xZGaAFzlo51IwgIexqlbfzjaYJ0/edit>
-- Deploy : heroku ><https://virtualmother.herokuapp.com/>
-- Twitter : <https://twitter.com/virtual_mother>
-- プロダクト/スプリントバックログ : <https://trello.com/b/MD98b6Sh/hoge2>
-- CI: Heroku Manual deploy
+## 開発チーム： すべてはモモヨのために
+- エレベーターピッチ： <https://docs.google.com/document/d/1zB2Ckr_j1sWsCza-xZGaAFzlo51IwgIexqlbfzjaYJ0/edit>
+- Official Site : <https://virtualmother.herokuapp.com/>
+- Official Twitter : <https://twitter.com/virtual_mother>
+- バックログ : <https://trello.com/b/MD98b6Sh/hoge2>
 
 ## 概要
 現在、Twitterを使用して朝のスケジュール管理のアプリを作成しています。
