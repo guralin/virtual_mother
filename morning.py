@@ -3,13 +3,13 @@
 
 import os
 
-from flask import Flask, render_template, request
+from flask import Flask
 app = Flask(__name__)
 app.debug = True
 
 from module import twitter
 
-# ###データベース関連###############
+#####データベース関連###############
 from flask_sqlalchemy import SQLAlchemy
 
 db_uri = os.environ.get('DATABASE_URL')
@@ -27,10 +27,11 @@ class Register(db.Model):
         return '<User %r>' % self.user_name
 ####################################
 
-# 「＠〜　もう〜時〜分よ！　起きなさい！」とTwitterに投稿する
+# データを取得
 do = Register
 users = db.session.query(do).all()
 
+# tweetする
 post = twitter.MorningCalls()
 post.call(users)
 
