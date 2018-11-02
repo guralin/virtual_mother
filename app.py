@@ -43,7 +43,7 @@ def do_post():
 # リプライ
 @app.route('/reply', methods=['POST'])
 def do_reply():
-    reply_name = request.form["reply_name"]
+    reply_name = request.form["reply_name"] # index.htmlのフォームから取得
     do = twitter.Replies()
     post_text = do.reply(reply_name)
     return render_template('post.html',post_text=post_text)
@@ -51,11 +51,12 @@ def do_reply():
 # ユーザー登録
 @app.route('/register', methods=['POST'])
 def do_register():
-    user_name = request.form['user_name']
+    user_name = request.form['user_name'] # index.htmlのフォームから取得
     do = Register(user_name)
     db.session.add(do)
     db.session.commit()
     return render_template('register.html',user_name=user_name)
+
 
 # デバッグ
 @app.route('/debug')
