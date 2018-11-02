@@ -7,7 +7,7 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 app.debug = True
 
-from module import post, reply
+from module import twitter
 
 #####################################
 from flask_sqlalchemy import SQLAlchemy
@@ -36,16 +36,17 @@ def do_index():
 # 投稿
 @app.route('/post')
 def do_post():
-    do = post.Posts()
-    return render_template('post.html', post_text=do.post_twitter())
+    do = twitter.Posts()
+    post_text = do.post()
+    return render_template('post.html', post_text=post_text)
 
 # リプライ
 @app.route('/reply', methods=['POST'])
 def do_reply():
-    do = reply.Reply()
-    result = request.form
-    reply_name = result["reply_name"] 
-    return render_template('post.html',post_text=do.send_reply(reply_name))
+    reply_name = request.form["reply_name"]
+    do = twitter.Replies()
+    post_text = do.reply(reply_name)
+    return render_template('post.html',post_text=post_text)
 
 # ユーザー登録
 @app.route('/register', methods=['POST'])
