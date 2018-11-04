@@ -4,6 +4,7 @@
 
 
 from datetime import datetime
+from random import randint
 
 import twitter, os
 api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
@@ -33,9 +34,13 @@ class Replies(Twitter):
 # morning.py
 class MorningCalls(Twitter):
     def call(self, users):
+        words = ["起きなさい！",
+        "早く起きなさい！",
+        "早く起きないと遅刻するよ"]
         for user in users:
             user_name = str(user).split("'")[1]
-            morning_call = "@{0}\n もう{1}よ！\n 起きなさい！".format(user_name, self.time)
+            word = words[randint(0, (len(words) - 1))]
+            morning_call = "@{0}\n もう{1}よ！\n {2}".format(user_name, self.time, word)
             api.PostUpdate(morning_call)
 
 
