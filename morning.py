@@ -12,7 +12,8 @@ from module import twitter
 #####データベース関連###############
 from flask_sqlalchemy import SQLAlchemy
 
-db_uri = os.environ.get('DATABASE_URL')
+# テスト環境用の環境変数を読み込み、ない場合は本番環境として認識する
+db_uri = os.environ.get('DEVELOP_DATABASE_URL') or os.environ.get('MASTER_DATABASE_URL')
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 # FSADeprecationWarning を消すため
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
