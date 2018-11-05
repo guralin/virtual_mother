@@ -7,7 +7,7 @@ from flask import Flask
 app = Flask(__name__)
 app.debug = True
 
-from module import twitter
+from module import connect_twitter
 
 #####データベース関連###############
 from flask_sqlalchemy import SQLAlchemy
@@ -33,6 +33,6 @@ do = GetData # GetDataクラスの呼び出し
 users = db.session.query(do).all()
 
 # tweetする
-post = twitter.MorningCalls()
+post = connect_twitter.Twitter()
 post.call(users)
 
