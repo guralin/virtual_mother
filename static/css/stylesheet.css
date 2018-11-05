@@ -71,7 +71,7 @@ footer{
     border-color: #fff;
     background-color: #f2f2f2;
 }
-.button:hover{
+.button : hover{
     background-color: #ddd;
     cursor: pointer;
 }
@@ -91,6 +91,10 @@ input.form{
     height: 40px;
     background-color: #fbfbfb;
     border-radius: 9px;
+}
+
+input.form : hover{
+    background-color: #ddd;
 }
 
 
