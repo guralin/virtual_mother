@@ -9,24 +9,24 @@ app.debug = True
 
 from module import twitter
 
-#####################################
+#####データベース関連###############
 from flask_sqlalchemy import SQLAlchemy
 
 # テスト環境用の環境変数を読み込み、ない場合は本番環境として認識する
-db_uri = os.environ.get('DEVELOP_DATABASE_URL') or os.environ.get('MASTER_DATABASE_URL')
-app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DEVELOP_DATABASE_URL') or os.environ.get('MASTER_DATABASE_URL')
 # FSADeprecationWarning を消すため
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
-# モデル
-class Register(db.Model):
+
+class Table(db.Model): # テーブルの指定
     __tablename__ = "morning_call_twitter"
     user_id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(80), unique=True)
 
+class SendData(Table): # カラムに値を代入
     def __init__(self, user_name):
         self.user_name = user_name
-#####################################
+###################################
 
 
 # index
@@ -53,7 +53,7 @@ def do_reply():
 @app.route('/register', methods=['POST'])
 def do_register():
     user_name = request.form['user_name'] # index.htmlのフォームから取得
-    do = Register(user_name)
+    do = SendData(user_name)
     db.session.add(do)
     db.session.commit()
     return render_template('register.html',user_name=user_name)

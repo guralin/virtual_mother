@@ -1,5 +1,4 @@
-
-
+/*CSS*/
 
 /*default*/
 body{
@@ -49,7 +48,7 @@ article{
 }
 
 h2{
-    font-size: 40px;
+    font-size: 34px;
     margin: 1% 2%;
     padding: 0 15px;
     border-left: solid 10px red;
