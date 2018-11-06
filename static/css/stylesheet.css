@@ -59,6 +59,7 @@ article{
     height: 100%;
     font-size: calc(100% + 0.1vw);
     border: solid 4px #ffe7f4;
+    color: #4a4a4a;
 }
 
 h2{
@@ -66,7 +67,8 @@ h2{
     margin: 1% 2%;
     padding: 0 15px;
     border-left: solid 10px red;
-    color: #4a4a4a;
+    font-weight: normal;
+    color: black;
 }
 
 footer{
