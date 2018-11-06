@@ -2,12 +2,13 @@
 
 /*default*/
 body{
-    font-size: 20px;
-    background-color: #ffeef4 /*#ebffff*/;
+    font-size: calc(100% + 0.5vw);
+    background-color: #ffeef4
 }
 
 a{
     text-decoration: none;
+　　color: blue;
 }
 
 a:hover{
@@ -17,31 +18,33 @@ a:hover{
 header{
     padding: 20px 20px;
     color: #4a4a4a;
-/*    background-color: #ffeae4;*/
-/*    margin: -8px -8px 0;*/
     margin: 5px;
     text-align: center;
 }
 header span.title{
-    font-size: calc(190% + 1vw);/*50px;*/
+    font-size: calc(130% + 2vw);
     color: white;
-    text-shadow: 0 0 5px #f545e8;
+    text-shadow: 0 0 7px #f500be;
     display: inline-block;
     border: solid #ffc1ea;
-    border-radius: 50px;
+    border-radius: 70px;
     background-color: #ffcfef;
-    padding:0 15px;
+    padding:0 calc(13px + 0.1vw);
 }
 header a{
     text-decoration: none;
-    color: black;
+    color: white;
 }
 header a:hover{
     text-decoration: none;
 }
 
 .twitter_url{
-    margin: 0% 1%;
+    text-align: center;
+}
+.twitter_url a{
+    text-decoration: none;
+    color: #00aced; /*twitterのアイコンの色*/
 }
 
 .go_home{
@@ -50,14 +53,16 @@ header a:hover{
 
 article{
     background-color: white;
-    border-radius: 20px;
+    border-radius: 50px;
     padding: 20px 10px 50px;
     margin: 20px 5%;
     height: 100%;
+    font-size: calc(100% + 0.1vw);
+    border: solid 4px #ffe7f4;
 }
 
 h2{
-    font-size: 34px;
+    font-size: calc(105% + 1.2vw);
     margin: 1% 2%;
     padding: 0 15px;
     border-left: solid 10px red;
@@ -73,10 +78,14 @@ footer{
     text-align: center;
 }
 
+img.mother{
+    filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.6))
+}
+
 
 /*index.css*/
 .button{
-    font-size: 30px;
+    font-size: calc(90% + 0.05vw);
     border-radius: 10px;
     border-color: #fff;
     background-color: #f2f2f2;
@@ -92,13 +101,13 @@ span.red{
 }
 
 .explain{
-    font-size: 30px;
+    font-size: calc(102% + 1vw);
     margin: 1% 3%;
     padding: 0 15px;
 }
 
 input.form{
-    height: 40px;
+    height: calc(30px + 1vw);
     background-color: #fbfbfb;
     border-radius: 9px;
 }
@@ -115,7 +124,7 @@ input.form:hover{
     margin: 1% 2%;
 }
 .post_text span{
-    font-size: 37px;
+    font-size: calc(102% + 1vw);
 }
 
 
