@@ -3,7 +3,7 @@
 /*default*/
 body{
     font-size: 20px;
-    background-color: #ebffff;
+    background-color: #ffeef4 /*#ebffff*/;
 }
 
 a{
@@ -17,12 +17,20 @@ a:hover{
 header{
     padding: 20px 20px;
     color: #4a4a4a;
-    background-color: #ffeae4;
-    margin: -8px -8px 0;
+/*    background-color: #ffeae4;*/
+/*    margin: -8px -8px 0;*/
+    margin: 5px;
+    text-align: center;
 }
 header span.title{
-    font-size: 50px;
-    color: black;
+    font-size: calc(190% + 1vw);/*50px;*/
+    color: white;
+    text-shadow: 0 0 5px #f545e8;
+    display: inline-block;
+    border: solid #ffc1ea;
+    border-radius: 50px;
+    background-color: #ffcfef;
+    padding:0 15px;
 }
 header a{
     text-decoration: none;
@@ -42,8 +50,9 @@ header a:hover{
 
 article{
     background-color: white;
+    border-radius: 20px;
     padding: 20px 10px 50px;
-    margin: 20px 5px;
+    margin: 20px 5%;
     height: 100%;
 }
 
@@ -56,11 +65,12 @@ h2{
 }
 
 footer{
-    background-color: #808080;
+/*    background-color: #808080;*/
     font-size: 15px;
     color: white;
     padding: 15px 10px;
     margin: 0 -8px;
+    text-align: center;
 }
 
 
