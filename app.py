@@ -7,7 +7,7 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 app.debug = True
 
-from module import twitter
+from module import tweet
 
 #####データベース関連###############
 from flask_sqlalchemy import SQLAlchemy
@@ -37,7 +37,7 @@ def do_index():
 # 投稿
 @app.route('/post')
 def do_post():
-    do = twitter.Posts()
+    do = tweet.Twitter()
     post_text = do.post()
     return render_template('post.html', post_text=post_text)
 
@@ -45,7 +45,7 @@ def do_post():
 @app.route('/reply', methods=['POST'])
 def do_reply():
     reply_name = request.form["reply_name"] # index.htmlのフォームから取得
-    do = twitter.Replies()
+    do = tweet.Twitter()
     post_text = do.reply(reply_name)
     return render_template('post.html',post_text=post_text)
 
