@@ -46,6 +46,10 @@ header a:hover{
     text-decoration: none;
     color: #00aced; /*twitterのアイコンの色*/
 }
+.twitter_url a:hover{
+    text-shadow: 0 0 10px #006eb9;
+    color: white;
+}
 
 .go_home{
     margin: 0% 1.5% -1%;
