@@ -47,7 +47,7 @@ header a:hover{
     color: #00aced; /*twitterのアイコンの色*/
 }
 .twitter_url a:hover{
-    text-shadow: 0 0 10px #006eb9;
+    text-shadow: 0 0 5px #006eb9;
     color: white;
 }
 
