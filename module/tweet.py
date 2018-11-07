@@ -13,7 +13,7 @@ api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
         access_token_secret=os.environ.get("ACCESS_TOKEN_SECRET"))
 
 
-# 親クラス
+
 class Twitter():
     def __init__(self):
         h = datetime.now().hour
@@ -31,7 +31,10 @@ class Twitter():
     def call(self, users):
         words = ["起きなさい！",
         "早く起きなさい！",
-        "早く起きないと遅刻するよ"]
+        "早く起きないと遅刻するよ",
+	"起きなさい!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+	"ご飯よ〜起きなさい〜",
+	"コラ！起きなさい！"]
         for user in users:
             word = words[randint(0, (len(words) - 1))]
             morning_call = "@{0}\n もう{1}よ！\n {2}".format(user, self.time, word)
