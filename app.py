@@ -34,6 +34,11 @@ class SendData(Table): # カラムに値を代入
 def do_index():
     return render_template('index.html')
 
+# ユーザー
+@app.route('/user')
+def do_user():
+    return render_template('user.html')
+
 # 投稿
 @app.route('/post')
 def do_post():
