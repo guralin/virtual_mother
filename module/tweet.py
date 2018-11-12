@@ -5,9 +5,9 @@
 
 from datetime import datetime
 from random import randint
-#import json
-#from collections import OrderedDict
-#import pprint 
+import json
+from collections import OrderedDict
+import pprint 
 import twitter, os
 
 api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
@@ -33,22 +33,14 @@ class Twitter():
         return self.reply_text
 
     def call(self, users): # morning.py
-        words = [
-            "起きなさい！",
-            "早く起きなさい！",
-            "早く起きないと遅刻するよ",
-	    "起きなさい!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-	    "ご飯よ〜起きなさい〜",
-	    "コラ！起きなさい！"
-        ]
-#        with open('json.json') as f:
-#           words = json.load(f)
+        with open('module/json/morning_call.json') as f:
+           words = json.load(f)
         for user in users:
-            word = words[randint(0, (len(words) - 1))]
+            word = words[str(randint(0, (len(words) - 1)))]
             morning_call = "@{0}\n もう{1}よ！\n {2}".format(user, self.time, word)
             api.PostUpdate(morning_call)
 
-
+#######################################################
     def test_tweet(self,tweet_content):
 #このクラスに投稿内容を渡すとその内容でツイートしてくれる
 # （テスト用)
