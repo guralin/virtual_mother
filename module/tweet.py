@@ -44,3 +44,13 @@ class Twitter():
             api.PostUpdate(morning_call)
 
 
+    def test_tweet(self,tweet_content):
+#このクラスに投稿内容を渡すとその内容でツイートしてくれる
+# （テスト用)
+
+        api.PostUpdate(tweet_content)
+        print(tweet_content)
+
+    def test_dm(self,tweet_content,friend_id):
+        api.PostDirectMessage(tweet_content,screen_name=friend_id)
+        print(tweet_content,friend_id)
