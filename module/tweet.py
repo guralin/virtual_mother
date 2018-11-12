@@ -18,7 +18,7 @@ class Twitter():
         h = datetime.now().hour
         m = datetime.now().minute
         self.time = "{0}時{1}分".format(h, m)
-        self.post_text = "現在の時刻は「{0}」です (^_^)y".format(self.time)
+        self.post_text = "今は「{0}」だよ、時間くらい自分で見てよ（激おこプンプン。）".format(self.time)
 
     def post(self): # app.py (/post)
         api.PostUpdate(self.post_text)
