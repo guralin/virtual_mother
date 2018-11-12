@@ -5,6 +5,9 @@
 
 from datetime import datetime
 from random import randint
+#import json
+#from collections import OrderedDict
+#import pprint 
 import twitter, os
 
 api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
@@ -38,6 +41,8 @@ class Twitter():
 	    "ご飯よ〜起きなさい〜",
 	    "コラ！起きなさい！"
         ]
+#        with open('json.json') as f:
+#           words = json.load(f)
         for user in users:
             word = words[randint(0, (len(words) - 1))]
             morning_call = "@{0}\n もう{1}よ！\n {2}".format(user, self.time, word)
