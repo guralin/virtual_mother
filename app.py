@@ -136,4 +136,10 @@ if __name__ == '__main__':
     app.run(port=port)
 
 
+# 404ページ
+#@app.errorhandler(404)
+#def page_not_found(error):
+#    return render_template(page_not_found.html, 404)
+
+
 
