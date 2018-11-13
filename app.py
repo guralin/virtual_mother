@@ -34,7 +34,8 @@ class SendData(Table): # カラムに値を代入
 request_token_url = 'https://twitter.com/oauth/request_token'
 access_token_url  = 'https://twitter.com/oauth/access_token'
 authenticate_url  = 'https://twitter.com/oauth/authorize'
-callback_url      = 'https://virtualmother-develop.herokuapp.com/user'# テスト環境用
+callback_url      = 'https://virtualmother-develop.herokuapp.com/user/'# テスト環境用
+# callback_url      = 'https://oauth-test-virtualmother.herokuapp.com/'# テスト環境用
 consumer_key      = 'U84inIJFauv3RUFedHOwzPGLs'  # 各自設定する
 consumer_secret   = 'VtbtEHaQz2hV3CTachsa29R4JOsLbVkTpxUoTbuSaPmSm5vhOa' # 各自設定する
 #################################
