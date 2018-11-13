@@ -2,7 +2,7 @@
 
 /*default*/
 body{
-    font-size: calc(100% + 0.1vw);
+    font-size: calc(100% + 0.3vw);
     background-color: #ffeef4
 }
 
@@ -59,7 +59,7 @@ article{
     background-color: white;
     border-radius: 50px;
     padding: 20px 10px 50px;
-    margin: 20px 5%;
+    margin: 20px calc(0.5% + 3vw);
     height: 100%;
     font-size: calc(100% + 0.05vw);
     border: solid 4px #ffe7f4;
@@ -75,18 +75,17 @@ h2{
 }
 
 footer{
-/*    background-color: #808080;*/
-    font-size: 15px;
+    font-size: calc(10px + 0.5vw);
     color: white;
     padding: 15px 10px;
     margin: 0 -8px;
     text-align: center;
 }
-
+/*
 img.mother{
     filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.6))
 }
-
+*/
 
 /*user.css*/
 .button{
@@ -121,10 +120,12 @@ input.form:hover{
     background-color: #f2f2f2;
 }
 
+/*index.css*/
+
 
 /*post.css*//*register.css*/
 .post_text{
-    font-size: 30px;
+    font-size: calc(15px + 0.5vw);
     padding-left: 15px;
     margin: 1% 2%;
 }
