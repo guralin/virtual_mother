@@ -5,15 +5,13 @@ import os
 
 import oauth2 as oauth
 from module import tweet
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.debug = True
 
 #####データベース関連###############
-
-
 # テスト環境用の環境変数を読み込み、ない場合は本番環境として認識する
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DEVELOP_DATABASE_URL') or os.environ.get('MASTER_DATABASE_URL')
 # FSADeprecationWarning を消すため
@@ -34,12 +32,12 @@ class SendData(Table): # カラムに値を代入
 request_token_url = 'https://twitter.com/oauth/request_token'
 access_token_url  = 'https://twitter.com/oauth/access_token'
 authenticate_url  = 'https://twitter.com/oauth/authorize'
-callback_url      = 'https://virtualmother-develop.herokuapp.com/authorize'# テスト環境用
+callback_url      = 'https://virtualmother-develop.herokuapp.com/authorize'# ローカル環境用
 # callback_url      = 'https://oauth-test-virtualmother.herokuapp.com/'# テスト環境用
+# callback_url      = 'https://virtualmother.herokuapp.com/authorize'# 本番環境用
 consumer_key      = 'U84inIJFauv3RUFedHOwzPGLs'  # 各自設定する
 consumer_secret   = 'VtbtEHaQz2hV3CTachsa29R4JOsLbVkTpxUoTbuSaPmSm5vhOa' # 各自設定する
 #################################
-
 # todo 分析できたら別モジュールに移植しましょう
 
 def get_request_token():
@@ -48,7 +46,6 @@ def get_request_token():
     resp, content = client.request('%s?&oauth_callback=%s' % (request_token_url, callback_url))
     content = content.decode('utf-8')
     request_token = dict(parse_qsl(content))
-    print(request_token)
     return request_token['oauth_token']
 
 #成型
@@ -70,8 +67,15 @@ def get_access_token(oauth_token, oauth_verifier):
     client = oauth.Client(consumer, token)
     resp, content = client.request("https://api.twitter.com/oauth/access_token","POST", body="oauth_verifier={0}".format(oauth_verifier))
     return content
+###############################
 
 
+# index
+@app.route('/')
+def do_index():
+    return render_template('index.html')
+
+# oauth
 @app.route("/authorize")
 def check_token():
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
@@ -82,19 +86,15 @@ def check_token():
         response = dict(parse_qsl(response))
         oauth_token = response['oauth_token']
         oauth_token_secret = response['oauth_token_secret']
-        return render_template('cer.html',url="NoNeed",oauth_token=oauth_token,oauth_token_secret=oauth_token_secret)
+        if oauth_token_secret=="failed":
+            return redirect(authorize_url)
+        else:
+            return redirect('/user')
     else:
         #リクエストトークンを取得する
         request_token = get_request_token()
         authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
-        print(authorize_url)
-        return render_template('cer.html',url=authorize_url,res="NoParams")
-
-
-# index
-@app.route('/')
-def do_index():
-    return render_template('index.html')
+        return redirect(authorize_url)
 
 # ユーザー
 @app.route('/user')
