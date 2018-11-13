@@ -83,15 +83,13 @@ def check_token():
 
     if oauth_token != "failed" and oauth_verifier !="failed": #トークン取得済みのとき
         return redirect('/user')
-"""
-        response = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
-        response = dict(parse_qsl(response))
-        oauth_token_secret = response['oauth_token_secret']
-        if oauth_token_secret=="aaaa":
-            return redirect(authorize_url)
-        else:
-            return redirect('/user')
-"""
+#        response = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
+#        response = dict(parse_qsl(response))
+#        oauth_token_secret = response['oauth_token_secret']
+#        if oauth_token_secret=="aaaa":
+#            return redirect(authorize_url)
+#        else:
+#            return redirect('/user')
     else:
         #リクエストトークンを取得する
         request_token = get_request_token()
