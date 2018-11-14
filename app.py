@@ -35,8 +35,8 @@ authenticate_url  = 'https://twitter.com/oauth/authorize'
 callback_url      = 'https://virtualmother-develop.herokuapp.com/authorize'# ローカル環境用
 # callback_url      = 'https://oauth-test-virtualmother.herokuapp.com/'# テスト環境用
 # callback_url      = 'https://virtualmother.herokuapp.com/authorize'# 本番環境用
-consumer_key      = 'U84inIJFauv3RUFedHOwzPGLs'  # 各自設定する
-consumer_secret   = 'VtbtEHaQz2hV3CTachsa29R4JOsLbVkTpxUoTbuSaPmSm5vhOa' # 各自設定する
+consumer_key      = os.environ.get("ACCESS_TOKEN")# 各自設定する
+consumer_secret   = os.environ.get("ACCESS_TOKEN_SECRET")# 各自設定する
 #################################
 # todo 分析できたら別モジュールに移植しましょう
 
