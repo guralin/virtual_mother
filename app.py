@@ -82,7 +82,6 @@ def check_token():
     oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
 
     if oauth_token != "failed" and oauth_verifier !="failed": #トークン取得済みのとき
-        print("true")
         return redirect('/user')
 #        response = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
 #        response = dict(parse_qsl(response))
@@ -93,7 +92,6 @@ def check_token():
 #            return redirect('/user')
     else:
         #リクエストトークンを取得する
-        print("false")
         request_token = get_request_token()
         authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
         return redirect(authorize_url)
