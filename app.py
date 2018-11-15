@@ -71,10 +71,6 @@ def get_access_token(oauth_token, oauth_verifier):
 ###############################
 
 
-# index
-@app.route('/')
-def do_index():
-    return render_template('index.html')
 
 # oauth
 @app.route("/authorize")
