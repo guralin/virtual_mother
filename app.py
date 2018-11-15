@@ -2,10 +2,11 @@
 # coding: utf-8
 
 import os
+import logging
 
 import oauth2 as oauth
-from module import tweet
-from flask import Flask, render_template, request, jsonify, redirect
+
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -32,13 +33,13 @@ class SendData(Table): # カラムに値を代入
 request_token_url = 'https://twitter.com/oauth/request_token'
 access_token_url  = 'https://twitter.com/oauth/access_token'
 authenticate_url  = 'https://twitter.com/oauth/authorize'
-callback_url      = 'https://virtualmother-develop.herokuapp.com/authorize'# ローカル環境用
-# callback_url      = 'https://oauth-test-virtualmother.herokuapp.com/'# テスト環境用
-# callback_url      = 'https://virtualmother.herokuapp.com/authorize'# 本番環境用
-consumer_key      = os.environ.get("ACCESS_TOKEN")# 各自設定する
-consumer_secret   = os.environ.get("ACCESS_TOKEN_SECRET")# 各自設定する
+callback_url      = 'https://virtualmother-develop.herokuapp.com/authorize'# テスト環境用
+#callback_url      = 'https://oauth-test-virtualmother.herokuapp.com/'# テスト環境用
+consumer_key      = os.environ.get("CONSUMER_KEY")  # 各自設定する
+consumer_secret   = os.environ.get("CONSUMER_SECRET") # 各自設定する
 #################################
 # todo 分析できたら別モジュールに移植しましょう
+logging.basicConfig(level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
 def get_request_token():
     consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
@@ -81,20 +82,26 @@ def check_token():
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
     oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
 
-    if oauth_token != "failed" and oauth_verifier !="failed": #トークン取得済みのとき
-        return redirect('/user')
-#        response = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
-#        response = dict(parse_qsl(response))
-#        oauth_token_secret = response['oauth_token_secret']
-#        if oauth_token_secret=="aaaa":
-#            return redirect(authorize_url)
-#        else:
-#            return redirect('/user')
+    if oauth_token != "failed" and oauth_verifier !="failed":
+        logging.debug("oauth_token and oauth_verifier is not failed")
+        response = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
+        response = dict(parse_qsl(response))
+        oauth_token = response['oauth_token']
+        oauth_token_secret = response['oauth_token_secret']
+        return render_template('cer.html',url="NoNeed",oauth_token=oauth_token,oauth_token_secret=oauth_token_secret)
     else:
+        logging.debug("oauth_token or oauth_verifier is failed")
         #リクエストトークンを取得する
         request_token = get_request_token()
         authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
-        return redirect(authorize_url)
+        logging.debug(authorize_url)
+        return render_template('cer.html',url=authorize_url,res="NoParams")
+
+
+# index
+@app.route('/')
+def do_index():
+    return render_template('index.html')
 
 # ユーザー
 @app.route('/user')
