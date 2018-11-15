@@ -5,7 +5,7 @@ import os
 import logging
 
 import oauth2 as oauth
-from module import tweet 
+
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
@@ -13,8 +13,6 @@ app = Flask(__name__)
 app.debug = True
 
 #####データベース関連###############
-
-
 # テスト環境用の環境変数を読み込み、ない場合は本番環境として認識する
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DEVELOP_DATABASE_URL') or os.environ.get('MASTER_DATABASE_URL')
 # FSADeprecationWarning を消すため
@@ -40,7 +38,6 @@ callback_url      = 'https://virtualmother-develop.herokuapp.com/authorize'# テ
 consumer_key      = os.environ.get("CONSUMER_KEY")  # 各自設定する
 consumer_secret   = os.environ.get("CONSUMER_SECRET") # 各自設定する
 #################################
-
 # todo 分析できたら別モジュールに移植しましょう
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -50,7 +47,6 @@ def get_request_token():
     resp, content = client.request('%s?&oauth_callback=%s' % (request_token_url, callback_url))
     content = content.decode('utf-8')
     request_token = dict(parse_qsl(content))
-    print(request_token)
     return request_token['oauth_token']
 
 #成型
@@ -72,8 +68,15 @@ def get_access_token(oauth_token, oauth_verifier):
     client = oauth.Client(consumer, token)
     resp, content = client.request("https://api.twitter.com/oauth/access_token","POST", body="oauth_verifier={0}".format(oauth_verifier))
     return content
+###############################
 
 
+# index
+@app.route('/')
+def do_index():
+    return render_template('index.html')
+
+# oauth
 @app.route("/authorize")
 def check_token():
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
@@ -138,6 +141,12 @@ def debug():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(port=port)
+
+
+# 404ページ
+#@app.errorhandler(404)
+#def page_not_found(error):
+#    return render_template(page_not_found.html, 404)
 
 
 
