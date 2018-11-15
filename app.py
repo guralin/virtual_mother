@@ -2,9 +2,10 @@
 # coding: utf-8
 
 import os
+import logging
 
 import oauth2 as oauth
-from module import tweet
+from module import tweet 
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
@@ -35,12 +36,13 @@ request_token_url = 'https://twitter.com/oauth/request_token'
 access_token_url  = 'https://twitter.com/oauth/access_token'
 authenticate_url  = 'https://twitter.com/oauth/authorize'
 callback_url      = 'https://virtualmother-develop.herokuapp.com/authorize'# テスト環境用
-# callback_url      = 'https://oauth-test-virtualmother.herokuapp.com/'# テスト環境用
-consumer_key      = 'U84inIJFauv3RUFedHOwzPGLs'  # 各自設定する
-consumer_secret   = 'VtbtEHaQz2hV3CTachsa29R4JOsLbVkTpxUoTbuSaPmSm5vhOa' # 各自設定する
+#callback_url      = 'https://oauth-test-virtualmother.herokuapp.com/'# テスト環境用
+consumer_key      = os.environ.get("CONSUMER_KEY")  # 各自設定する
+consumer_secret   = os.environ.get("CONSUMER_SECRET") # 各自設定する
 #################################
 
 # todo 分析できたら別モジュールに移植しましょう
+logging.basicConfig(level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
 def get_request_token():
     consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
@@ -78,16 +80,18 @@ def check_token():
     oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
 
     if oauth_token != "failed" and oauth_verifier !="failed":
+        logging.debug("oauth_token and oauth_verifier is not failed")
         response = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
         response = dict(parse_qsl(response))
         oauth_token = response['oauth_token']
         oauth_token_secret = response['oauth_token_secret']
         return render_template('cer.html',url="NoNeed",oauth_token=oauth_token,oauth_token_secret=oauth_token_secret)
     else:
+        logging.debug("oauth_token or oauth_verifier is failed")
         #リクエストトークンを取得する
         request_token = get_request_token()
         authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
-        print(authorize_url)
+        logging.debug(authorize_url)
         return render_template('cer.html',url=authorize_url,res="NoParams")
 
 
