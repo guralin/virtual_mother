@@ -42,6 +42,7 @@ consumer_secret   = os.environ.get("CONSUMER_SECRET") # 各自設定する
 # todo 分析できたら別モジュールに移植しましょう
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
+# リクエストトークンを取得
 def get_request_token():
     consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
     client = oauth.Client(consumer)
@@ -50,7 +51,7 @@ def get_request_token():
     request_token = dict(parse_qsl(content))
     return request_token['oauth_token']
 
-#成型
+# 成型
 def parse_qsl(url):
     param = {}
     try:
@@ -62,7 +63,7 @@ def parse_qsl(url):
         param['oauth_token_secret'] ='failed'
     return param
 
-#アクセストークンを取得する関数
+# アクセストークンを取得
 def get_access_token(oauth_token, oauth_verifier):
     consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
     token = oauth.Token(oauth_token, oauth_verifier)
