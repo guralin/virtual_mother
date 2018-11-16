@@ -86,7 +86,7 @@ def check_token():
         response = dict(parse_qsl(response))
         oauth_token = response['oauth_token']
         oauth_token_secret = response['oauth_token_secret']
-        return redirect(authenticate_url) #render_template('cer.html',url="NoNeed",oauth_token=oauth_token,oauth_token_secret=oauth_token_secret)
+        return render_template('cer.html',url="NoNeed") #,oauth_token=oauth_token,oauth_token_secret=oauth_token_secret)
     else:
         logging.debug("oauth_token or oauth_verifier is failed")
         #リクエストトークンを取得する
