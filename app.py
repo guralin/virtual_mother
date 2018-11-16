@@ -34,6 +34,7 @@ request_token_url = 'https://twitter.com/oauth/request_token'
 access_token_url  = 'https://twitter.com/oauth/access_token'
 authenticate_url  = 'https://twitter.com/oauth/authorize'
 callback_url      = 'https://virtualmother-develop.herokuapp.com/authorize'# テスト環境用
+#callback_url      = 'https://virtualmother.herokuapp.com/authorize'# 本番環境用
 #callback_url      = 'https://oauth-test-virtualmother.herokuapp.com/'# テスト環境用
 consumer_key      = os.environ.get("CONSUMER_KEY")  # 各自設定する
 consumer_secret   = os.environ.get("CONSUMER_SECRET") # 各自設定する
