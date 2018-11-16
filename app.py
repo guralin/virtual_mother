@@ -6,7 +6,7 @@ import logging
 
 import oauth2 as oauth
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -76,6 +76,10 @@ def get_access_token(oauth_token, oauth_verifier):
 # oauth
 @app.route("/authorize")
 def check_token():
+    request_token = get_request_token()
+    authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
+    return redirect(authorize_url)
+"""
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
     oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
 
@@ -93,7 +97,7 @@ def check_token():
         authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
         logging.debug(authorize_url)
         return render_template('cer.html',url=authorize_url,res="NoParams")
-
+"""
 
 # index
 @app.route('/')
@@ -129,21 +133,16 @@ def do_register():
     db.session.commit()
     return render_template('register.html',user_name=user_name)
 
-
-# デバッグ
-@app.route('/debug')
-def debug():
-    return render_template('notemplate.html')
-
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(port=port)
-
-
 # 404ページ
 #@app.errorhandler(404)
 #def page_not_found(error):
 #    return render_template(page_not_found.html, 404)
+
+
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(port=port)
 
 
 
