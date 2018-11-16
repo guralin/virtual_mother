@@ -16,6 +16,8 @@ if(url != "NoNeed"){
 }
 //認証している場合
 else{
+  document.getElementById("ot").innerHTML = "認証済み"
+/*
   ot = "{{oauth_token}}"
   ots ="{{oauth_token_secret}}"
 
@@ -28,6 +30,7 @@ else{
     document.getElementById("ot").innerHTML = "oauth_token: " + ot
     document.getElementById("ots").innerHTML ="oauth_token_secret: "+ots
   }
+*/
 }
 </script>
 <div><a href='/user'>ユーザーページに進む</a></div>
