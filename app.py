@@ -103,7 +103,8 @@ def do_index():
 # ユーザー
 @app.route('/user')
 def do_user():
-    return render_template('user.html')
+    user_name = "ユーザー名"
+    return render_template('user.html', user_name=user_name)
 
 # 投稿
 @app.route('/post')
