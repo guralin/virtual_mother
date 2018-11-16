@@ -76,10 +76,6 @@ def get_access_token(oauth_token, oauth_verifier):
 # oauth
 @app.route("/authorize")
 def check_token():
-    request_token = get_request_token()
-    authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
-    return redirect(authorize_url)
-"""
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
     oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
 
@@ -97,7 +93,7 @@ def check_token():
         authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
         logging.debug(authorize_url)
         return render_template('cer.html',url=authorize_url,res="NoParams")
-"""
+
 
 # index
 @app.route('/')
