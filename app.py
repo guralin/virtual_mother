@@ -42,16 +42,9 @@ consumer_secret   = os.environ.get("CONSUMER_SECRET") # 各自設定する
 # todo 分析できたら別モジュールに移植しましょう
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
 
-# リクエストトークンを取得
-def get_request_token():
-    consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
-    client = oauth.Client(consumer)
-    resp, content = client.request('%s?&oauth_callback=%s' % (request_token_url, callback_url))
-    content = content.decode('utf-8')
-    request_token = dict(parse_qsl(content))
-    return request_token['oauth_token'] # リクエストトークンのみ
-
-# 成型 ＜ {'oauth_token', 'oauth_token_secret'} を返す＞
+# 成型
+# アクセストークン取得時は {'oauth_token':'トークン', 'oauth_token_secret':'シークレット',…} を返す
+# リクエストトークン取得時は {'oauth_token':'トークン',…} を返す
 def parse_qsl(url):
     param = {}
     try:
@@ -63,6 +56,15 @@ def parse_qsl(url):
         param['oauth_token_secret'] ='failed'
     return param
 
+# リクエストトークンを取得
+def get_request_token():
+    consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
+    client = oauth.Client(consumer)
+    resp, content = client.request('%s?&oauth_callback=%s' % (request_token_url, callback_url))
+    url_content = content.decode('utf-8')
+    request_token = dict(parse_qsl(url_content))
+    return request_token['oauth_token'] # リクエストトークンのみ
+
 # アクセストークンを取得（１
 def get_access_token(oauth_token, oauth_verifier):
     consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
@@ -71,7 +73,7 @@ def get_access_token(oauth_token, oauth_verifier):
     resp, content = client.request("https://api.twitter.com/oauth/access_token","POST", body="oauth_verifier={0}".format(oauth_verifier))
     return content
 
-# アクセストークンとアクセストークンシークレットを取得（２
+# アクセストークンとアクセストークンシークレットを取得（２　/authorize 認証済の時に使う
 def get_access_token_and_secret(oauth_token, oauth_verifier):
     access_token_and_secret = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
     access_token_or_secret = dict(parse_qsl(access_token_and_secret))
