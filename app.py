@@ -96,12 +96,10 @@ def check_token():
         # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に飛ばす
         return redirect(authorize_url)
     else: # 認証済の時
-        """
         access_token_and_secret = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
         access_token_or_secret = dict(parse_qsl(access_token_and_secret))
         oauth_token = access_token_or_secret['oauth_token']
         oauth_token_secret = access_token_or_secret['oauth_token_secret']
-        """
         return render_template('user.html') # 何もしなくてもauthorize_urlに飛ばして、callback_url（/user）に飛ばされる
 
 # index
