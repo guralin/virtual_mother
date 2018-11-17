@@ -87,6 +87,25 @@ def check_token():
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
     oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
 
+#    if oauth_token != "failed" and oauth_verifier !="failed":
+    if oauth_token == "failed" and oauth_verifier == "failed":
+#        pass
+        """
+        logging.debug("oauth_token and oauth_verifier is not failed")
+        response = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
+        response = dict(parse_qsl(response))
+        oauth_token = response['oauth_token']
+        oauth_token_secret = response['oauth_token_secret']
+        return render_template('cer.html',url="NoNeed")
+        """
+#     else:
+        logging.debug("oauth_token or oauth_verifier is failed")
+        #リクエストトークンを取得する
+        request_token = get_request_token()
+        authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
+        logging.debug(authorize_url)
+        return redirect(authorize_url)
+    """
     if oauth_token == "failed" and oauth_verifier == "failed": # 未認証の時
         logging.debug("oauth_token or oauth_verifier is failed") # デバッグ
         request_token = get_request_token() # リクエストトークンを取得する
@@ -101,6 +120,7 @@ def check_token():
         oauth_token = access_token_or_secret['oauth_token']
         oauth_token_secret = access_token_or_secret['oauth_token_secret']
         return render_template('user.html') # 何もしなくてもauthorize_urlに飛ばして、callback_url（/user）に飛ばされる
+    """
 
 # index
 @app.route('/')
