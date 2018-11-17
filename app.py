@@ -98,7 +98,7 @@ def check_token():
         oauth_token_secret = response['oauth_token_secret']
         return render_template('cer.html',url="NoNeed")
         
-     else:
+    else:
         logging.debug("oauth_token or oauth_verifier is failed")
         #リクエストトークンを取得する
         request_token = get_request_token()
