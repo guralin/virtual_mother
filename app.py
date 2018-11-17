@@ -46,8 +46,8 @@ logging.basicConfig(level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(
 def get_request_token():
     consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
     client = oauth.Client(consumer)
-    resp = client.request('%s?&oauth_callback=%s' % (request_token_url, callback_url))
-    content = resp.decode('utf-8')
+    resp, content = client.request('%s?&oauth_callback=%s' % (request_token_url, callback_url))
+    content = content.decode('utf-8')
     request_token = dict(parse_qsl(content))
     return request_token['oauth_token'] # リクエストトークンのみ
 
@@ -68,7 +68,7 @@ def get_access_token(oauth_token, oauth_verifier):
     consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
     token = oauth.Token(oauth_token, oauth_verifier)
     client = oauth.Client(consumer, token)
-    content = client.request("https://api.twitter.com/oauth/access_token","POST", body="oauth_verifier={0}".format(oauth_verifier))
+    resp, content = client.request("https://api.twitter.com/oauth/access_token","POST", body="oauth_verifier={0}".format(oauth_verifier))
     return content
 
 # アクセストークンとアクセストークンシークレットを取得（２
