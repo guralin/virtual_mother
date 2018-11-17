@@ -87,18 +87,18 @@ def check_token():
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
     oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
 
-#    if oauth_token != "failed" and oauth_verifier !="failed":
-    if oauth_token == "failed" and oauth_verifier == "failed":
+    if oauth_token != "failed" and oauth_verifier !="failed":
+#    if oauth_token == "failed" and oauth_verifier == "failed":
 #        pass
-        """
+        
         logging.debug("oauth_token and oauth_verifier is not failed")
         response = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
         response = dict(parse_qsl(response))
         oauth_token = response['oauth_token']
         oauth_token_secret = response['oauth_token_secret']
         return render_template('cer.html',url="NoNeed")
-        """
-#     else:
+        
+     else:
         logging.debug("oauth_token or oauth_verifier is failed")
         #リクエストトークンを取得する
         request_token = get_request_token()
