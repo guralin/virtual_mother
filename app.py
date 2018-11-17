@@ -96,7 +96,7 @@ def check_token():
         # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に飛ばす
         return redirect(authorize_url)
     else: # 認証済の時
-        pass
+        return redirect(/user)
         """
         access_token_and_secret = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
         access_token_or_secret = dict(parse_qsl(access_token_and_secret))
