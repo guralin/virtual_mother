@@ -33,7 +33,7 @@ class SendData(Table): # カラムに値を代入
 request_token_url = 'https://twitter.com/oauth/request_token'
 access_token_url  = 'https://twitter.com/oauth/access_token'
 authenticate_url  = 'https://twitter.com/oauth/authenticate'
-callback_url      = 'https://virtualmother-develop.herokuapp.com/user'# テスト環境用
+callback_url      = 'https://virtualmother-develop.herokuapp.com/authorize'# テスト環境用
 #callback_url      = 'https://virtualmother.herokuapp.com/authorize'# 本番環境用
 #callback_url      = 'https://oauth-test-virtualmother.herokuapp.com/'# テスト環境用
 consumer_key      = os.environ.get("CONSUMER_KEY")  # 各自設定する
@@ -80,23 +80,10 @@ oauth_token_secret = access_token_or_secret['oauth_token_secret']
 ###############################
 
 
-"""
+
 # oauth
 @app.route("/authorize")
 def check_token():
-
-#        return render_template('user.html') # 何もしなくてもauthorize_urlに飛ばして、callback_url（/user）に飛ばされる
-"""    
-        
-
-# index
-@app.route('/')
-def do_index():
-    return render_template('index.html')
-
-# ユーザー
-@app.route('/user')
-def do_user():
 ######
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
     oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
@@ -114,8 +101,19 @@ def do_user():
         access_token_or_secret = dict(parse_qsl(access_token_and_secret))
         oauth_token = access_token_or_secret['oauth_token']
         oauth_token_secret = access_token_or_secret['oauth_token_secret']
-        
+        return redirect('/user')
 ######
+  
+        
+
+# index
+@app.route('/')
+def do_index():
+    return render_template('index.html')
+
+# ユーザー
+@app.route('/user')
+def do_user():
         user_name = "ユーザー名"
         return render_template('user.html', user_name=user_name)
 
