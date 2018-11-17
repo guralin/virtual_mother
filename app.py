@@ -104,7 +104,6 @@ def check_token():
     else: # 認証済の時
         # アクセストークンとアクセストークンシークレットの取得
         access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
-        logging.debug(oauth_token, oauth_token_secret) # デバッグ
         return redirect('/user')
 
 # ユーザー
