@@ -47,8 +47,8 @@ def get_request_token():
     consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
     client = oauth.Client(consumer)
     resp, content = client.request('%s?&oauth_callback=%s' % (request_token_url, callback_url))
-    url_content = content.decode('utf-8')
-    request_token = dict(parse_qsl(url_content))
+    content = content.decode('utf-8')
+    request_token = dict(parse_qsl(content))
     return request_token['oauth_token'] # リクエストトークンのみ
 
 # 成型 ＜ {'oauth_token', 'oauth_token_secret'} を返す＞
