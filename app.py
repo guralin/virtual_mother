@@ -86,7 +86,7 @@ oauth_token_secret = access_token_or_secret['oauth_token_secret']
 def check_token():
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
     oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
-
+    """
     if oauth_token != "failed" and oauth_verifier !="failed":
 #    if oauth_token == "failed" and oauth_verifier == "failed":
 #        pass
@@ -120,7 +120,7 @@ def check_token():
         oauth_token = access_token_or_secret['oauth_token']
         oauth_token_secret = access_token_or_secret['oauth_token_secret']
         return render_template('user.html') # 何もしなくてもauthorize_urlに飛ばして、callback_url（/user）に飛ばされる
-        """
+        
 
 # index
 @app.route('/')
