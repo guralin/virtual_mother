@@ -102,7 +102,7 @@ def check_token():
         oauth_token_secret = access_token_or_secret['oauth_token_secret']
         return redirect('/user')
 #        return render_template('user.html') # 何もしなくてもauthorize_urlに飛ばして、callback_url（/user）に飛ばされる
-        """
+        
         
 
 # index
