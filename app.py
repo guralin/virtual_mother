@@ -63,20 +63,22 @@ def parse_qsl(url):
         param['oauth_token_secret'] ='failed'
     return param
 
-# アクセストークンを取得
+# アクセストークンを取得（１
 def get_access_token(oauth_token, oauth_verifier):
     consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
     token = oauth.Token(oauth_token, oauth_verifier)
     client = oauth.Client(consumer, token)
     resp, content = client.request("https://api.twitter.com/oauth/access_token","POST", body="oauth_verifier={0}".format(oauth_verifier))
     return content
-"""
-アクセストークンとアクセストークンシークレットの取得方法のメモ
-access_token_and_secret = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
-access_token_or_secret = dict(parse_qsl(access_token_and_secret))
-oauth_token = access_token_or_secret['oauth_token']
-oauth_token_secret = access_token_or_secret['oauth_token_secret']
-"""
+
+# アクセストークンとアクセストークンシークレットを取得（２
+def get_access_token_and_secret(oauth_token, oauth_verifier):
+    access_token_and_secret = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
+    access_token_or_secret = dict(parse_qsl(access_token_and_secret))
+    oauth_token = access_token_or_secret['oauth_token']
+    oauth_token_secret = access_token_or_secret['oauth_token_secret']
+    return oauth_token, oauth_token_secret
+
 ###############################
 
 
@@ -97,10 +99,13 @@ def check_token():
         # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に飛ばす
         return redirect(authorize_url)
     else: # 認証済の時
+        access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
+        """アクセストークンとアクセストークンシークレットの取得
         access_token_and_secret = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
         access_token_or_secret = dict(parse_qsl(access_token_and_secret))
         oauth_token = access_token_or_secret['oauth_token']
         oauth_token_secret = access_token_or_secret['oauth_token_secret']
+        """
         return redirect('/user')
 ######
   
