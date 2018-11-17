@@ -49,7 +49,7 @@ def get_request_token():
     resp, content = client.request('%s?&oauth_callback=%s' % (request_token_url, callback_url))
     content = content.decode('utf-8')
     request_token = dict(parse_qsl(content))
-    return request_token['oauth_token']
+    return request_token['oauth_token'] # リクエストトークン
 
 # 成型
 def parse_qsl(url):
@@ -70,6 +70,13 @@ def get_access_token(oauth_token, oauth_verifier):
     client = oauth.Client(consumer, token)
     resp, content = client.request("https://api.twitter.com/oauth/access_token","POST", body="oauth_verifier={0}".format(oauth_verifier))
     return content
+"""
+アクセストークンとアクセストークンシークレットの取得方法のメモ
+access_token_and_secret = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
+access_token_or_secret = dict(parse_qsl(access_token_and_secret))
+oauth_token = access_token_or_secret['oauth_token']
+oauth_token_secret = access_token_or_secret['oauth_token_secret']
+"""
 ###############################
 
 
@@ -80,25 +87,16 @@ def check_token():
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
     oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
 
-    if oauth_token == "failed" and oauth_verifier == "failed":
-#        pass
-        """
-        logging.debug("oauth_token and oauth_verifier is not failed")
-        response = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
-        response = dict(parse_qsl(response))
-        oauth_token = response['oauth_token']
-        oauth_token_secret = response['oauth_token_secret']
-        return render_template('cer.html',url="NoNeed")
-        """
-#    else:
-        logging.debug("oauth_token or oauth_verifier is failed")
-        #リクエストトークンを取得する
-        request_token = get_request_token()
+    if oauth_token == "failed" and oauth_verifier == "failed": # 未認証の時
+        logging.debug("oauth_token or oauth_verifier is failed") # デバッグ
+        request_token = get_request_token() # リクエストトークンを取得する
+        # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン を作る
         authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
-        logging.debug(authorize_url)
+        logging.debug(authorize_url) # デバッグ
+        # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に飛ばす
         return redirect(authorize_url)
-    else:
-        pass
+    else: # 認証済の時
+        pass # 何もしなくてもauthorize_urlに飛ばして、callback_url（/user）に飛ばされる
 
 # index
 @app.route('/')
