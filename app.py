@@ -49,9 +49,9 @@ def get_request_token():
     resp, content = client.request('%s?&oauth_callback=%s' % (request_token_url, callback_url))
     content = content.decode('utf-8')
     request_token = dict(parse_qsl(content))
-    return request_token['oauth_token'] # リクエストトークン
+    return request_token['oauth_token'] # リクエストトークンのみ
 
-# 成型
+# 成型 ＜ {'oauth_token', 'oauth_token_secret'} を返す＞
 def parse_qsl(url):
     param = {}
     try:
@@ -78,15 +78,17 @@ def get_access_token_and_secret(oauth_token, oauth_verifier):
     oauth_token = access_token_or_secret['oauth_token']
     oauth_token_secret = access_token_or_secret['oauth_token_secret']
     return oauth_token, oauth_token_secret
-
 ###############################
 
 
+# INDEX
+@app.route('/')
+def do_index():
+    return render_template('index.html')
 
-# oauth
+# OAUTH
 @app.route("/authorize")
 def check_token():
-######
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
     oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
 
@@ -98,28 +100,16 @@ def check_token():
         logging.debug(authorize_url) # デバッグ
         # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に飛ばす
         return redirect(authorize_url)
-    else: # 認証済の時
-        access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
-        """アクセストークンとアクセストークンシークレットの取得
-        access_token_and_secret = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
-        access_token_or_secret = dict(parse_qsl(access_token_and_secret))
-        oauth_token = access_token_or_secret['oauth_token']
-        oauth_token_secret = access_token_or_secret['oauth_token_secret']
-        """
-        return redirect('/user')
-######
-  
-        
 
-# index
-@app.route('/')
-def do_index():
-    return render_template('index.html')
+    else: # 認証済の時
+        # アクセストークンとアクセストークンシークレットの取得
+        access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
+        return redirect('/user')
 
 # ユーザー
 @app.route('/user')
 def do_user():
-        user_name = "ユーザー名"
+        user_name = "ユーザー名" # ← user_name = "Twitterのスクリーン名"に変更する
         return render_template('user.html', user_name=user_name)
 
 # 投稿
@@ -140,8 +130,10 @@ def do_reply():
 # ユーザー登録
 @app.route('/register', methods=['POST'])
 def do_register():
+    ##### ↓ user_name = "Twitterのスクリーン名" に変更する
     user_name = request.form['user_name'] # index.htmlのフォームから取得
-    do = SendData(user_name)
+    ##### ← user_id = ユーザーID を追加する
+    do = SendData(user_name) # ← user_name を user_id に変更する
     db.session.add(do)
     db.session.commit()
     return render_template('register.html',user_name=user_name)
