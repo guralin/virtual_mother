@@ -82,14 +82,14 @@ def check_token():
 
     if oauth_token != "failed" and oauth_verifier !="failed":
         pass
-"""
+        """
         logging.debug("oauth_token and oauth_verifier is not failed")
         response = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
         response = dict(parse_qsl(response))
         oauth_token = response['oauth_token']
         oauth_token_secret = response['oauth_token_secret']
         return render_template('cer.html',url="NoNeed")
-"""
+        """
     else:
         logging.debug("oauth_token or oauth_verifier is failed")
         #リクエストトークンを取得する
