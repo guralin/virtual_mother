@@ -21,8 +21,8 @@ db = SQLAlchemy(app)
 
 class Table(db.Model): # テーブルの指定
     __tablename__ = "morning_call_twitter"
-    user_id = db.Column(db.Integer, primary_key=True)
-    user_name = db.Column(db.String(80), unique=True)
+    user_id = db.Column(db.Integer, primary_key=True) ### user_idをuser_indexに変更
+    user_name = db.Column(db.String(80), unique=True) ### user_nameをuser_idに変更
 
 class SendData(Table): # カラムに値を代入
     def __init__(self, user_name):
@@ -35,7 +35,7 @@ access_token_url  = 'https://twitter.com/oauth/access_token'
 authenticate_url  = 'https://twitter.com/oauth/authenticate'
 callback_url      = 'https://virtualmother-develop.herokuapp.com/authorize'# テスト環境用
 #callback_url      = 'https://virtualmother.herokuapp.com/authorize'# 本番環境用
-#callback_url      = 'https://oauth-test-virtualmother.herokuapp.com/'# テスト環境用
+#callback_url      = 'https://oauth-test-virtualmother.herokuapp.com/'# T君のテスト用
 consumer_key      = os.environ.get("CONSUMER_KEY")  # 各自設定する
 consumer_secret   = os.environ.get("CONSUMER_SECRET") # 各自設定する
 #################################
@@ -46,8 +46,8 @@ logging.basicConfig(level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(
 def get_request_token():
     consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
     client = oauth.Client(consumer)
-    resp, content = client.request('%s?&oauth_callback=%s' % (request_token_url, callback_url))
-    content = content.decode('utf-8')
+    resp = client.request('%s?&oauth_callback=%s' % (request_token_url, callback_url))
+    content = resp.decode('utf-8')
     request_token = dict(parse_qsl(content))
     return request_token['oauth_token'] # リクエストトークンのみ
 
@@ -68,7 +68,7 @@ def get_access_token(oauth_token, oauth_verifier):
     consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
     token = oauth.Token(oauth_token, oauth_verifier)
     client = oauth.Client(consumer, token)
-    resp, content = client.request("https://api.twitter.com/oauth/access_token","POST", body="oauth_verifier={0}".format(oauth_verifier))
+    content = client.request("https://api.twitter.com/oauth/access_token","POST", body="oauth_verifier={0}".format(oauth_verifier))
     return content
 
 # アクセストークンとアクセストークンシークレットを取得（２
@@ -104,12 +104,13 @@ def check_token():
     else: # 認証済の時
         # アクセストークンとアクセストークンシークレットの取得
         access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
+        logging.debug(oauth_token, oauth_token_secret) # デバッグ
         return redirect('/user')
 
 # ユーザー
 @app.route('/user')
 def do_user():
-        user_name = "ユーザー名" # ← user_name = "Twitterのスクリーン名"に変更する
+        user_name = "ユーザー名" ### ← user_name = "Twitterのスクリーン名"に変更する
         return render_template('user.html', user_name=user_name)
 
 # 投稿
@@ -130,10 +131,10 @@ def do_reply():
 # ユーザー登録
 @app.route('/register', methods=['POST'])
 def do_register():
-    ##### ↓ user_name = "Twitterのスクリーン名" に変更する
+    ### ↓ user_name = "Twitterのスクリーン名" に変更する
     user_name = request.form['user_name'] # index.htmlのフォームから取得
-    ##### ← user_id = ユーザーID を追加する
-    do = SendData(user_name) # ← user_name を user_id に変更する
+    ### ← user_id = ユーザーID を追加する
+    do = SendData(user_name) ### ← user_name を user_id に変更する(データベースも)
     db.session.add(do)
     db.session.commit()
     return render_template('register.html',user_name=user_name)
