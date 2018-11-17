@@ -105,7 +105,7 @@ def check_token():
         authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
         logging.debug(authorize_url)
         return redirect(authorize_url)
-    """
+        """
     if oauth_token == "failed" and oauth_verifier == "failed": # 未認証の時
         logging.debug("oauth_token or oauth_verifier is failed") # デバッグ
         request_token = get_request_token() # リクエストトークンを取得する
@@ -120,7 +120,7 @@ def check_token():
         oauth_token = access_token_or_secret['oauth_token']
         oauth_token_secret = access_token_or_secret['oauth_token_secret']
         return render_template('user.html') # 何もしなくてもauthorize_urlに飛ばして、callback_url（/user）に飛ばされる
-    """
+        """
 
 # index
 @app.route('/')
