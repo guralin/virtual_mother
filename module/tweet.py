@@ -17,6 +17,10 @@ api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
 
 class Twitter():
 
+    api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
+            consumer_secret=os.environ.get("CONSUMER_SECRET"),
+            access_token_key=os.environ.get("ACCESS_TOKEN"),
+            access_token_secret=os.environ.get("ACCESS_TOKEN_SECRET"))
     def __init__(self):
         h = datetime.now().hour
         m = datetime.now().minute
@@ -42,4 +46,6 @@ class Twitter():
         print(tweet_content,friend_id)
 
 
-
+class ApiConnect():
+    def __init__(access_token,access_token_secret):
+        pass
