@@ -120,10 +120,8 @@ input.form:hover{
     background-color: #f2f2f2;
 }
 
-/*index.css*/
 
-
-/*post.css*//*register.css*/
+/*register.css*/
 .post_text{
     font-size: calc(15px + 0.5vw);
     padding-left: 15px;

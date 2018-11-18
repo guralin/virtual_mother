@@ -40,7 +40,7 @@ consumer_key      = os.environ.get("CONSUMER_KEY")  # 各自設定する
 consumer_secret   = os.environ.get("CONSUMER_SECRET") # 各自設定する
 #################################
 # todo 分析できたら別モジュールに移植しましょう
-logging.basicConfig(level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s') # デバッグ
 
 # 成型
 # アクセストークン取得時は {'oauth_token':'トークン', 'oauth_token_secret':'シークレット',…} を返す
@@ -65,7 +65,7 @@ def get_request_token():
     request_token = dict(parse_qsl(url_content))
     return request_token['oauth_token'] # リクエストトークンのみ
 
-# アクセストークンを取得（１
+# アクセストークンを取得（１）
 def get_access_token(oauth_token, oauth_verifier):
     consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
     token = oauth.Token(oauth_token, oauth_verifier)
@@ -73,7 +73,7 @@ def get_access_token(oauth_token, oauth_verifier):
     resp, content = client.request("https://api.twitter.com/oauth/access_token","POST", body="oauth_verifier={0}".format(oauth_verifier))
     return content
 
-# アクセストークンとアクセストークンシークレットを取得（２　/authorize 認証済の時に使う
+# アクセストークンとアクセストークンシークレットを取得（２）　/authorize 認証済の時に使う
 def get_access_token_and_secret(oauth_token, oauth_verifier):
     access_token_and_secret = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
     access_token_or_secret = dict(parse_qsl(access_token_and_secret))
@@ -83,12 +83,12 @@ def get_access_token_and_secret(oauth_token, oauth_verifier):
 ###############################
 
 
-# INDEX
+# トップページ
 @app.route('/')
-def do_index():
-    return render_template('index.html')
+def do_top():
+    return render_template('top.html')
 
-# OAUTH
+# OAUTH (this is not page)
 @app.route("/authorize")
 def check_token():
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
@@ -100,45 +100,32 @@ def check_token():
         # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン を作る
         authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
         logging.debug(authorize_url) # デバッグ
-        # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に飛ばす
+        # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に進む
         return redirect(authorize_url)
 
     else: # 認証済の時
         # アクセストークンとアクセストークンシークレットの取得
         access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
-        return redirect('/user')
+        return redirect('/user') # ユーザーページに進む
 
-# ユーザー
+# ユーザーページ
 @app.route('/user')
 def do_user():
         user_name = "ユーザー名" ###（変更）← user_name = "Twitterのスクリーン名"に変更する
         return render_template('user.html', user_name=user_name)
 
-# 投稿
-@app.route('/post')
-def do_post():
-    do = tweet.Twitter()
-    post_text = do.post()
-    return render_template('post.html', post_text=post_text)
-
-# リプライ
-@app.route('/reply', methods=['POST'])
-def do_reply():
-    reply_name = request.form["reply_name"] # index.htmlのフォームから取得
-    do = tweet.Twitter()
-    post_text = do.reply(reply_name)
-    return render_template('post.html',post_text=post_text)
-
-# ユーザー登録
-@app.route('/register', methods=['POST'])
+# ユーザー登録完了ページ
+@app.route('/register') # , methods=['POST'])
 def do_register():
-    ###（変更）↓ user_name = "Twitterのスクリーン名" に変更する
-    user_name = request.form['user_name'] # index.htmlのフォームから取得
-    ###（追加）← user_id = ユーザーID を追加する
-    do = SendData(user_name) ###（変更）← user_name を user_id に変更する(データベースも)
+    ###（変更）↓ Twitterのスクリーン名を取得して挿入する
+    user_name = "スクリーン名"
+    ###（変更）↓ TwitterのユーザーIDを取得して挿入する
+    user_id = "ユーザーID"
+    do = SendData(user_id)
     db.session.add(do)
     db.session.commit()
     return render_template('register.html',user_name=user_name)
+#    request.form[""] # フォームから取得
 
 # 404ページ
 #@app.errorhandler(404)
