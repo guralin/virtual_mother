@@ -117,10 +117,11 @@ def do_user():
 # ユーザー登録完了ページ
 @app.route('/register') # , methods=['POST'])
 def do_register():
-    ###（変更）↓ user_name = "Twitterのスクリーン名" に変更する
-    user_name = 
-    ###（追加）← user_id = ユーザーID を追加する
-    do = SendData(user_name) ###（変更）← user_name を user_id に変更する(データベースも)
+    ###（変更）↓ Twitterのスクリーン名を取得して挿入する
+    user_name = "スクリーン名"
+    ###（変更）↓ TwitterのユーザーIDを取得して挿入する
+    user_id = "ユーザーID"
+    do = SendData(user_id)
     db.session.add(do)
     db.session.commit()
     return render_template('register.html',user_name=user_name)
