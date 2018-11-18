@@ -29,8 +29,8 @@ class GetData(Table): # カラムの指定
 
 # データを取得
 do = GetData # GetDataクラスの呼び出し
-### user_idを使って、スクリーン名を取得して、user_nameに格納
-users = db.session.query(do).all() ### doをuser_nameに変更
+###（追加） user_idを使って、スクリーン名を取得して、user_nameに格納
+users = db.session.query(do).all() ###（変更）doをuser_nameに変更
 
 # tweetする
 post = tweet.Twitter()

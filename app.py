@@ -21,8 +21,8 @@ db = SQLAlchemy(app)
 
 class Table(db.Model): # テーブルの指定
     __tablename__ = "morning_call_twitter"
-    user_id = db.Column(db.Integer, primary_key=True) ### user_idをuser_indexに変更
-    user_name = db.Column(db.String(80), unique=True) ### user_nameをuser_idに変更
+    user_id = db.Column(db.Integer, primary_key=True) ###（変更）user_idをuser_indexに変更
+    user_name = db.Column(db.String(80), unique=True) ###（変更）user_nameをuser_idに変更
 
 class SendData(Table): # カラムに値を代入
     def __init__(self, user_name):
@@ -111,7 +111,7 @@ def check_token():
 # ユーザー
 @app.route('/user')
 def do_user():
-        user_name = "ユーザー名" ### ← user_name = "Twitterのスクリーン名"に変更する
+        user_name = "ユーザー名" ###（変更）← user_name = "Twitterのスクリーン名"に変更する
         return render_template('user.html', user_name=user_name)
 
 # 投稿
@@ -132,10 +132,10 @@ def do_reply():
 # ユーザー登録
 @app.route('/register', methods=['POST'])
 def do_register():
-    ### ↓ user_name = "Twitterのスクリーン名" に変更する
+    ###（変更）↓ user_name = "Twitterのスクリーン名" に変更する
     user_name = request.form['user_name'] # index.htmlのフォームから取得
-    ### ← user_id = ユーザーID を追加する
-    do = SendData(user_name) ### ← user_name を user_id に変更する(データベースも)
+    ###（追加）← user_id = ユーザーID を追加する
+    do = SendData(user_name) ###（変更）← user_name を user_id に変更する(データベースも)
     db.session.add(do)
     db.session.commit()
     return render_template('register.html',user_name=user_name)
