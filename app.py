@@ -94,7 +94,7 @@ def check_token():
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
     oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
 
-    if oauth_token == "failed" and oauth_verifier == "failed": # 未認証の時
+    if oauth_token == "failed" or oauth_verifier == "failed": # 未認証の時
         logging.debug("oauth_token or oauth_verifier is failed") # デバッグ
         request_token = get_request_token() # リクエストトークンを取得する
         # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン を作る
