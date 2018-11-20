@@ -115,7 +115,7 @@ def do_user():
         oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
         access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
         logging.debug("token and secret : [{}]".format(access_token_and_secret))
-        oauth_token_secret = access_token_or_secret['oauth_token_secret']
+        oauth_token_secret = access_token_and_secret['oauth_token_secret']
         
         user_instance = tweet.ApiConnect(oauth_token,oauth_token_secret)
         # 手に入れたトークンのゆーざーIDを取得する
