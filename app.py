@@ -71,7 +71,7 @@ def get_access_token(oauth_token, oauth_verifier):
     consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
     token = oauth.Token(oauth_token, oauth_verifier)
     client = oauth.Client(consumer, token)
-    resp, content = client.request("https://api.twitter.com/oauth/access_token","POST", body="oauth_verifier={0}".format(oauth_verifier))
+    resp, content = client.request(access_token_url,"POST", body="oauth_verifier={0}".format(oauth_verifier))
     return content
 
 # アクセストークンとアクセストークンシークレットを取得（２）　/authorize 認証済の時に使う
@@ -89,8 +89,10 @@ def get_access_token_and_secret(oauth_token, oauth_verifier):
 def do_top():
     return render_template('top.html')
 
+
 # OAUTH (this is not page)
 @app.route("/authorize", methods=['GET','POST'])
+
 def check_token():
     if request.method == 'POST': 
         if 'user_id' in request.form.keys():
