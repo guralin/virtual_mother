@@ -93,18 +93,20 @@ def do_top():
 def check_token():
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
     oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
+    print(oauth_token,oauth_verifier)
 
     if oauth_token == "failed" or oauth_verifier == "failed": # 未認証の時
-        logging.debug("oauth_token or oauth_verifier is failed") # デバッグ
+        print("oauth_token or oauth_verifier is failed") # デバッグ
         request_token = get_request_token() # リクエストトークンを取得する
         # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン を作る
         authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
-        logging.debug(authorize_url) # デバッグ
+        print(authorize_url) # デバッグ
         # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に進む
         return redirect(authorize_url)
 
     else: # 認証済の時
         # アクセストークンとアクセストークンシークレットの取得
+        print("already authorized")
         access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
         return redirect('/user') # ユーザーページに進む
 
@@ -117,12 +119,12 @@ def do_user():
         print("token and secret : [{0}] \n oauth_token: [{1}]".format(access_token_and_secret,oauth_token))
         oauth_token_secret = access_token_and_secret['oauth_token_secret']
         
-        user_instance = tweet.ApiConnect(oauth_token,oauth_token_secret)
+        #user_instance = tweet.ApiConnect(oauth_token,oauth_token_secret)
         # 手に入れたトークンのゆーざーIDを取得する
-        user_name = user_instance.see_profile()
+        #user_name = user_instance.see_profile()
 
 
-        #user_name = "ユーザー名" ###（変更）← user_name = "Twitterのスクリーン名"に変更する
+        user_name = "ユーザー名" ###（変更）← user_name = "Twitterのスクリーン名"に変更する
         return render_template('user.html', user_name=user_name,access_token_and_secret=access_token_and_secret)
 
 # ユーザー登録完了ページ
