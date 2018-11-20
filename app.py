@@ -108,6 +108,7 @@ def check_token():
         # アクセストークンとアクセストークンシークレットの取得
         print("already authorized")
         access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
+        print(access_token_and_secret)
         return redirect('/user') # ユーザーページに進む
 
 # ユーザーページ
