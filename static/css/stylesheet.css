@@ -118,43 +118,43 @@ body.color{
 div.bubble-1{
     width: 100%;
     height: 100%;
-    animation: translate 50s ease 0s infinite;
+    animation: translate 50s ease-in-out 0s infinite;
     background: url('../img/bubble-1.png') repeat;
 }
 div.bubble-2{
     width: 100%;
     height: 100%;
-    animation: translate 40s ease 0s infinite;
+    animation: translate 40s ease-in-out 0s infinite;
     background: url('../img/bubble-2.png') repeat;
 }
 div.bubble-3{
     width: 100%;
     height: 100%;
-    animation: translate 30s ease 0s infinite;
+    animation: translate 30s ease-in-out 0s infinite;
     background: url('../img/bubble-3.png') repeat;
 }
 div.bubble-4{
     width: 100%;
     height: 100%;
-    animation: translate 45s ease 0s infinite;
+    animation: translate 45s ease-in-out 0s infinite;
     background: url('../img/bubble-4.png') repeat;
 }
 div.bubble-5{
     width: 100%;
     height: 100%;
-    animation: translate 60s ease 0s infinite;
+    animation: translate 60s ease-in-out 0s infinite;
     background: url('../img/bubble-5.png') repeat;
 }
 div.bubble-6{
     width: 100%;
     height: 100%;
-    animation: translate 20s ease 0s infinite;
+    animation: translate 20s ease-in-out 0s infinite;
     background: url('../img/bubble-6.png') repeat;
 }
 div.bubble-7{
     width: 100%;
     height: 100%;
-    animation: translate 70s ease 0s infinite;
+    animation: translate 70s ease-in-out 0s infinite;
     background: url('../img/bubble-7.png') repeat;
 }
 @keyframes translate{
@@ -187,16 +187,35 @@ div.bubble-7{
 }
 
 article.tap{
-    background-color: pink;
-    border-radius: 50px;
-    padding: 50px 10px 50px;
-    margin: 10% calc(0.5% + 3vw);
-    height: 20%;
-    width: 40%;
-    font-size: calc(100% + 0.05vw);
-    border: solid 4px #ffe7f4;
+    background-color: rgba(0,0,0,0);
+    border-radius: none;
+    padding: none;
+    margin: none;
+    height: none;
+    font-size: none;
+    border: none;
+    color: none;
+    text-align: center;
+}
+article.tap a :hover{
+    transition-duration: 1s;
+    transform: scale(1.02, 1.02);
+}
+article div.tap{
+    display: inline-block;
+    background-color: #fbdade;
+    border-radius: 100px;
+    margin-top: 150px;
+    height: calc(300px + 10vw);
+    width: calc(300px + 20vw);
+    font-size: calc(200% + 0.05vw);
+    border: solid 10px pink;
     color: #4a4a4a;
     text-align: center;
+}
+article div.tap span{
+    font-size: 120%;
+    font-weight: bold;
 }
 
 /*================*/
