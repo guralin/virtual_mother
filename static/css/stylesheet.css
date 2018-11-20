@@ -94,7 +94,7 @@ img.mother{
 /*===============*/
 body.color{
     width: 100vw;
-    height: 100vw;
+    height: 300vw;
     animation: background 20s ease 0s infinite;
     margin: 0;
 }
@@ -107,10 +107,12 @@ body.color{
     98%{background-color: #fffef4}
 }
 @-webkit-keyframes background{
-    0%{background-color: #ffffdf}
-    16%{background-color: #ff7def}
-    49%{background-color: #eaffff}
-    82%{background-color: #ffffdf}
+    0%{background-color: #fffef4}
+    3%{background-color: #fffef4}
+    23%{background-color: #fff0ea}
+    54%{background-color: #eaffff}
+    88%{background-color: #fffef4}
+    98%{background-color: #fffef4}
 }
 
 div.bubble-1{
@@ -170,18 +172,18 @@ div.bubble-7{
     100%{background-position: -1% -300%}
 }
 @-webkit-keyframes translate{
-    0%  {background-position: -1%   0%}
-    10% {background-position:  1% -10%}
-    20% {background-position: -1% -20%}
-    30% {background-position:  1% -50%}
-    40% {background-position: -1% -60%}
-    50% {background-position:  1% -80%}
-    60% {background-position: -1% -100%}
-    70% {background-position:  1% -140%}
-    80% {background-position: -1% -160%}
-    90% {background-position: -1% -190%}
-    95% {background-position: -5% -220%}
-    100%{background-position: -1% -300%}
+    0%  {background-position: -3px   0px}
+    10% {background-position:  3px -10px}
+    20% {background-position: -3px -20px}
+    30% {background-position:  3px -50px}
+    40% {background-position: -3px -60px}
+    50% {background-position:  3px -80px}
+    60% {background-position: -3px -100px}
+    70% {background-position:  3px -140px}
+    80% {background-position: -3px -160px}
+    90% {background-position:  3px -190px}
+    95% {background-position: -3px -220px}
+    100%{background-position:  3px -300px}
 }
 
 article.tap{
