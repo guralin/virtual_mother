@@ -205,7 +205,7 @@ article div.tap{
     display: inline-block;
     background-color: #fbdade;
     border-radius: 100px;
-    margin-top: 100px;
+    margin-top: 50px;
     height: calc(300px + 10vw);
     width: calc(300px + 20vw);
     font-size: calc(200% + 0.05vw);
