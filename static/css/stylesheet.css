@@ -208,14 +208,14 @@ article div.tap{
     border-radius: 100px;
     margin-top: 50px;
     height: calc(250px + 10vw);
-    width: calc(250px + 20vw);
-    font-size: calc(170% + 0.05vw);
+    width: calc(200px + 25vw);
+    font-size: calc(140% + 0.05vw);
     border: solid 10px pink;
     color: #4a4a4a;
     text-align: center;
 }
 article div.tap span{
-    font-size: 120%;
+    font-size: 110%;
     font-weight: bold;
 }
 
