@@ -79,7 +79,7 @@ def get_access_token_and_secret(oauth_token, oauth_verifier):
     access_token_or_secret = dict(parse_qsl(access_token_and_secret))
     oauth_token = access_token_or_secret['oauth_token']
     oauth_token_secret = access_token_or_secret['oauth_token_secret']
-    return oauth_token, oauth_token_secret
+    return access_token_and_secret
 ###############################
 
 
@@ -111,8 +111,19 @@ def check_token():
 # ユーザーページ
 @app.route('/user')
 def do_user():
-        user_name = "ユーザー名" ###（変更）← user_name = "Twitterのスクリーン名"に変更する
-        return render_template('user.html', user_name=user_name)
+        oauth_token = request.args.get('oauth_token', default = "failed", type = str)
+        oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
+        access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
+        logging.debug("token and secret : [{}]".format(access_token_and_secret))
+        oauth_token_secret = access_token_or_secret['oauth_token_secret']
+        
+        user_instance = tweet.ApiConnect(oauth_token,oauth_token_secret)
+        # 手に入れたトークンのゆーざーIDを取得する
+        user_name = user_instance.see_profile()
+
+
+        #user_name = "ユーザー名" ###（変更）← user_name = "Twitterのスクリーン名"に変更する
+        return render_template('user.html', user_name=user_name,access_token_and_secret=access_token_and_secret)
 
 # ユーザー登録完了ページ
 @app.route('/register') # , methods=['POST'])
