@@ -158,32 +158,32 @@ div.bubble-7{
     background: url('../img/bubble-7.png') repeat;
 }
 @keyframes translate{
-    0%  {background-position: -1%   0%}
-    10% {background-position:  1% -10%}
-    20% {background-position: -1% -20%}
-    30% {background-position:  1% -50%}
-    40% {background-position: -1% -60%}
-    50% {background-position:  1% -80%}
-    60% {background-position: -1% -100%}
-    70% {background-position:  1% -140%}
-    80% {background-position: -1% -160%}
-    90% {background-position: -1% -190%}
-    95% {background-position: -5% -220%}
-    100%{background-position: -1% -300%}
+    0%  {background-position: -3px   0px}
+    10% {background-position:  3px -20px}
+    20% {background-position: -3px -90px}
+    30% {background-position:  3px -140px}
+    40% {background-position: -3px -180px}
+    50% {background-position:  3px -260px}
+    60% {background-position: -3px -310px}
+    70% {background-position:  3px -390px}
+    80% {background-position: -3px -450px}
+    90% {background-position:  3px -510px}
+    95% {background-position: -3px -610px}
+    100%{background-position:  3px -790px}
 }
 @-webkit-keyframes translate{
     0%  {background-position: -3px   0px}
-    10% {background-position:  3px -10px}
-    20% {background-position: -3px -20px}
-    30% {background-position:  3px -50px}
-    40% {background-position: -3px -60px}
-    50% {background-position:  3px -80px}
-    60% {background-position: -3px -100px}
-    70% {background-position:  3px -140px}
-    80% {background-position: -3px -160px}
-    90% {background-position:  3px -190px}
-    95% {background-position: -3px -220px}
-    100%{background-position:  3px -300px}
+    10% {background-position:  3px -20px}
+    20% {background-position: -3px -90px}
+    30% {background-position:  3px -140px}
+    40% {background-position: -3px -180px}
+    50% {background-position:  3px -260px}
+    60% {background-position: -3px -310px}
+    70% {background-position:  3px -390px}
+    80% {background-position: -3px -450px}
+    90% {background-position:  3px -510px}
+    95% {background-position: -3px -610px}
+    100%{background-position:  3px -790px}
 }
 
 article.tap{
