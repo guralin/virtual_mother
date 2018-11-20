@@ -79,7 +79,7 @@ def get_access_token_and_secret(oauth_token, oauth_verifier):
     access_token_or_secret = dict(parse_qsl(access_token_and_secret))
     oauth_token = access_token_or_secret['oauth_token']
     oauth_token_secret = access_token_or_secret['oauth_token_secret']
-    return access_token_and_secret
+    return oauth_token, oauth_token_secret
 ###############################
 
 
