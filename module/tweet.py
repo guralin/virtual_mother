@@ -60,13 +60,14 @@ class Twitter():
 
         
 class ApiConnect():
-    def __init__(access_token,access_token_secret):
+    def __init__(self,access_token,access_token_secret):
         self.api = twitter.Api(
                 consumer_key=os.environ.get("CONSUMER_KEY"),
                 consumer_secret=os.environ.get("CONSUMER_SECRET"),
                 access_token_key=access_token,
                 access_token_secret=access_token_secret)
         
-    def see_profile():
-        token_have_profile = self.api.VerifyCredentials()
-        return status
+    def see_profile(self):
+        status= self.api.VerifyCredentials()
+        user_id = status.id
+        return user_id
