@@ -79,7 +79,7 @@ def get_access_token_and_secret(oauth_token, oauth_verifier):
     access_token_and_secret = dict(parse_qsl(access_token_and_secret))
     oauth_token = access_token_and_secret['oauth_token']
     oauth_token_secret = access_token_and_secret['oauth_token_secret']
-    return oauth_token, oauth_token_secret
+    return oauth_token_secret
 ###############################
 
 
@@ -106,10 +106,11 @@ def check_token():
 
     else: # 認証済の時
         # アクセストークンとアクセストークンシークレットの取得
+        # アクセストークンシークレットの取得
         print("already authorized")
-        access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
-        print(access_token_and_secret)
-        return redirect('/user') # ユーザーページに進む
+        access_token_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
+        print(access_token_secret)
+        return render_template('storage.html',oauth_token=oauth_token,oauth_token_secret=oauth_token_secret) # ユーザーページに進む
 
 # ユーザーページ
 @app.route('/user')
