@@ -112,8 +112,7 @@ def check_token():
         oauth_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
         oauth_token = oauth_token_and_secret[0]
         oauth_token_secret = oauth_token_and_secret[1]
-        print("oauth_token:{0} \n oauth_secret:{1}".format(oauth_token,oauth_token_secret)
-            
+        print("oauth_token:{0} \n oauth_secret:{1}".format(oauth_token,oauth_token_secret))
         api_co  = tweet.ApiConnect(oauth_token,oauth_token_secret)
         user_id = api_co.see_profile()
         
