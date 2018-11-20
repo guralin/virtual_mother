@@ -5,6 +5,7 @@ import os
 import logging
 
 import oauth2 as oauth
+from module import tweet
 
 from flask import Flask, render_template, request, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
