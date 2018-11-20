@@ -47,8 +47,8 @@ class Twitter():
 
     def return_user(self):
         users = self.api.GetUser(screen_name="virtual_child")
-        #print(vars(users))
-        print(users.id)
+        #print(users.id)
+        print(users.screen_name)
         
 
     def self_profile(self):
@@ -60,6 +60,7 @@ class Twitter():
 
         
 class ApiConnect():
+# api.VerifyCredentials()でインスタンスを作ると、TwitterUserインスタンスになり、このインスタンスの中にあるid,screen_name,nameなどのキーを指定すると値が帰ってくる
     def __init__(self,access_token,access_token_secret):
         self.api = twitter.Api(
                 consumer_key=os.environ.get("CONSUMER_KEY"),
@@ -67,7 +68,17 @@ class ApiConnect():
                 access_token_key=access_token,
                 access_token_secret=access_token_secret)
         
-    def see_profile(self):
-        status= self.api.VerifyCredentials()
-        user_id = status.id
+        self.status= self.api.VerifyCredentials()
+    def see_user_id(self):
+        user_id = self.status.id
         return user_id
+    
+    def see_screen_name(self):
+        screen_name = self.status.screen_name
+        return screen_name
+
+    def see_user_name(self):
+        user_name = self.status.name
+        return user_name
+
+
