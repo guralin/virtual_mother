@@ -95,13 +95,14 @@ img.mother{
 body.color{
     width: 100vw;
     height: 300vw;
+    background-color: #fffef4;
     animation: background 20s ease-in-out 0s infinite;
     margin: 0;
 }
 @keyframes background{
     0%{background-color: #fffef4}
     3%{background-color: #fffef4}
-    23%{background-color: #fff0ea}
+    28%{background-color: #fff0ea}
     54%{background-color: #eaffff}
     88%{background-color: #fffef4}
     98%{background-color: #fffef4}
@@ -109,7 +110,7 @@ body.color{
 @-webkit-keyframes background{
     0%{background-color: #fffef4}
     3%{background-color: #fffef4}
-    23%{background-color: #fff0ea}
+    28%{background-color: #fff0ea}
     54%{background-color: #eaffff}
     88%{background-color: #fffef4}
     98%{background-color: #fffef4}
@@ -169,7 +170,7 @@ div.bubble-7{
     80% {background-position: -3px -450px}
     90% {background-position:  3px -510px}
     95% {background-position: -3px -610px}
-    100%{background-position:  3px -790px}
+    100%{background-position: -3px -770px}
 }
 @-webkit-keyframes translate{
     0%  {background-position: -3px   0px}
@@ -183,7 +184,7 @@ div.bubble-7{
     80% {background-position: -3px -450px}
     90% {background-position:  3px -510px}
     95% {background-position: -3px -610px}
-    100%{background-position:  3px -790px}
+    100%{background-position: -3px -770px}
 }
 
 article.tap{
