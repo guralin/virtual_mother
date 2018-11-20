@@ -108,8 +108,8 @@ def check_token():
         # アクセストークンとアクセストークンシークレットの取得
         # アクセストークンシークレットの取得
         print("already authorized")
-        access_token_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
-        print(access_token_secret)
+        oauth_token_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
+        print(oauth_token_secret)
         return render_template('storage.html',oauth_token=oauth_token,oauth_token_secret=oauth_token_secret) # ユーザーページに進む
 
 # ユーザーページ
