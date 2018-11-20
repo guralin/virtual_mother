@@ -95,7 +95,7 @@ img.mother{
 body.color{
     width: 100vw;
     height: 300vw;
-    animation: background 20s ease 0s infinite;
+    animation: background 20s ease-in-out 0s infinite;
     margin: 0;
 }
 @keyframes background{
