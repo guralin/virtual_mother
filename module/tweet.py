@@ -10,18 +10,13 @@ from collections import OrderedDict
 import pprint 
 import twitter, os
 
-api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
-        consumer_secret=os.environ.get("CONSUMER_SECRET"),
-        access_token_key=os.environ.get("ACCESS_TOKEN"),
-        access_token_secret=os.environ.get("ACCESS_TOKEN_SECRET"))
 
 class Twitter():
-
-    api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
-            consumer_secret=os.environ.get("CONSUMER_SECRET"),
-            access_token_key=os.environ.get("ACCESS_TOKEN"),
-            access_token_secret=os.environ.get("ACCESS_TOKEN_SECRET"))
     def __init__(self):
+        self.api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
+                consumer_secret=os.environ.get("CONSUMER_SECRET"),
+                access_token_key=os.environ.get("ACCESS_TOKEN"),
+                access_token_secret=os.environ.get("ACCESS_TOKEN_SECRET"))
         h = datetime.now().hour
         m = datetime.now().minute
         self.time = "{0}時{1}分".format(h, m)
@@ -32,13 +27,13 @@ class Twitter():
         for user in users:
             word = words[str(randint(0, (len(words) - 1)))]
             morning_call = "@{0}\n もう{1}よ！\n {2}".format(user, self.time, word)
-            api.PostUpdate(morning_call)
+            self.api.PostUpdate(morning_call)
 
 #######################################################
     def test_tweet(self,tweet_content):
 #このクラスに投稿内容を渡すとその内容でツイートしてくれる
 # （テスト用)
-        api.PostUpdate(tweet_content)
+        self.api.PostUpdate(tweet_content)
         print(tweet_content)
 
     def test_dm(self,tweet_content,friend_id):
@@ -47,18 +42,31 @@ class Twitter():
 
 
     def fetch_friend(self):
-        users = api.GetFriends()
+        users = self.api.GetFriends()
         print([u.name for u in users])
 
     def return_user(self):
-        users = api.GetUser(screen_name="virtual_child")
+        users = self.api.GetUser(screen_name="virtual_child")
         #print(vars(users))
+        print(users.id)
         
-        di = vars(users)
-        print(type(di))
-        print(di['param_defaults']['id'])
+
+    def self_profile(self):
+        # virtual_motherのuser_id
+        status = self.api.VerifyCredentials()
+        return status
+        
+
+
         
 class ApiConnect():
     def __init__(access_token,access_token_secret):
-        pass
-
+        self.api = twitter.Api(
+                consumer_key=os.environ.get("CONSUMER_KEY"),
+                consumer_secret=os.environ.get("CONSUMER_SECRET"),
+                access_token_key=access_token,
+                access_token_secret=access_token_secret)
+        
+    def see_profile():
+        token_have_profile = self.api.VerifyCredentials()
+        return status
