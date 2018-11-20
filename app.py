@@ -76,9 +76,9 @@ def get_access_token(oauth_token, oauth_verifier):
 # アクセストークンとアクセストークンシークレットを取得（２）　/authorize 認証済の時に使う
 def get_access_token_and_secret(oauth_token, oauth_verifier):
     access_token_and_secret = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
-    access_token_or_secret = dict(parse_qsl(access_token_and_secret))
-    oauth_token = access_token_or_secret['oauth_token']
-    oauth_token_secret = access_token_or_secret['oauth_token_secret']
+    access_token_and_secret = dict(parse_qsl(access_token_and_secret))
+    oauth_token = access_token_and_secret['oauth_token']
+    oauth_token_secret = access_token_and_secret['oauth_token_secret']
     return oauth_token, oauth_token_secret
 ###############################
 
@@ -117,7 +117,7 @@ def do_user():
         oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
         access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
         print("token and secret : [{0}] \n oauth_token: [{1}]".format(access_token_and_secret,oauth_token))
-        oauth_token_secret = access_token_and_secret['oauth_token_secret']
+        #oauth_token_secret = access_token_and_secret['oauth_token_secret']
         
         #user_instance = tweet.ApiConnect(oauth_token,oauth_token_secret)
         # 手に入れたトークンのゆーざーIDを取得する
