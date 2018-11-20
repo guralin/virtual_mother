@@ -110,15 +110,19 @@ def check_token():
         print("already authorized")
         oauth_token_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
         print(oauth_token_secret)
-        return render_template('storage.html',oauth_token=oauth_token,oauth_token_secret=oauth_token_secret) # ユーザーページに進む
+        api_co  = tweet.ApiConnect(oauth_token,oauth_token_secret)
+        user_id = api_co.see_profile()
+        
+
+        return render_template('user.html',user_id=user_id) # ユーザーページに進む
 
 # ユーザーページ
 @app.route('/user')
 def do_user():
-        oauth_token = request.args.get('oauth_token', default = "failed", type = str)
-        oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
-        access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
-        print("token and secret : [{0}] \n oauth_token: [{1}]".format(access_token_and_secret,oauth_token))
+#        oauth_token = request.args.get('oauth_token', default = "failed", type = str)
+#        oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
+#        access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
+#        print("token and secret : [{0}] \n oauth_token: [{1}]".format(access_token_and_secret,oauth_token))
         #oauth_token_secret = access_token_and_secret['oauth_token_secret']
         
         #user_instance = tweet.ApiConnect(oauth_token,oauth_token_secret)
