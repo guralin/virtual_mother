@@ -1,7 +1,7 @@
 #!/bin/env python
 # coding: utf-8
 
-
+import codecs
 
 from datetime import datetime
 from random import randint
@@ -46,6 +46,19 @@ class Twitter():
         print(tweet_content,friend_id)
 
 
+    def fetch_friend(self):
+        users = api.GetFriends()
+        print([u.name for u in users])
+
+    def return_user(self):
+        users = api.GetUser(screen_name="virtual_child")
+        #print(vars(users))
+        
+        di = vars(users)
+        print(type(di))
+        print(di['param_defaults']['id'])
+        
 class ApiConnect():
     def __init__(access_token,access_token_secret):
         pass
+
