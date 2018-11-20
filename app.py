@@ -92,6 +92,7 @@ def do_top():
 # OAUTH (this is not page)
 @app.route("/authorize", methods=['GET','POST'])
 def check_token():
+    """
     if request.method == 'POST': 
         if 'user_id' in request.form.keys():
             user_id = request.form['user_id']
@@ -99,34 +100,34 @@ def check_token():
             db.session.add(do)
             db.session.commit()
             return redirect('register.html')
-    if request.method == 'GET': 
-        oauth_token = request.args.get('oauth_token', default = "failed", type = str)
-        oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
-        print(oauth_token,oauth_verifier)
+    """        
+    oauth_token = request.args.get('oauth_token', default = "failed", type = str)
+    oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
+    print(oauth_token,oauth_verifier)
 
-        if oauth_token == "failed" or oauth_verifier == "failed": # 未認証の時
-            print("oauth_token or oauth_verifier is failed") # デバッグ
-            request_token = get_request_token() # リクエストトークンを取得する
-            # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン を作る
-            authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
-            print(authorize_url) # デバッグ
-            # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に進む
-            return redirect(authorize_url)
+    if oauth_token == "failed" or oauth_verifier == "failed": # 未認証の時
+        print("oauth_token or oauth_verifier is failed") # デバッグ
+        request_token = get_request_token() # リクエストトークンを取得する
+        # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン を作る
+        authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
+        print(authorize_url) # デバッグ
+        # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に進む
+        return redirect(authorize_url)
 
-        else: # 認証済の時
-            # アクセストークンとアクセストークンシークレットの取得
-            # アクセストークンシークレットの取得
-            print("already authorized")
-            oauth_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
-            oauth_token        = oauth_token_and_secret[0]
-            oauth_token_secret = oauth_token_and_secret[1]
-            print("oauth_token:{0} \n oauth_secret:{1}".format(oauth_token,oauth_token_secret))
-            api_co    = tweet.ApiConnect(oauth_token,oauth_token_secret)
-            user_id   = api_co.see_user_id()
-            user_name = api_co.see_user_name()
-            
+    else: # 認証済の時
+        # アクセストークンとアクセストークンシークレットの取得
+        # アクセストークンシークレットの取得
+        print("already authorized")
+        oauth_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
+        oauth_token        = oauth_token_and_secret[0]
+        oauth_token_secret = oauth_token_and_secret[1]
+        print("oauth_token:{0} \n oauth_secret:{1}".format(oauth_token,oauth_token_secret))
+        api_co    = tweet.ApiConnect(oauth_token,oauth_token_secret)
+        user_id   = api_co.see_user_id()
+        user_name = api_co.see_user_name()
+        
 
-            return render_template('user.html',user_id=user_id,user_name=user_name) # ユーザーページに進む
+        return render_template('user.html',user_id=user_id,user_name=user_name) # ユーザーページに進む
 
 # ユーザーページ
 @app.route('/user')
@@ -146,16 +147,17 @@ def do_user():
         return render_template('user.html', user_name=user_name,access_token_and_secret=access_token_and_secret)
 
 # ユーザー登録完了ページ
-@app.route('/register') # , methods=['POST'])
+@app.route('/register', methods=['POST']) # , methods=['POST'])
 def do_register():
     ###（変更）↓ Twitterのスクリーン名を取得して挿入する
-    user_name = "スクリーン名"
-    ###（変更）↓ TwitterのユーザーIDを取得して挿入する
-    user_id = "ユーザーID"
-    do = SendData(user_id)
-    db.session.add(do)
-    db.session.commit()
-    return render_template('register.html',user_name=user_name)
+    if request.method == 'POST':
+        user_id   = request.form['user_id']
+        user_name = request.form['user_name']
+        ###（変更）↓ TwitterのユーザーIDを取得して挿入する
+        do = SendData(user_id)
+        db.session.add(do)
+        db.session.commit()
+        return render_template('register.html',user_name=user_name)
 #    request.form[""] # フォームから取得
 
 # 404ページ
