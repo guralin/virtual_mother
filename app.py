@@ -34,9 +34,14 @@ class SendData(Table): # カラムに値を代入
 request_token_url = 'https://twitter.com/oauth/request_token'
 access_token_url  = 'https://twitter.com/oauth/access_token'
 authenticate_url  = 'https://twitter.com/oauth/authenticate'
-callback_url      = 'https://virtualmother-develop.herokuapp.com/user'# テスト環境用
-#callback_url      = 'https://virtualmother.herokuapp.com/user'# 本番環境用
-#callback_url      = 'https://oauth-test-virtualmother.herokuapp.com/'# T君のテスト用
+
+#本番環境だけcallback_urlが変わる
+if os.environ.get("environ") == "master":
+    callback_url  ="https://virtualmother.herokuapp.com/user"
+
+else:
+    callback_url  = 'https://virtualmother-develop.herokuapp.com/user'# テスト環境用
+    
 consumer_key      = os.environ.get("CONSUMER_KEY")  # 各自設定する
 consumer_secret   = os.environ.get("CONSUMER_SECRET") # 各自設定する
 #################################
@@ -91,7 +96,7 @@ def do_top():
 
 
 # ユーザーページ
-@app.route('/user', methods=['POST'])
+@app.route('/user', methods=['GET','POST'])
 def check_token():       
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
     oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
