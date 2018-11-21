@@ -121,8 +121,9 @@ def check_token():
         print("oauth_token:{0} \n oauth_secret:{1}".format(oauth_token,oauth_token_secret))
         api_co    = tweet.ApiConnect(oauth_token,oauth_token_secret)
         user_id   = api_co.see_user_id()
-        user_name = api_co.see_user_name()        
-        return render_template('user.html',user_id=user_id,user_name=user_name) # ユーザーページに進む
+        user_name = api_co.see_user_name()
+        # ユーザーページに進む
+        return render_template('user.html',user_id=user_id,user_name=user_name)
 
 
 
