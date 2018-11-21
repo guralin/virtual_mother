@@ -29,7 +29,24 @@ class Twitter():
             morning_call = "@{0}\n もう{1}よ！\n {2}".format(user, self.time, word)
             self.api.PostUpdate(morning_call)
 
+    def screen_name_call(self, users_id): # morning.py
+        with open('module/json/morning_call.json') as morning_call_words:
+           words = json.load(morning_call_words)
+           print(words)
+        for user_id in users_id:
+            word         = words[str(randint(0, (len(words) - 1)))]
+            screen_name  = self.id_for_screen_name(user_id)
+            morning_call = "@{0}\n もう{1}よ！\n {2}".format(screen_name , self.time, word)
+            self.api.PostUpdate(morning_call)
+            print(morning_call)
 #######################################################
+
+    def id_for_screen_name(self,user_id):
+        user = self.api.GetUser(user_id=user_id)
+        return user.screen_name
+
+
+
     def test_tweet(self,tweet_content):
 #このクラスに投稿内容を渡すとその内容でツイートしてくれる
 # （テスト用)
