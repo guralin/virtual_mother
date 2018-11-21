@@ -121,8 +121,7 @@ def check_token():
         print("oauth_token:{0} \n oauth_secret:{1}".format(oauth_token,oauth_token_secret))
         api_co    = tweet.ApiConnect(oauth_token,oauth_token_secret)
         user_id   = api_co.see_user_id()
-        user_name = api_co.see_user_name()
-        
+        user_name = api_co.see_user_name()        
         return render_template('user.html',user_id=user_id,user_name=user_name) # ユーザーページに進む
 
 
@@ -133,12 +132,16 @@ def do_register():
     ###（変更）↓ Twitterのスクリーン名を取得して挿入する
     user_id   = request.form['user_id']
     user_name = request.form['user_name']
-    ###（変更）↓ TwitterのユーザーIDを取得して挿入する
-    do = SendData(user_id)
-    db.session.add(do)
-    db.session.commit()
-    return render_template('register.html',user_name=user_name)
-#    request.form[""] # フォームから取得
+    try:
+        ###（変更）↓ TwitterのユーザーIDを取得して挿入する
+        do = SendData(user_id)
+        db.session.add(do)
+        db.session.commit()
+        return render_template('register.html', user_name=user_name, user_id=user_id)
+    except:
+        return render_template('register.html', user_name=user_name)
+
+
 
 # 404ページ
 #@app.errorhandler(404)
