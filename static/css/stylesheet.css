@@ -1,14 +1,16 @@
+/*CSS*/
 
-
-
-/*default*/
+/*===================*/
+/*=== default.css ===*/
+/*===================*/
 body{
-    font-size: 20px;
-    background-color: #ebffff;
+    font-size: calc(100% + 0.3vw);
+    background-color: #ffeef4
 }
 
 a{
     text-decoration: none;
+　　color: blue;
 }
 
 a:hover{
@@ -18,23 +20,37 @@ a:hover{
 header{
     padding: 20px 20px;
     color: #4a4a4a;
-    background-color: #ffeae4;
-    margin: -8px -8px 0;
+    margin: 5px;
+    text-align: center;
 }
 header span.title{
-    font-size: 50px;
-    color: black;
+    font-size: calc(100% + 2vw);
+    color: white;
+    text-shadow: 0 0 7px #f500be;
+    display: inline-block;
+    border: solid #ffc1ea;
+    border-radius: 70px;
+    background-color: #ffcfef;
+    padding:5px calc(13px + 0.1vw);
 }
 header a{
     text-decoration: none;
-    color: black;
+    color: white;
 }
 header a:hover{
     text-decoration: none;
 }
 
 .twitter_url{
-    margin: 0% 1%;
+    text-align: center;
+}
+.twitter_url a{
+    text-decoration: none;
+    color: #00aced; /*twitterのアイコンの色*/
+}
+.twitter_url a:hover{
+    text-shadow: 0 0 5px #006eb9;
+    color: white;
 }
 
 .go_home{
@@ -43,31 +59,171 @@ header a:hover{
 
 article{
     background-color: white;
+    border-radius: 50px;
     padding: 20px 10px 50px;
-    margin: 20px 5px;
+    margin: 20px calc(0.5% + 3vw);
     height: 100%;
-}
-
-h2{
-    font-size: 40px;
-    margin: 1% 2%;
-    padding: 0 15px;
-    border-left: solid 10px red;
+    font-size: calc(100% + 0.05vw);
+    border: solid 4px #ffe7f4;
     color: #4a4a4a;
 }
 
+h2{
+    font-size: calc(140% + 0.05vw);
+    margin: 1% 2%;
+    padding: 0 15px;
+    font-weight: normal;
+    color: black;
+}
+
 footer{
-    background-color: #808080;
-    font-size: 15px;
+    font-size: calc(10px + 0.5vw);
     color: white;
     padding: 15px 10px;
     margin: 0 -8px;
+    text-align: center;
+}
+/*
+img.mother{
+    filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.6))
+}
+*/
+
+/*===============*/
+/*=== top.css ===*/
+/*===============*/
+body.color{
+    width: 100vw;
+    height: 300vw;
+    background-color: #fffef4;
+    animation: background 20s ease-in-out 0s infinite;
+    margin: 0;
+}
+@keyframes background{
+    0%{background-color: #fffef4}
+    3%{background-color: #fffef4}
+    28%{background-color: #fff0ea}
+    54%{background-color: #eaffff}
+    88%{background-color: #fffef4}
+    98%{background-color: #fffef4}
+}
+@-webkit-keyframes background{
+    0%{background-color: #fffef4}
+    3%{background-color: #fffef4}
+    28%{background-color: #fff0ea}
+    54%{background-color: #eaffff}
+    88%{background-color: #fffef4}
+    98%{background-color: #fffef4}
 }
 
+div.bubble-1{
+    width: 100%;
+    height: 100%;
+    animation: translate 50s ease-in-out 0s infinite;
+    background: url('../img/bubble-1.png') repeat;
+}
+div.bubble-2{
+    width: 100%;
+    height: 100%;
+    animation: translate 40s ease-in-out 0s infinite;
+    background: url('../img/bubble-2.png') repeat;
+}
+div.bubble-3{
+    width: 100%;
+    height: 100%;
+    animation: translate 30s ease-in-out 0s infinite;
+    background: url('../img/bubble-3.png') repeat;
+}
+div.bubble-4{
+    width: 100%;
+    height: 100%;
+    animation: translate 45s ease-in-out 0s infinite;
+    background: url('../img/bubble-4.png') repeat;
+}
+div.bubble-5{
+    width: 100%;
+    height: 100%;
+    animation: translate 60s ease-in-out 0s infinite;
+    background: url('../img/bubble-5.png') repeat;
+}
+div.bubble-6{
+    width: 100%;
+    height: 100%;
+    animation: translate 20s ease-in-out 0s infinite;
+    background: url('../img/bubble-6.png') repeat;
+}
+div.bubble-7{
+    width: 100%;
+    height: 100%;
+    animation: translate 70s ease-in-out 0s infinite;
+    background: url('../img/bubble-7.png') repeat;
+}
+@keyframes translate{
+    0%  {background-position: -3px   0px}
+    10% {background-position:  3px -20px}
+    20% {background-position: -3px -90px}
+    30% {background-position:  3px -140px}
+    40% {background-position: -3px -180px}
+    50% {background-position:  3px -260px}
+    60% {background-position: -3px -310px}
+    70% {background-position:  3px -390px}
+    80% {background-position: -3px -450px}
+    90% {background-position:  3px -510px}
+    95% {background-position: -3px -610px}
+    100%{background-position: -3px -770px}
+}
+@-webkit-keyframes translate{
+    0%  {background-position: -3px   0px}
+    10% {background-position:  3px -20px}
+    20% {background-position: -3px -90px}
+    30% {background-position:  3px -140px}
+    40% {background-position: -3px -180px}
+    50% {background-position:  3px -260px}
+    60% {background-position: -3px -310px}
+    70% {background-position:  3px -390px}
+    80% {background-position: -3px -450px}
+    90% {background-position:  3px -510px}
+    95% {background-position: -3px -610px}
+    100%{background-position: -3px -770px}
+}
 
-/*index.css*/
+article.tap{
+    background-color: rgba(0,0,0,0);
+    border-radius: none;
+    padding: none;
+    margin: none;
+    height: none;
+    font-size: none;
+    border: none;
+    color: none;
+    text-align: center;
+}
+article.tap a :hover{
+    transition-duration: 1s;
+    transform: scale(1.02, 1.02);
+}
+article div.tap{
+    display: inline-block;
+    background-color: #fbdade;
+    border-radius: 100px;
+    margin-top: 50px;
+    height: calc(300px + 10vw);
+    width: calc(200px + 25vw);
+    font-size: calc(140% + 0.05vw);
+    border: solid 10px pink;
+    color: #4a4a4a;
+    text-align: center;
+}
+article div.tap span{
+    font-size: 110%;
+    font-weight: bold;
+}
+
+/*================*/
+/*=== user.css ===*/
+/*================*/
 .button{
-    font-size: 30px;
+    font-size: calc(90% + 0.05vw);
     border-radius: 10px;
     border-color: #fff;
     background-color: #f2f2f2;
@@ -83,26 +239,31 @@ span.red{
 }
 
 .explain{
-    font-size: 30px;
+    font-size: calc(110% + 0.05vw);
     margin: 1% 3%;
-    padding: 0 15px;
+    padding: 0 25px;
 }
 
 input.form{
-    height: 40px;
+    height: calc(40px + 0.05vw);
     background-color: #fbfbfb;
     border-radius: 9px;
 }
 
+input.form:hover{
+    background-color: #f2f2f2;
+}
 
-/*post.css*//*register.css*/
+/*====================*/
+/*=== register.css ===*/
+/*====================*/
 .post_text{
-    font-size: 30px;
+    font-size: calc(15px + 0.5vw);
     padding-left: 15px;
     margin: 1% 2%;
 }
 .post_text span{
-    font-size: 37px;
+    font-size: calc(120% + 0.05vw);
 }
 
 

@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>登録中</title>
+    <link rel="shortcut icon" href="../static/img/mother.png">
+</head>
+
+<body>
+
+    <script>
+        localStorage.setItem('oauth_token','{{oauth_token}}')
+        localStorage.setItem('oauth_token_secret','{{oauth_token_secret}}')
+        location.href="{{url_for('do_user')}}"
+
+
+    </script>
+
+</body>
+</html>
