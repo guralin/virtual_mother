@@ -39,8 +39,10 @@ authenticate_url  = 'https://twitter.com/oauth/authenticate'
 if os.environ.get("environ") == "master":
     callback_url  ="https://virtualmother.herokuapp.com/user"
 
-else:
+elif os.environ.get("environ") == "develop":
     callback_url  = 'https://virtualmother-develop.herokuapp.com/user'# テスト環境用
+else:
+    callback_url = "http://127.0.0.1:5000/user"
     
 consumer_key      = os.environ.get("CONSUMER_KEY")  # 各自設定する
 consumer_secret   = os.environ.get("CONSUMER_SECRET") # 各自設定する
