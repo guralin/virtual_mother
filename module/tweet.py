@@ -40,7 +40,6 @@ class Twitter():
         api.PostDirectMessage(tweet_content,screen_name=friend_id)
         print(tweet_content,friend_id)
 
-
     def fetch_friend(self):
         users = self.api.GetFriends()
         print([u.name for u in users])
@@ -50,7 +49,6 @@ class Twitter():
         #print(users.id)
         print(users.screen_name)
         
-
     def self_profile(self):
         # virtual_motherのuser_id
         status = self.api.VerifyCredentials()

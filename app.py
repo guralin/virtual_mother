@@ -34,8 +34,8 @@ class SendData(Table): # カラムに値を代入
 request_token_url = 'https://twitter.com/oauth/request_token'
 access_token_url  = 'https://twitter.com/oauth/access_token'
 authenticate_url  = 'https://twitter.com/oauth/authenticate'
-callback_url      = 'https://virtualmother-develop.herokuapp.com/authorize'# テスト環境用
-#callback_url      = 'https://virtualmother.herokuapp.com/authorize'# 本番環境用
+callback_url      = 'https://virtualmother-develop.herokuapp.com/user'# テスト環境用
+#callback_url      = 'https://virtualmother.herokuapp.com/user'# 本番環境用
 #callback_url      = 'https://oauth-test-virtualmother.herokuapp.com/'# T君のテスト用
 consumer_key      = os.environ.get("CONSUMER_KEY")  # 各自設定する
 consumer_secret   = os.environ.get("CONSUMER_SECRET") # 各自設定する
@@ -90,19 +90,9 @@ def do_top():
     return render_template('top.html')
 
 
-# OAUTH (this is not page)
-@app.route("/authorize", methods=['GET','POST'])
-
-def check_token():
-    """
-    if request.method == 'POST': 
-        if 'user_id' in request.form.keys():
-            user_id = request.form['user_id']
-            do = SendData(user_id)
-            db.session.add(do)
-            db.session.commit()
-            return redirect('register.html')
-    """        
+# ユーザーページ
+@app.route('/user', methods=['POST'])
+def check_token():       
     oauth_token = request.args.get('oauth_token', default = "failed", type = str)
     oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
     print(oauth_token,oauth_verifier)
@@ -128,38 +118,21 @@ def check_token():
         user_id   = api_co.see_user_id()
         user_name = api_co.see_user_name()
         
-
         return render_template('user.html',user_id=user_id,user_name=user_name) # ユーザーページに進む
 
-# ユーザーページ
-@app.route('/user')
-def do_user():
-#        oauth_token = request.args.get('oauth_token', default = "failed", type = str)
-#        oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
-#        access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
-#        print("token and secret : [{0}] \n oauth_token: [{1}]".format(access_token_and_secret,oauth_token))
-        #oauth_token_secret = access_token_and_secret['oauth_token_secret']
-        
-        #user_instance = tweet.ApiConnect(oauth_token,oauth_token_secret)
-        # 手に入れたトークンのゆーざーIDを取得する
-        #user_name = user_instance.see_profile()
 
-
-        user_name = "ユーザー名" ###（変更）← user_name = "Twitterのスクリーン名"に変更する
-        return render_template('user.html', user_name=user_name,access_token_and_secret=access_token_and_secret)
 
 # ユーザー登録完了ページ
-@app.route('/register', methods=['POST']) # , methods=['POST'])
+@app.route('/register', methods=['POST'])
 def do_register():
     ###（変更）↓ Twitterのスクリーン名を取得して挿入する
-    if request.method == 'POST':
-        user_id   = request.form['user_id']
-        user_name = request.form['user_name']
-        ###（変更）↓ TwitterのユーザーIDを取得して挿入する
-        do = SendData(user_id)
-        db.session.add(do)
-        db.session.commit()
-        return render_template('register.html',user_name=user_name)
+    user_id   = request.form['user_id']
+    user_name = request.form['user_name']
+    ###（変更）↓ TwitterのユーザーIDを取得して挿入する
+    do = SendData(user_id)
+    db.session.add(do)
+    db.session.commit()
+    return render_template('register.html',user_name=user_name)
 #    request.form[""] # フォームから取得
 
 # 404ページ
