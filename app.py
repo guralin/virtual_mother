@@ -7,16 +7,17 @@ import logging
 import oauth2 as oauth
 from module import tweet
 
-from flask import Flask, render_template, request, jsonify, redirect
+from flask import Flask, render_template, request, jsonify, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.secret_key = '環境変数にSECRET_KEYを設定しておく'
 app.debug = True
 
 #####データベース関連###############
-# テスト環境用の環境変数を読み込み、ない場合は本番環境として認識する
+# テスト環境か本番環境のデータベースURLの環境変数を読み込む
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DEVELOP_DATABASE_URL') or os.environ.get('MASTER_DATABASE_URL')
-# FSADeprecationWarning を消すため
+# FSADeprecationWarning を消す
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
@@ -28,25 +29,22 @@ class Table(db.Model): # テーブルの指定
 class SendData(Table): # カラムに値を代入
     def __init__(self, user_name):
         self.user_name = user_name
-###################################
-
-# oauth関連#######################
+#####oauth関連#####################
 request_token_url = 'https://twitter.com/oauth/request_token'
 access_token_url  = 'https://twitter.com/oauth/access_token'
 authenticate_url  = 'https://twitter.com/oauth/authenticate'
 
-#本番環境だけcallback_urlが変わる
+# 環境によってcallback_urlを変える
 if os.environ.get("environ") == "master":
-    callback_url  ="https://virtualmother.herokuapp.com/user"
-
+    callback_url  ="https://virtualmother.herokuapp.com/user" # 本番環境用
 elif os.environ.get("environ") == "develop":
-    callback_url  = 'https://virtualmother-develop.herokuapp.com/user'# テスト環境用
+    callback_url  = 'https://virtualmother-develop.herokuapp.com/user' # テスト環境用
 else:
-    callback_url = "http://127.0.0.1:5000/user"
+    callback_url = "http://127.0.0.1:5000/user" # ローカル環境用
     
 consumer_key      = os.environ.get("CONSUMER_KEY")  # 各自設定する
 consumer_secret   = os.environ.get("CONSUMER_SECRET") # 各自設定する
-#################################
+###################################
 # todo 分析できたら別モジュールに移植しましょう
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s') # デバッグ
 
@@ -87,7 +85,7 @@ def get_access_token_and_secret(oauth_token, oauth_verifier):
     access_token_and_secret = dict(parse_qsl(access_token_and_secret))
     oauth_token = access_token_and_secret['oauth_token']
     oauth_token_secret = access_token_and_secret['oauth_token_secret']
-    return oauth_token,oauth_token_secret
+    return oauth_token, oauth_token_secret
 ###############################
 
 
@@ -98,13 +96,14 @@ def do_top():
 
 
 # ユーザーページ
-@app.route('/user', methods=['GET','POST'])
+@app.route('/user', methods=['GET', 'POST'])
 def check_token():       
-    oauth_token = request.args.get('oauth_token', default = "failed", type = str)
-    oauth_verifier = request.args.get('oauth_verifier', default = "failed", type = str)
-    print(oauth_token,oauth_verifier)
-
-    if oauth_token == "failed" or oauth_verifier == "failed": # 未認証の時
+    session['oauth_token'] = request.args.get('oauth_token', default = None, type = str)
+    session['oauth_verifier'] = request.args.get('oauth_verifier', default = None, type = str)
+    oauth_token = session['oauth_token']
+    oauth_verifier = session['oauth_verifier']
+    print(oauth_token, oauth_verifier)
+    if session['oauth_token'] == None or session['oauth_verifier'] == None: # 未認証の時
         print("oauth_token or oauth_verifier is failed") # デバッグ
         request_token = get_request_token() # リクエストトークンを取得する
         # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン を作る
@@ -120,12 +119,12 @@ def check_token():
         oauth_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
         oauth_token        = oauth_token_and_secret[0]
         oauth_token_secret = oauth_token_and_secret[1]
-        print("oauth_token:{0} \n oauth_secret:{1}".format(oauth_token,oauth_token_secret))
-        api_co    = tweet.ApiConnect(oauth_token,oauth_token_secret)
+        print("oauth_token:{0} \n oauth_secret:{1}".format(oauth_token, oauth_token_secret))
+        api_co    = tweet.ApiConnect(oauth_token, oauth_token_secret)
         user_id   = api_co.see_user_id()
         user_name = api_co.see_user_name()
         # ユーザーページに進む
-        return render_template('user.html',user_id=user_id,user_name=user_name)
+        return render_template('user.html', user_id=user_id, user_name=user_name)
 
 
 
