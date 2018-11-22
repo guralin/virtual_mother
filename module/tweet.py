@@ -39,21 +39,19 @@ class Twitter():
             morning_call = "@{0}\n もう{1}よ！\n {2}".format(screen_name , self.time, word)
             self.api.PostUpdate(morning_call)
             print(morning_call)
-#######################################################
 
-    def id_for_screen_name(self,user_id):
+    def id_for_screen_name(self, user_id):
         user = self.api.GetUser(user_id=user_id)
         return user.screen_name
 
 
-
-    def test_tweet(self,tweet_content):
-#このクラスに投稿内容を渡すとその内容でツイートしてくれる
-# （テスト用)
+# テスト用
+    def test_tweet(self, tweet_content):
+    # このクラスに投稿内容を渡すとその内容でツイートしてくれる
         self.api.PostUpdate(tweet_content)
         print(tweet_content)
 
-    def test_dm(self,tweet_content,friend_id):
+    def test_dm(self, tweet_content, friend_id):
         api.PostDirectMessage(tweet_content,screen_name=friend_id)
         print(tweet_content,friend_id)
 
@@ -76,14 +74,14 @@ class Twitter():
         
 class ApiConnect():
 # api.VerifyCredentials()でインスタンスを作ると、TwitterUserインスタンスになり、このインスタンスの中にあるid,screen_name,nameなどのキーを指定すると値が帰ってくる
-    def __init__(self,access_token,access_token_secret):
+    def __init__(self, access_token, access_token_secret):
         self.api = twitter.Api(
                 consumer_key=os.environ.get("CONSUMER_KEY"),
                 consumer_secret=os.environ.get("CONSUMER_SECRET"),
                 access_token_key=access_token,
                 access_token_secret=access_token_secret)
-        
         self.status= self.api.VerifyCredentials()
+
     def see_user_id(self):
         user_id = self.status.id
         return user_id

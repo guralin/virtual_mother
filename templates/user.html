@@ -20,15 +20,16 @@
 <br>
 <div>7時に起こそうか？</div>
 <div>
+<button onclick="location.href='/register'" class="button">起こしてもらう</button>
+</div>
+<!--
     <form action="{{url_for('do_register')}}" method="POST">
-        <!--<button onclick="location.href='/register'" class="button">起こしてもらう</button>-->
         <input type="hidden" name="user_id" value="{{user_id}}">
         <input type="hidden" name="user_name" value="{{user_name}}">
 
         <button class="button">起こしてもらう</button>
     </form>
 </div>
-<!--
     <h2>現在の時刻をツイートしてみよう (^<span class="red">_</span>^)y
     <button onclick="location.href='post'" class="button">投稿する</button></h2>
 <br>
