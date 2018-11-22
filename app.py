@@ -10,6 +10,8 @@ from module import tweet
 from flask import Flask, render_template, request, jsonify, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 
+from datetime import timedelta
+
 app = Flask(__name__)
 app.secret_key = '環境変数にSECRET_KEYを設定しておく'
 app.debug = True
@@ -82,66 +84,78 @@ def get_access_token(oauth_token, oauth_verifier):
 # アクセストークンとアクセストークンシークレットを取得（２）　/authorize 認証済の時に使う
 def get_access_token_and_secret(oauth_token, oauth_verifier):
     access_token_and_secret = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
-    access_token_and_secret = dict(parse_qsl(access_token_and_secret))
-    oauth_token = access_token_and_secret['oauth_token']
-    oauth_token_secret = access_token_and_secret['oauth_token_secret']
-    return oauth_token, oauth_token_secret
+    dict_access_token_and_secret = dict(parse_qsl(access_token_and_secret))
+    access_token = dict_access_token_and_secret['oauth_token']
+    access_token_secret = dict_access_token_and_secret['oauth_token_secret']
+    return access_token, access_token_secret
 ###############################
 
 
 # トップページ
 @app.route('/')
 def do_top():
+    # セッションを30分に設定
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=30)
     return render_template('top.html')
 
 
 # ユーザーページ
 @app.route('/user', methods=['GET', 'POST'])
-def check_token():       
-    session['oauth_token'] = request.args.get('oauth_token', default = None, type = str)
-    session['oauth_verifier'] = request.args.get('oauth_verifier', default = None, type = str)
-    oauth_token = session['oauth_token']
-    oauth_verifier = session['oauth_verifier']
-    print(oauth_token, oauth_verifier)
-    if session['oauth_token'] == None or session['oauth_verifier'] == None: # 未認証の時
-        print("oauth_token or oauth_verifier is failed") # デバッグ
-        request_token = get_request_token() # リクエストトークンを取得する
-        # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン を作る
-        authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
-        print(authorize_url) # デバッグ
-        # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に進む
-        return redirect(authorize_url)
+def check_token():
+    try: # セッションがあったら値を代入
+        access_token = session['access_token']
+        access_token_secret = session['access_token_secret']
+    except: # セッションが無いときはNoneを入れる
+        access_token = None
+        access_token_secret = None
 
-    else: # 認証済の時
-        # アクセストークンとアクセストークンシークレットの取得
-        # アクセストークンシークレットの取得
-        print("already authorized")
-        oauth_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
-        oauth_token        = oauth_token_and_secret[0]
-        oauth_token_secret = oauth_token_and_secret[1]
-        print("oauth_token:{0} \n oauth_secret:{1}".format(oauth_token, oauth_token_secret))
-        api_co    = tweet.ApiConnect(oauth_token, oauth_token_secret)
-        user_id   = api_co.see_user_id()
+    if access_token != None and access_token_secret != None: # セッションがあったとき
+        api_co    = tweet.ApiConnect(access_token, access_token_secret)
         user_name = api_co.see_user_name()
         # ユーザーページに進む
-        return render_template('user.html', user_id=user_id, user_name=user_name)
+        return render_template('user.html', user_name=user_name)
+    else: # セッションが無いとき
+        oauth_token = request.args.get('oauth_token', default = None, type = str)
+        oauth_verifier = request.args.get('oauth_verifier', default = None, type = str)
+        print(oauth_token, oauth_verifier)
+        if oauth_token == None or oauth_verifier == None: # Oauth認証する
+            print("Oauth認証する")
+            request_token = get_request_token() # リクエストトークンを取得する
+            # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン を作る
+            authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
+            print(authorize_url) # デバッグ
+            # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に進む
+            return redirect(authorize_url)
 
+        else: # セッションに値を登録する
+            print("セッションに値を登録する")
+            # アクセストークンとアクセストークンシークレットの取得
+            # アクセストークンシークレットの取得
+            access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
+            session['access_token']        = access_token_and_secret[0]
+            session['access_token_secret'] = access_token_and_secret[1]
+            return redirect('/user')
 
 
 # ユーザー登録完了ページ
-@app.route('/register', methods=['POST'])
+@app.route('/register')
 def do_register():
-    ###（変更）↓ Twitterのスクリーン名を取得して挿入する
-    user_id   = request.form['user_id']
-    user_name = request.form['user_name']
     try:
-        ###（変更）↓ TwitterのユーザーIDを取得して挿入する
-        do = SendData(user_id)
-        db.session.add(do)
-        db.session.commit()
-        return render_template('register.html', user_name=user_name, user_id=user_id)
-    except:
-        return render_template('register.html', user_name=user_name)
+        access_token = session.get('access_token')
+        access_token_secret = session.get('access_token_secret')
+        api_co    = tweet.ApiConnect(access_token, access_token_secret)
+        user_id   = api_co.see_user_id()
+        user_name = api_co.see_user_name()
+        try: # 登録する
+            do = SendData(user_id)
+            db.session.add(do)
+            db.session.commit()
+            return render_template('register.html', user_name=user_name, user_id=user_id)
+        except: # 登録済み
+            return render_template('register.html', user_name=user_name)
+    except: # セッション切れのとき
+        return redirect('/')
 
 
 
