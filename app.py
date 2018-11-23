@@ -23,7 +23,7 @@ db = SQLAlchemy(app)
 
 class Table(db.Model): # テーブルの指定
     # 先にdb.create_all()してね
-    __tablename__ = "get_up_time"
+    __tablename__ = "morning_call_user_data"
     user_index   = db.Column(db.Integer, primary_key=True) 
     # twitterID
     user_id      = db.Column(db.String(20), unique=True) 
@@ -70,7 +70,7 @@ def check_token():
         access_token_secret = None
 
     if access_token != None and access_token_secret != None: # セッションがあったとき
-        api_co    = tweet.ApiConnect(access_token, access_token_secret)
+        api_co    = tweet.UsersTwitter(access_token, access_token_secret)
         user_name = api_co.see_user_name()
         # ユーザーページに進む
         return render_template('user.html', user_name=user_name)
