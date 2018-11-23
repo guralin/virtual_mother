@@ -5,22 +5,14 @@ import os
 
 from flask import Flask, render_template, request, jsonify, redirect, session
 from flask_sqlalchemy import SQLAlchemy,sqlalchemy
-from datetime import timedelta,time
+from datetime import timedelta, time
 import twitter
 
 from virtualmother_app import app, db
+from virtualmother_app.models import Table
 from virtualmother_app.module import tweet, token
 
 #####データベース関連###############
-class Table(db.Model): # テーブルの指定
-    # 先にdb.create_all()してね
-    __tablename__ = "morning_call_user_data"
-    user_index   = db.Column(db.Integer, primary_key=True) 
-    # twitterID
-    user_id      = db.Column(db.String(20), unique=True) 
-    # 起きてツイートする時間
-    get_up_time  = db.Column(db.DateTime) 
-
 class SendData(Table): # カラムに値を代入
     def __init__(self, user_id, get_up_time):
         self.user_id      = user_id
@@ -77,7 +69,7 @@ def check_token():
             authenticate_url = 'https://twitter.com/oauth/authenticate'
             authorize_url    = '%s?oauth_token=%s' % (authenticate_url, request_token) 
             # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に進む
-            print(f'{authorize_url}に進む')
+            print(f'認証ページに進む ({authorize_url})')
             return redirect(authorize_url)
 
         else: # セッションに値を登録する
