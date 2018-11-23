@@ -22,7 +22,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
 class Table(db.Model): # テーブルの指定
-    __tablename__ = "test_wake_up_time_set"
+    # 先にdb.create_all()してね
+    __tablename__ = "morning_call_twitter"
     user_index   = db.Column(db.Integer, primary_key=True) 
     # twitterID
     user_id      = db.Column(db.String(20), unique=True) 
