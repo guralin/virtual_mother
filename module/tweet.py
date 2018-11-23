@@ -11,7 +11,7 @@ import pprint
 import twitter, os
 
 
-class Twitter():
+class MothersTwitter():
 
     def __init__(self):
         self.api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
@@ -73,7 +73,7 @@ class Twitter():
 
 
         
-class ApiConnect():
+class UsersTwitter():
 # api.VerifyCredentials()でインスタンスを作ると、TwitterUserインスタンスになり、このインスタンスの中にあるid,screen_name,nameなどのキーを指定すると値が帰ってくる
     def __init__(self, access_token, access_token_secret):
         self.api = twitter.Api(
