@@ -3,12 +3,12 @@
 
 import os
 
-from module import tweet, token
-
 from flask import Flask, render_template, request, jsonify, redirect, session
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy,sqlalchemy
+from datetime import timedelta,time
+import twitter
 
-from datetime import timedelta
+from module import tweet, token
 
 app = Flask(__name__)
 app.secret_key = '環境変数にSECRET_KEYを設定しておく'
@@ -23,25 +23,25 @@ db = SQLAlchemy(app)
 
 class Table(db.Model): # テーブルの指定
     # 先にdb.create_all()してね
-    __tablename__ = "morning_call_twitter"
+    __tablename__ = "get_up_time"
     user_index   = db.Column(db.Integer, primary_key=True) 
     # twitterID
     user_id      = db.Column(db.String(20), unique=True) 
     # 起きてツイートする時間
-    wake_up_time = db.Column(db.String(20)) 
+    get_up_time  = db.Column(db.DateTime) 
 
 class SendData(Table): # カラムに値を代入
-    def __init__(self, user_id,wake_up_time):
+    def __init__(self, user_id,get_up_time):
         self.user_id      = user_id
-        self.wake_up_time = wake_up_time
+        self.get_up_time  = get_up_time
 
 
 class DBOperation():
     def __init__(self,db):
         self.db = db
     
-    def db_add(self,user_id,wake_up_time):
-            do = SendData(user_id,wake_up_time)
+    def db_add(self,user_id,get_up_time=time(7,0)):
+            do = SendData(user_id,get_up_time)
             db.session.add(do)
             db.session.commit()
 
@@ -101,21 +101,28 @@ def check_token():
 # ユーザー登録完了ページ
 @app.route('/register')
 def do_register():
-    #try:
-    access_token        = session.get('access_token')
-    access_token_secret = session.get('access_token_secret')
-    api_co    = tweet.ApiConnect(access_token, access_token_secret)
-    user_id   = api_co.see_user_id()
-    user_name = api_co.see_user_name()
-    #try: # 登録する
-    do = DBOperation(db)
-#起床時間が変数として設定されていない場合は自動的に7時として設定する
-    do.db_add(user_id,wake_up_time="0700")
-    return render_template('register.html', user_name=user_name, user_id=user_id)
-        #except: # 登録済み
-         #   return render_template('register.html', user_name=user_name)
-    #except: # セッション切れのとき
-      #  return redirect('/')
+    try:
+        access_token        = session.get('access_token')
+        access_token_secret = session.get('access_token_secret')
+        api_co    = tweet.ApiConnect(access_token, access_token_secret)
+        user_id   = api_co.see_user_id()
+        user_name = api_co.see_user_name()
+        try: # 登録する
+            do = DBOperation(db)
+            
+#フォームから取得した時刻をtimeモジュールget_up_timeに渡してください
+#起床時間が変数として設定されていない場合は自動的に7時として設定します
+            try:
+                do.db_add(user_id,get_up_time)
+
+            except NameError: # get_up_timeが定義されていないとき
+                do.db_add(user_id)
+
+            return render_template('register.html', user_name=user_name, user_id=user_id)
+        except sqlalchemy.exc.IntegrityError: # 登録済み
+            return render_template('register.html', user_name=user_name)
+    except twitter.error.TwitterError: # セッション切れのとき
+        return redirect('/')
 
 
 # 404ページ
