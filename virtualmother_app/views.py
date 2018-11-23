@@ -8,12 +8,10 @@ from flask_sqlalchemy import SQLAlchemy,sqlalchemy
 from datetime import timedelta,time
 import twitter
 
-from virtualmother_app import app
+from virtualmother_app import app, db
 from virtualmother_app.module import tweet, token
 
 #####データベース関連###############
-db = SQLAlchemy(app)
-
 class Table(db.Model): # テーブルの指定
     # 先にdb.create_all()してね
     __tablename__ = "morning_call_user_data"
