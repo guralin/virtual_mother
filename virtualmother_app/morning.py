@@ -4,7 +4,7 @@
 import os
 
 from flask import Flask
-from module import tweet
+from virtualmother_app.module import tweet
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
