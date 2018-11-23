@@ -1,7 +1,7 @@
 #!/bin/env python
 # coding: utf-8
 
-# appのconfig
+# appの設定
 
 
 
