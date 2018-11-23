@@ -33,6 +33,6 @@ do = GetData # GetDataクラスの呼び出し
 users = db.session.query(do).all() ###（変更）doをuser_nameに変更
 
 # tweetする
-post = tweet.Twitter()
+post = tweet.MothersTwitter()
 post.screen_name_call(users)
 
