@@ -70,7 +70,7 @@ def check_token():
             request_token = get_token.get_request_token() # リクエストトークンを取得する
             # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン を作る
             authenticate_url = 'https://twitter.com/oauth/authenticate'
-            authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token) 
+            authorize_url    = '%s?oauth_token=%s' % (authenticate_url, request_token) 
             # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に進む
             print(f'{authorize_url}に進む')
             return redirect(authorize_url)
@@ -91,7 +91,7 @@ def do_register():
     try:
         access_token        = session.get('access_token')
         access_token_secret = session.get('access_token_secret')
-        api_co    = tweet.ApiConnect(access_token, access_token_secret)
+        api_co    = tweet.UsersTwitter(access_token, access_token_secret)
         user_id   = api_co.see_user_id()
         user_name = api_co.see_user_name()
 
