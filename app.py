@@ -2,10 +2,8 @@
 # coding: utf-8
 
 import os
-import logging
 
-import oauth2 as oauth
-from module import tweet
+from module import tweet, token
 
 from flask import Flask, render_template, request, jsonify, redirect, session
 from flask_sqlalchemy import SQLAlchemy
@@ -31,64 +29,8 @@ class Table(db.Model): # テーブルの指定
 class SendData(Table): # カラムに値を代入
     def __init__(self, user_name):
         self.user_name = user_name
-#####oauth関連#####################
-request_token_url = 'https://twitter.com/oauth/request_token'
-access_token_url  = 'https://twitter.com/oauth/access_token'
-authenticate_url  = 'https://twitter.com/oauth/authenticate'
-
-# 環境によってcallback_urlを変える
-if os.environ.get("environ") == "master":
-    callback_url  ="https://virtualmother.herokuapp.com/user" # 本番環境用
-elif os.environ.get("environ") == "develop":
-    callback_url  = 'https://virtualmother-develop.herokuapp.com/user' # テスト環境用
-else:
-    callback_url = "http://127.0.0.1:5000/user" # ローカル環境用
-    
-consumer_key      = os.environ.get("CONSUMER_KEY")  # 各自設定する
-consumer_secret   = os.environ.get("CONSUMER_SECRET") # 各自設定する
 ###################################
-# todo 分析できたら別モジュールに移植しましょう
-logging.basicConfig(level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s') # デバッグ
 
-# 成型
-# アクセストークン取得時は {'oauth_token':'トークン', 'oauth_token_secret':'シークレット',…} を返す
-# リクエストトークン取得時は {'oauth_token':'トークン',…} を返す
-def parse_qsl(url):
-    param = {}
-    try:
-        for i in url.split('&'):
-            _p = i.split('=')
-            param.update({_p[0]: _p[1]})
-    except:
-        param['oauth_token'] ='failed'
-        param['oauth_token_secret'] ='failed'
-    return param
-
-# リクエストトークンを取得
-def get_request_token():
-    consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
-    client = oauth.Client(consumer)
-    resp, content = client.request('%s?&oauth_callback=%s' % (request_token_url, callback_url))
-    url_content = content.decode('utf-8')
-    request_token = dict(parse_qsl(url_content))
-    return request_token['oauth_token'] # リクエストトークンのみ
-
-# アクセストークンを取得（１）
-def get_access_token(oauth_token, oauth_verifier):
-    consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
-    token = oauth.Token(oauth_token, oauth_verifier)
-    client = oauth.Client(consumer, token)
-    resp, content = client.request(access_token_url,"POST", body="oauth_verifier={0}".format(oauth_verifier))
-    return content
-
-# アクセストークンとアクセストークンシークレットを取得（２）　/authorize 認証済の時に使う
-def get_access_token_and_secret(oauth_token, oauth_verifier):
-    access_token_and_secret = get_access_token(oauth_token, oauth_verifier).decode('utf-8')
-    dict_access_token_and_secret = dict(parse_qsl(access_token_and_secret))
-    access_token = dict_access_token_and_secret['oauth_token']
-    access_token_secret = dict_access_token_and_secret['oauth_token_secret']
-    return access_token, access_token_secret
-###############################
 
 
 # トップページ
@@ -103,6 +45,7 @@ def do_top():
 # ユーザーページ
 @app.route('/user', methods=['GET', 'POST'])
 def check_token():
+    get_token = token.Token()
     try: # セッションがあったら値を代入
         access_token = session['access_token']
         access_token_secret = session['access_token_secret']
@@ -118,11 +61,12 @@ def check_token():
     else: # セッションが無いとき
         oauth_token = request.args.get('oauth_token', default = None, type = str)
         oauth_verifier = request.args.get('oauth_verifier', default = None, type = str)
-        print(oauth_token, oauth_verifier)
+        print(f'oauth_token={oauth_token}, oauth_verifier={oauth_verifier}')
         if oauth_token == None or oauth_verifier == None: # Oauth認証する
             print("Oauth認証する")
-            request_token = get_request_token() # リクエストトークンを取得する
+            request_token = get_token.get_request_token() # リクエストトークンを取得する
             # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン を作る
+            authenticate_url = 'https://twitter.com/oauth/authenticate'
             authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token)
             print(authorize_url) # デバッグ
             # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に進む
@@ -132,7 +76,7 @@ def check_token():
             print("セッションに値を登録する")
             # アクセストークンとアクセストークンシークレットの取得
             # アクセストークンシークレットの取得
-            access_token_and_secret = get_access_token_and_secret(oauth_token, oauth_verifier)
+            access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
             session['access_token']        = access_token_and_secret[0]
             session['access_token_secret'] = access_token_and_secret[1]
             return redirect('/user')

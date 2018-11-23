@@ -12,6 +12,7 @@ import twitter, os
 
 
 class Twitter():
+
     def __init__(self):
         self.api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
                 consumer_secret=os.environ.get("CONSUMER_SECRET"),
