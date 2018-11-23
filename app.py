@@ -45,7 +45,6 @@ def do_top():
 # ユーザーページ
 @app.route('/user', methods=['GET', 'POST'])
 def check_token():
-    get_token = token.Token()
     try: # セッションがあったら値を代入
         access_token = session['access_token']
         access_token_secret = session['access_token_secret']
@@ -59,6 +58,7 @@ def check_token():
         # ユーザーページに進む
         return render_template('user.html', user_name=user_name)
     else: # セッションが無いとき
+        get_token = token.Token()
         oauth_token = request.args.get('oauth_token', default = None, type = str)
         oauth_verifier = request.args.get('oauth_verifier', default = None, type = str)
         print(f'oauth_token={oauth_token}, oauth_verifier={oauth_verifier}')
@@ -102,11 +102,10 @@ def do_register():
         return redirect('/')
 
 
-
 # 404ページ
-#@app.errorhandler(404)
-#def page_not_found(error):
-#    return render_template(page_not_found.html, 404)
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404-page.html')
 
 
 
