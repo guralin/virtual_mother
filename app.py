@@ -48,6 +48,7 @@ def check_token():
     try: # セッションがあったら値を代入
         access_token        = session['access_token']
         access_token_secret = session['access_token_secret']
+
     except: # セッションが無いときはNoneを入れる
         access_token        = None
         access_token_secret = None
@@ -57,19 +58,21 @@ def check_token():
         user_name = api_co.see_user_name()
         # ユーザーページに進む
         return render_template('user.html', user_name=user_name)
+
     else: # セッションが無いとき
         get_token      = token.Token()
         oauth_token    = request.args.get('oauth_token', default = None, type = str)
         oauth_verifier = request.args.get('oauth_verifier', default = None, type = str)
         print(f'oauth_token={oauth_token}, oauth_verifier={oauth_verifier}')
+
         if oauth_token == None or oauth_verifier == None: # Oauth認証する
             print("Oauth認証する")
-            request_token    = get_token.get_request_token() # リクエストトークンを取得する
+            request_token = get_token.get_request_token() # リクエストトークンを取得する
             # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン を作る
             authenticate_url = 'https://twitter.com/oauth/authenticate'
-            authorize_url    = '%s?oauth_token=%s' % (authenticate_url, request_token)
-            print(authorize_url) # デバッグ
+            authorize_url = '%s?oauth_token=%s' % (authenticate_url, request_token) 
             # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に進む
+            print(f'{authorize_url}に進む')
             return redirect(authorize_url)
 
         else: # セッションに値を登録する
@@ -91,13 +94,16 @@ def do_register():
         api_co    = tweet.ApiConnect(access_token, access_token_secret)
         user_id   = api_co.see_user_id()
         user_name = api_co.see_user_name()
+
         try: # 登録する
             do = SendData(user_id)
             db.session.add(do)
             db.session.commit()
             return render_template('register.html', user_name=user_name, user_id=user_id)
+
         except: # 登録済み
             return render_template('register.html', user_name=user_name)
+
     except: # セッション切れのとき
         return redirect('/')
 
