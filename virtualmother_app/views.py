@@ -5,28 +5,12 @@ import os
 
 from flask import Flask, render_template, request, jsonify, redirect, session
 from flask_sqlalchemy import SQLAlchemy,sqlalchemy
-from datetime import timedelta, time
+from datetime import timedelta
 import twitter
 
 from virtualmother_app import app, db
-from virtualmother_app.models import Table
-from virtualmother_app.module import tweet, token
+from virtualmother_app.module import tweet, token, database
 
-#####データベース関連###############
-class SendData(Table): # カラムに値を代入
-    def __init__(self, user_id, get_up_time):
-        self.user_id      = user_id
-        self.get_up_time  = get_up_time
-
-class DBOperation():
-    def __init__(self,db):
-        self.db = db
-    
-    def db_add(self, user_id, get_up_time=time(7,0)):
-            do = SendData(user_id, get_up_time)
-            db.session.add(do)
-            db.session.commit()
-###################################
 
 
 # トップページ
@@ -60,7 +44,7 @@ def check_token():
         get_token      = token.Token()
         oauth_token    = request.args.get('oauth_token', default = None, type = str)
         oauth_verifier = request.args.get('oauth_verifier', default = None, type = str)
-        print(f'oauth_token={oauth_token}, oauth_verifier={oauth_verifier}')
+        print(f'oauth_token = {oauth_token}, oauth_verifier = {oauth_verifier}')
 
         if oauth_token == None or oauth_verifier == None: # Oauth認証する
             print("Oauth認証する")
@@ -94,7 +78,7 @@ def do_register():
         user_name = api_co.see_user_name()
 
         try: # 登録する
-            do = DBOperation(db)
+            do = database.DBOperation(db)
             #フォームから取得した時刻をtimeモジュールget_up_timeに渡してください
             #起床時間が変数として設定されていない場合は自動的に7時として設定します
             try:

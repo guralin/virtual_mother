@@ -3,8 +3,6 @@
 
 # データベースのテーブルの指定
 
-
-
 from virtualmother_app import db
 
 
@@ -17,6 +15,9 @@ class Table(db.Model): # テーブルの指定
 
 def init():
     db.create_all()
+    # データベースを作るときは
+    # ALTER TABLE morning_call_user_data ALTER get_up_time TYPE time without time zone;
+    # を実行して、タイムゾーンを指定しなくても良いようにする
 
 
 

@@ -3,8 +3,6 @@
 
 # appの設定
 
-
-
 import os
 
 from virtualmother_app import app

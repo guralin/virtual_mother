@@ -3,8 +3,6 @@
 
 # appの実行
 
-
-
 import os
 
 from virtualmother_app import app
