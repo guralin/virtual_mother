@@ -95,7 +95,7 @@ def check_token():
             print("セッションに値を登録する")
             # アクセストークンとアクセストークンシークレットの取得
             # アクセストークンシークレットの取得
-            access_token_and_secret        = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
+            access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
             session['access_token']        = access_token_and_secret[0]
             session['access_token_secret'] = access_token_and_secret[1]
             return redirect('/user')
@@ -113,16 +113,16 @@ def do_register():
 
         try: # 登録する
             do = DBOperation(db)
-            
-#フォームから取得した時刻をtimeモジュールget_up_timeに渡してください
-#起床時間が変数として設定されていない場合は自動的に7時として設定します
+            #フォームから取得した時刻をtimeモジュールget_up_timeに渡してください
+            #起床時間が変数として設定されていない場合は自動的に7時として設定します
             try:
-                do.db_add(user_id,get_up_time)
+                do.db_add(user_id, get_up_time)
 
             except NameError: # get_up_timeが定義されていないとき
                 do.db_add(user_id)
 
             return render_template('register.html', user_name=user_name, user_id=user_id)
+
         except sqlalchemy.exc.IntegrityError: # 登録済み
             return render_template('register.html', user_name=user_name)
 
