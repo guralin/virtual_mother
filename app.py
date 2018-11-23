@@ -41,7 +41,6 @@ class DBOperation():
         self.db = db
     
     def db_add(self,user_id,wake_up_time):
-            
             do = SendData(user_id,wake_up_time)
             db.session.add(do)
             db.session.commit()
