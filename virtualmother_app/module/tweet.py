@@ -1,23 +1,24 @@
 #!/bin/env python
 # coding: utf-8
 
+import os
 import codecs
-
 from datetime import datetime
 from random import randint
 import json
 from collections import OrderedDict
 import pprint 
-import twitter, os
+import twitter # python-twitterライブラリ
+
 
 
 class MothersTwitter():
 
     def __init__(self):
         self.api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
-                consumer_secret=os.environ.get("CONSUMER_SECRET"),
-                access_token_key=os.environ.get("ACCESS_TOKEN"),
-                access_token_secret=os.environ.get("ACCESS_TOKEN_SECRET"))
+                               consumer_secret=os.environ.get("CONSUMER_SECRET"),
+                               access_token_key=os.environ.get("ACCESS_TOKEN"),
+                               access_token_secret=os.environ.get("ACCESS_TOKEN_SECRET"))
         h = datetime.now().hour
         m = datetime.now().minute
         self.time = "{0}時{1}分".format(h, m)
@@ -76,11 +77,10 @@ class MothersTwitter():
 class UsersTwitter():
 # api.VerifyCredentials()でインスタンスを作ると、TwitterUserインスタンスになり、このインスタンスの中にあるid,screen_name,nameなどのキーを指定すると値が帰ってくる
     def __init__(self, access_token, access_token_secret):
-        self.api = twitter.Api(
-                consumer_key=os.environ.get("CONSUMER_KEY"),
-                consumer_secret=os.environ.get("CONSUMER_SECRET"),
-                access_token_key=access_token,
-                access_token_secret=access_token_secret)
+        self.api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
+                               consumer_secret=os.environ.get("CONSUMER_SECRET"),
+                               access_token_key=access_token,
+                               access_token_secret=access_token_secret)
         self.status= self.api.VerifyCredentials()
 
     def see_user_id(self):

@@ -10,22 +10,22 @@ authenticate_url  = 'https://twitter.com/oauth/authenticate'
 
 # 環境によってcallback_urlを変える
 if   os.environ.get("environ") == "master":
-    callback_url  = 'https://virtualmother.herokuapp.com/user' # 本番環境用
+    callback_url = 'https://virtualmother.herokuapp.com/user' # 本番環境用
 
 elif os.environ.get("environ") == "develop":
-    callback_url  = 'https://virtualmother-develop.herokuapp.com/user' # テスト環境用
+    callback_url = 'https://virtualmother-develop.herokuapp.com/user' # テスト環境用
 
 else:
-    callback_url  = 'http://127.0.0.1:5000/user' # ローカル環境用
+    callback_url = 'http://127.0.0.1:5000/user' # ローカル環境用
     
-consumer_key      = os.environ.get("CONSUMER_KEY")
-consumer_secret   = os.environ.get("CONSUMER_SECRET")
+consumer_key    = os.environ.get("CONSUMER_KEY")
+consumer_secret = os.environ.get("CONSUMER_SECRET")
 
 
 
 class Token():
     # 成型
-    # アクセストークン取得時は {'oauth_token':'トークン', 'oauth_token_secret':'シークレット',…} を返す
+    # アクセストークン取得時は {'access_token':'トークン', 'access_token_secret':'シークレット',…} を返す
     # リクエストトークン取得時は {'oauth_token':'トークン',…} を返す
     def parse_qsl(self, url):
         param = {}
@@ -52,7 +52,7 @@ class Token():
         consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
         token    = oauth.Token(oauth_token, oauth_verifier)
         client   = oauth.Client(consumer, token)
-        resp, content = client.request(access_token_url,"POST", body="oauth_verifier={0}".format(oauth_verifier))
+        resp, content = client.request(access_token_url, "POST", body="oauth_verifier={0}".format(oauth_verifier))
         return content
 
     # アクセストークンとアクセストークンシークレットを取得（２）　/authorize 認証済の時に使う
