@@ -1,14 +1,11 @@
 #!/bin/env python
 # coding: utf-8
 
-# appの定義
-
-
+# app, dbの定義
 
 import os
-
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy, sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
 
 
 
