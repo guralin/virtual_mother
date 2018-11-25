@@ -34,8 +34,8 @@ class Token():
                 _p = i.split('=')
                 param.update({_p[0]: _p[1]})
         except:
-            param['oauth_token']        ='failed'
-            param['oauth_token_secret'] ='failed'
+            param['oauth_token']        = 'failed'
+            param['oauth_token_secret'] = 'failed'
         return param
     
     # リクエストトークンを取得

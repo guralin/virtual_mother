@@ -31,10 +31,10 @@ def check_token():
         access_token_secret = session['access_token_secret']
 
     except: # セッションが無いときはNoneを入れる
-        access_token        = None
-        access_token_secret = None
+        access_token        = 'failed'
+        access_token_secret = 'failed'
 
-    if access_token != None and access_token_secret != None: # セッションがあったとき
+    if access_token != 'failed' and access_token_secret != 'failed': # セッションがあったとき
         api_co    = tweet.UsersTwitter(access_token, access_token_secret)
         user_name = api_co.see_user_name()
         # ユーザーページに進む
@@ -42,11 +42,11 @@ def check_token():
 
     else: # セッションが無いとき
         get_token      = token.Token()
-        oauth_token    = request.args.get('oauth_token', default = None, type = str)
-        oauth_verifier = request.args.get('oauth_verifier', default = None, type = str)
+        oauth_token    = request.args.get('oauth_token', default = 'failed', type = str)
+        oauth_verifier = request.args.get('oauth_verifier', default = 'failed', type = str)
         print(f'oauth_token = {oauth_token}, oauth_verifier = {oauth_verifier}')
 
-        if oauth_token == None or oauth_verifier == None: # Oauth認証する
+        if oauth_token == 'failed' or oauth_verifier == 'failed': # Oauth認証する
             print("Oauth認証する")
             request_token = get_token.get_request_token() # リクエストトークンを取得する
             # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン を作る
