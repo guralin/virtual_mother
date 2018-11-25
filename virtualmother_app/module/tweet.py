@@ -7,7 +7,8 @@ from datetime import datetime
 from random import randint
 import json
 from collections import OrderedDict
-import pprint 
+import pprint
+
 import twitter # python-twitterライブラリ
 
 
