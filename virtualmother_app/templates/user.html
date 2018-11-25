@@ -2,16 +2,40 @@
 
 {% block article %}
 
-    <div>
+    <p>
         {{ user_name }} &nbsp;毎日ちゃんと起きてる？
-    </div>
+    </p>
+    <p>
+        起こしてあげようか？
+    </p>
 <br>
-    <div>
-        7時に起こそうか？
-    </div>
-    <div>
-        <button onclick="location.href='/register'" class="button">起こしてもらう</button>
-    </div>
+    <form action='/register' method='POST'>
+        <p></p>
+        <p>
+            <select name='hour' class='button'>
+                <option value='7'>7</option>
+                <option value='4'>4</option>
+                <option value='5'>5</option>
+                <option value='6'>6</option>
+                <option value='7'>7</option>
+                <option value='8'>8</option>
+                <option value='9'>9</option>
+                <option value='10'>10</option>
+            </select>
+            時
+            <select name='minute' class='button'>
+                <option value='0'>0</option>
+                <option value='10'>10</option>
+                <option value='20'>20</option>
+                <option value='30'>30</option>
+                <option value='40'>40</option>
+                <option value='50'>50</option>
+            </select>
+            分
+        </p>
+        <p>に起こしてもらう</p>
+        <input type='submit' value='登録' class='button'>
+    </form>
 
 {% endblock %}
 
