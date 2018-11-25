@@ -25,5 +25,10 @@ class DBOperation():
 
 # morning.py
 class GetData(Table): # カラムを指定してデータを取得
+    def id_and_get_up(self):
+        users = db.session.query(Table.user_id,Table.get_up_time).all()
+        return users
+    
+    
     def __repr__(self):
         return self.user_id
