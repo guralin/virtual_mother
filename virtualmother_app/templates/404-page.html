@@ -1,12 +1,24 @@
 {% extends 'body.html' %}
 
+{% block twitter %}
+
+    {{ super() }}
+
+{% endblock %}
+
 {% block article %}
 
     <div style='text-align:center'>
         <img src="../static/img/404-page.png">
     </div>
-    {% block go-home %}
-        {{ super() }}
-    {% endblock %}
 
 {% endblock %}
+
+{% block go_home %}
+
+    {{ super() }}
+
+{% endblock %}
+
+
+

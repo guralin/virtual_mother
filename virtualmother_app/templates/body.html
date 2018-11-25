@@ -12,14 +12,25 @@
         <span class="title"><a href="/">バーチャルお母さん</a></span>
     </header>
     <article>
-        {% block article %}
-            {% block go-home %}
-                <p class="go_home"><a href='/user'><i class="fas fa-home"></i>&nbsp;ホームに戻る</a></p>
-            {% endblock %}
-        {% endblock%}
+
+        {% block twitter %}
+            <p class="twitter_url"><a href="https://twitter.com/virtual_mother/" target="_blank">
+                お母さんのTwitter&nbsp;<i class="fab fa-twitter-square"></i>
+            </a></p>
+        {% endblock %}
+
+        {% block article %} {% endblock %}
+
+        {% block go_home %}
+            <p class="go_home"><a href='/user'><i class="fas fa-home"></i>&nbsp;ホームに戻る</a></p>
+        {% endblock %}
+
     </article>
     <footer>
         <div>&copy; 2018 Virtual Mother</div>
     </footer>
 
 {% endblock %}
+
+
+
