@@ -2,10 +2,10 @@
 # coding: utf-8
 
 import os
-
-from flask import Flask, render_template, request, jsonify, redirect, session
-from flask_sqlalchemy import SQLAlchemy,sqlalchemy
 from datetime import timedelta
+
+from flask import render_template, request, redirect, session
+from flask_sqlalchemy import sqlalchemy
 import twitter
 
 from virtualmother_app import app, db
@@ -19,7 +19,8 @@ def do_top():
     # セッションを30分に設定
     session.permanent = True
     app.permanent_session_lifetime = timedelta(minutes=30)
-    return render_template('top.html')
+    title = "ようこそ"
+    return render_template('top.html', title=title)
 
 
 
@@ -38,7 +39,8 @@ def check_token():
         api_co    = tweet.UsersTwitter(access_token, access_token_secret)
         user_name = api_co.see_user_name()
         # ユーザーページに進む
-        return render_template('user.html', user_name=user_name)
+        title = f"{user_name} の部屋"
+        return render_template('user.html', title=title, user_name=user_name)
 
     else: # セッションが無いとき
         get_token      = token.Token()
@@ -87,10 +89,12 @@ def do_register():
             except NameError: # get_up_timeが定義されていないとき
                 do.db_add(user_id)
 
-            return render_template('register.html', user_name=user_name, user_id=user_id)
+            title = "登録完了"
+            return render_template('register.html', title=title, user_name=user_name, user_id=user_id)
 
         except sqlalchemy.exc.IntegrityError: # 登録済み
-            return render_template('register.html', user_name=user_name)
+            title = "登録済"
+            return render_template('register.html', title=title, user_name=user_name)
 
     except twitter.error.TwitterError: # セッション切れのとき
         return redirect('/')
