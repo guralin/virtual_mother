@@ -18,24 +18,15 @@ now_minute = now_time.minute
 round_down_now_minute = int(now_minute/10)*10
 
 round_down_now_time = time(now_hour,round_down_now_minute)
-print(round_down_now_time)
 
-print(users)
+do = tweet.MothersTwitter()
 
 for user in users:
     db_get_up_time = user[1]
-    if db_get_up_time == round_down_now_time :
+    if db_get_up_time == round_down_now_time:
         print(user[0])
     else:
         print("no")
-
-
-
-
-
-
-
-
 
 #print(users)
 #print(users[0][1])

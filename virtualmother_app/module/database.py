@@ -19,9 +19,15 @@ class DBOperation():
         self.db = db
     
     def db_add(self, user_id, get_up_time=time(7,0)):
-            do = SendData(user_id, get_up_time)
-            db.session.add(do)
-            db.session.commit()
+        do = SendData(user_id, get_up_time)
+        db.session.add(do)
+        db.session.commit()
+
+# 一致するユーザー
+    def update_get_up_time(self, user_id,get_up_time):
+        do = db.session.query(Table).filter(Table.user_id==user_id).first()
+        do.get_up_time = get_up_time
+        db.session.commit()
 
 # morning.py
 class GetData(Table): # カラムを指定してデータを取得
