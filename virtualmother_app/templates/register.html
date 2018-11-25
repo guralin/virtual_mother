@@ -1,28 +1,23 @@
 {% extends 'body.html' %}
 
-{% block twitter %}
-
-    {{ super() }}
-
-{% endblock %}
-
 {% block article %}
 
-    <p class="twitter_url"><a href="https://twitter.com/virtual_mother/" target="_blank">お母さんのTwitter&nbsp;<i class="fab fa-twitter-square"></i></a></p>
-<br>
-<br>
-<br>
-        <div class="post_text">
+    <div class="post_text">
 
-            <p><span>{{ user_name }}</span></t>&nbsp;
-                {% if user_id %}
-                    登録できたよ
-                {% else %}
-                    登録済みだよ
-                {% endif %}
-            </p>
-            <p>毎朝７時にツイートするから起きてね</p>
-        </div>
+        <p><span>{{ user_name }}</span></t>&nbsp;
+            {% if user_id %}
+                登録できたよ
+            {% else %}
+                登録済みだよ
+            {% endif %}
+        </p>
+
+        <p>
+            毎朝７時にツイートするから起きてね
+        </p>
+
+    </div>
+
 <br>
 <br>
 <br>
@@ -33,7 +28,7 @@
 
 {% block go_home %}
 
-    {{ super() }}
+    <p class="go_home"><a href='/user'><i class="fas fa-home"></i>&nbsp;ホームに戻る</a></p>
 
 {% endblock %}
 

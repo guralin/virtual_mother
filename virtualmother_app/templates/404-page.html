@@ -1,11 +1,5 @@
 {% extends 'body.html' %}
 
-{% block twitter %}
-
-    {{ super() }}
-
-{% endblock %}
-
 {% block article %}
 
     <div style='text-align:center'>
@@ -16,7 +10,7 @@
 
 {% block go_home %}
 
-    {{ super() }}
+    <p class="go_home"><a href='/user'><i class="fas fa-home"></i>&nbsp;ホームに戻る</a></p>
 
 {% endblock %}
 

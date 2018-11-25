@@ -1,15 +1,7 @@
 {% extends 'body.html' %}
 
-{% block twitter %}
-
-    {{ super() }}
-
-{% endblock %}
-
 {% block article %}
 
-<br>
-<br>
     <div>
         {{ user_name }} &nbsp;毎日ちゃんと起きてる？
     </div>
@@ -22,6 +14,7 @@
     </div>
 
 {% endblock %}
+
 
 <!--
     <form action="{{url_for('do_register')}}" method="POST">

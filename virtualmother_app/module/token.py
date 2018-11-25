@@ -60,7 +60,7 @@ class Token():
 
     # アクセストークンとアクセストークンシークレットを取得（２）　/authorize 認証済の時に使う
     def get_access_token_and_secret(self, oauth_token, oauth_verifier):
-        access_token_and_secret      = self.get_access_token(oauth_token, oauth_verifier).decode('utf-8')
+        access_token_and_secret = self.get_access_token(oauth_token, oauth_verifier).decode('utf-8')
         dict_access_token_and_secret = dict(self.parse_qsl(access_token_and_secret))
         access_token        = dict_access_token_and_secret['oauth_token']
         access_token_secret = dict_access_token_and_secret['oauth_token_secret']
