@@ -18,14 +18,14 @@ from virtualmother_app.module import tweet, token, database
 def do_top():
     # セッションを30分に設定
     session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes=30)
+    app.permanent_session_lifetime = timedelta(minutes = 30)
     title = "ようこそ"
-    return render_template('top.html', title=title)
+    return render_template('top.html', title = title)
 
 
 
 # ユーザーページ
-@app.route('/user', methods=['GET', 'POST'])
+@app.route('/user', methods = ['GET', 'POST'])
 def check_token():
     try: # セッションがあったら値を代入
         access_token        = session['access_token']
@@ -40,7 +40,7 @@ def check_token():
         user_name = api_co.see_user_name()
         # ユーザーページに進む
         title = f"{user_name} の部屋"
-        return render_template('user.html', title=title, user_name=user_name)
+        return render_template('user.html', title = title, user_name = user_name)
 
     else: # セッションが無いとき
         get_token      = token.Token()
@@ -90,11 +90,11 @@ def do_register():
                 do.db_add(user_id)
 
             title = "登録完了"
-            return render_template('register.html', title=title, user_name=user_name, user_id=user_id)
+            return render_template('register.html', title = title, user_name = user_name, user_id = user_id)
 
         except sqlalchemy.exc.IntegrityError: # 登録済み
             title = "登録済"
-            return render_template('register.html', title=title, user_name=user_name)
+            return render_template('register.html', title = title, user_name = user_name)
 
     except twitter.error.TwitterError: # セッション切れのとき
         return redirect('/')
@@ -104,7 +104,8 @@ def do_register():
 # 404ページ
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('404-page.html')
+    title = "ページが見つかりません"
+    return render_template('404-page.html', title = title)
 
 
 
