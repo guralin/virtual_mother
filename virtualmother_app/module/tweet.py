@@ -33,9 +33,11 @@ class MothersTwitter():
             self.api.PostUpdate(morning_call)
 
     def screen_name_call(self, users_id): # morning.py
-        with open('module/json/morning_call.json') as morning_call_words:
-            words = json.load(morning_call_words)
-            print(words)
+
+        with open('virtualmother_app/module/json/morning_call.json') as morning_call_words:
+           words = json.load(morning_call_words)
+           print(words)
+
         for user_id in users_id:
             word         = words[str(randint(0, (len(words) - 1)))]
             screen_name  = self.id_for_screen_name(user_id)
