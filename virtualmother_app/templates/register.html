@@ -4,7 +4,12 @@
 
     <div class="post_text">
 
-        <p><span>{{ user_name }}</span></t>&nbsp;
+        <p><span>{{ user_name }}</span>
+    {% if message %}
+        </p>
+        <p>{{ message }}</p>
+    {% else %}
+            </t>&nbsp;
             {% if hour %}
                 登録できたよ
             {% else %}
@@ -19,6 +24,7 @@
             {% endif %}
             ツイートするから起きてね
         </p>
+    {% endif %}
 
     </div>
 
