@@ -2,10 +2,10 @@
 # coding: utf-8
 
 import os
+from datetime import timedelta, time
 
-from flask import Flask, render_template, request, jsonify, redirect, session
-from flask_sqlalchemy import SQLAlchemy,sqlalchemy
-from datetime import timedelta
+from flask import render_template, request, redirect, session
+from flask_sqlalchemy import sqlalchemy
 import twitter
 
 from virtualmother_app import app, db
@@ -16,16 +16,19 @@ from virtualmother_app.module import tweet, token, database
 # トップページ
 @app.route('/')
 def do_top():
+
     # セッションを30分に設定
     session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes=30)
-    return render_template('top.html')
+    app.permanent_session_lifetime = timedelta(minutes = 30)
+    title = "ようこそ"
+    return render_template('top.html', title = title)
 
 
 
 # ユーザーページ
-@app.route('/user', methods=['GET', 'POST'])
+@app.route('/user', methods = ['GET'])
 def check_token():
+
     try: # セッションがあったら値を代入
         access_token        = session['access_token']
         access_token_secret = session['access_token_secret']
@@ -38,7 +41,8 @@ def check_token():
         api_co    = tweet.UsersTwitter(access_token, access_token_secret)
         user_name = api_co.see_user_name()
         # ユーザーページに進む
-        return render_template('user.html', user_name=user_name)
+        title = f"{user_name} の部屋"
+        return render_template('user.html', title = title, user_name = user_name)
 
     else: # セッションが無いとき
         get_token      = token.Token()
@@ -68,8 +72,9 @@ def check_token():
 
 
 # ユーザー登録完了ページ
-@app.route('/register')
+@app.route('/register', methods = ['POST'])
 def do_register():
+
     try:
         access_token        = session.get('access_token')
         access_token_secret = session.get('access_token_secret')
@@ -79,18 +84,16 @@ def do_register():
 
         try: # 登録する
             do = database.DBOperation(db)
-            #フォームから取得した時刻をtimeモジュールget_up_timeに渡してください
-            #起床時間が変数として設定されていない場合は自動的に7時として設定します
-            try:
-                do.db_add(user_id, get_up_time)
-
-            except NameError: # get_up_timeが定義されていないとき
-                do.db_add(user_id)
-
-            return render_template('register.html', user_name=user_name, user_id=user_id)
+            hour   = int(request.form['hour'])
+            minute = int(request.form['minute'])
+            get_up_time = time(hour, minute)
+            do.db_add(user_id, get_up_time)
+            title = "登録完了"
+            return render_template('register.html', title = title, user_name = user_name, hour = hour, minute = minute)
 
         except sqlalchemy.exc.IntegrityError: # 登録済み
-            return render_template('register.html', user_name=user_name)
+            title = "登録済"
+            return render_template('register.html', title = title, user_name = user_name)
 
     except twitter.error.TwitterError: # セッション切れのとき
         return redirect('/')
@@ -100,7 +103,9 @@ def do_register():
 # 404ページ
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('404-page.html')
+
+    title = "ページが見つかりません"
+    return render_template('404-page.html', title = title)
 
 
 

@@ -7,7 +7,8 @@ from datetime import datetime
 from random import randint
 import json
 from collections import OrderedDict
-import pprint 
+import pprint
+
 import twitter # python-twitterライブラリ
 
 
@@ -25,16 +26,18 @@ class MothersTwitter():
 
     def call(self, users): # morning.py
         with open('module/json/morning_call.json') as morning_call_words:
-           words = json.load(morning_call_words)
+            words = json.load(morning_call_words)
         for user in users:
             word = words[str(randint(0, (len(words) - 1)))]
             morning_call = "@{0}\n もう{1}よ！\n {2}".format(user, self.time, word)
             self.api.PostUpdate(morning_call)
 
     def screen_name_call(self, users_id): # morning.py
+
         with open('virtualmother_app/module/json/morning_call.json') as morning_call_words:
            words = json.load(morning_call_words)
            print(words)
+
         for user_id in users_id:
             word         = words[str(randint(0, (len(words) - 1)))]
             screen_name  = self.id_for_screen_name(user_id)
@@ -43,7 +46,7 @@ class MothersTwitter():
             print(morning_call)
 
     def id_for_screen_name(self, user_id):
-        user = self.api.GetUser(user_id=user_id)
+        user = self.api.GetUser(user_id = user_id)
         return user.screen_name
 
 
@@ -54,15 +57,15 @@ class MothersTwitter():
         print(tweet_content)
 
     def test_dm(self, tweet_content, friend_id):
-        api.PostDirectMessage(tweet_content,screen_name=friend_id)
-        print(tweet_content,friend_id)
+        api.PostDirectMessage(tweet_content, screen_name = friend_id)
+        print(tweet_content, friend_id)
 
     def fetch_friend(self):
         users = self.api.GetFriends()
         print([u.name for u in users])
 
     def return_user(self):
-        users = self.api.GetUser(screen_name="virtual_child")
+        users = self.api.GetUser(screen_name = "virtual_child")
         #print(users.id)
         print(users.screen_name)
         
@@ -81,7 +84,7 @@ class UsersTwitter():
                                consumer_secret=os.environ.get("CONSUMER_SECRET"),
                                access_token_key=access_token,
                                access_token_secret=access_token_secret)
-        self.status= self.api.VerifyCredentials()
+        self.status = self.api.VerifyCredentials()
 
     def see_user_id(self):
         user_id = self.status.id

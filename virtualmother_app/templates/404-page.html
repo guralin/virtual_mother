@@ -1,22 +1,18 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>ページが見つかりません - バーチャルお母さん</title>
-    <link rel="shortcut icon" href="../static/img/mother.png">
-    <link rel="stylesheet" href="../static/css/stylesheet.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-</head>
-<body>
-    <header>
-        <span class="title"><a href="/">バーチャルお母さん</a></span>
-    </header>
-    <article style='text-align:center'>
+{% extends 'body.html' %}
+
+{% block article %}
+
+    <div style='text-align:center'>
         <img src="../static/img/404-page.png">
-    </article>
-    <footer>
-        <div>&copy; 2018 Virtual Mother</div>
-    </footer>
-</body>
-</html>
+    </div>
+
+{% endblock %}
+
+{% block go_home %}
+
+    <p class="go_home"><a href='/user'><i class="fas fa-home"></i>&nbsp;ホームに戻る</a></p>
+
+{% endblock %}
+
+
+
