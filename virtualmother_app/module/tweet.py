@@ -23,6 +23,10 @@ class MothersTwitter():
         h = datetime.now().hour
         m = datetime.now().minute
         self.time = "{0}時{1}分".format(h, m)
+        try:
+            self.status = self.api.VerifyCredentials()
+        except twitter.error.TwitterError:
+            print("access_token_keyが間違っている可能性があります")
 
     def call(self, users): # morning.py
         with open('module/json/morning_call.json') as morning_call_words:
@@ -31,12 +35,11 @@ class MothersTwitter():
             word = words[str(randint(0, (len(words) - 1)))]
             morning_call = "@{0}\n もう{1}よ！\n {2}".format(user, self.time, word)
             self.api.PostUpdate(morning_call)
-
-    def screen_name_call(self, users_id): # morning.py
+# リストを渡す
+    def call_screen_names(self, users_id): # morning.py
 
         with open('virtualmother_app/module/json/morning_call.json') as morning_call_words:
-           words = json.load(morning_call_words)
-           print(words)
+            words = json.load(morning_call_words)
 
         for user_id in users_id:
             word         = words[str(randint(0, (len(words) - 1)))]
@@ -44,6 +47,25 @@ class MothersTwitter():
             morning_call = "@{0}\n もう{1}よ！\n {2}".format(screen_name , self.time, word)
             self.api.PostUpdate(morning_call)
             print(morning_call)
+
+# 変数を渡す
+    def call_screen_name(self, user_id): # morning.py
+
+        with open('virtualmother_app/module/json/morning_call.json') as morning_call_words:
+            words = json.load(morning_call_words)
+
+            word  = words[str(randint(0, (len(words) - 1)))]
+
+            try:
+                screen_name  = self.id_for_screen_name(user_id)
+                morning_call = "@{0}\n もう{1}よ！\n {2}".format(screen_name , self.time, word)
+                self.api.PostUpdate(morning_call)
+                print(morning_call)
+
+            except twitter.error.TwitterError:
+                print("存在しないIDを参照している可能性があります")
+                
+                
 
     def id_for_screen_name(self, user_id):
         user = self.api.GetUser(user_id = user_id)
