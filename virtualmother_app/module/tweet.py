@@ -16,10 +16,10 @@ import twitter # python-twitterライブラリ
 class MothersTwitter():
 
     def __init__(self):
-        self.api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
-                               consumer_secret=os.environ.get("CONSUMER_SECRET"),
-                               access_token_key=os.environ.get("ACCESS_TOKEN"),
-                               access_token_secret=os.environ.get("ACCESS_TOKEN_SECRET"))
+        self.api = twitter.Api(consumer_key    = os.environ.get("CONSUMER_KEY"),
+                               consumer_secret = os.environ.get("CONSUMER_SECRET"),
+                               access_token_key    = os.environ.get("ACCESS_TOKEN"),
+                               access_token_secret = os.environ.get("ACCESS_TOKEN_SECRET"))
         h = datetime.now().hour
         m = datetime.now().minute
         self.time = "{0}時{1}分".format(h, m)
@@ -29,7 +29,7 @@ class MothersTwitter():
             print("access_token_keyが間違っている可能性があります")
 
     def call(self, users): # morning.py
-        with open('module/json/morning_call.json') as morning_call_words:
+        with open('virtualmother_app/module/json/morning_call.json') as morning_call_words:
             words = json.load(morning_call_words)
         for user in users:
             word = words[str(randint(0, (len(words) - 1)))]
@@ -43,8 +43,8 @@ class MothersTwitter():
 
         for user_id in users_id:
             word         = words[str(randint(0, (len(words) - 1)))]
-            screen_name  = self.id_for_screen_name(user_id)
-            morning_call = "@{0}\n もう{1}よ！\n {2}".format(screen_name , self.time, word)
+            screen_name  = self.get_screen_name(user_id)
+            morning_call = "@{0}\n もう{1}よ！\n {2}".format(screen_name, self.time, word)
             self.api.PostUpdate(morning_call)
             print(morning_call)
 
@@ -57,17 +57,15 @@ class MothersTwitter():
             word  = words[str(randint(0, (len(words) - 1)))]
 
             try:
-                screen_name  = self.id_for_screen_name(user_id)
+                screen_name  = self.get_screen_name(user_id)
                 morning_call = "@{0}\n もう{1}よ！\n {2}".format(screen_name , self.time, word)
                 self.api.PostUpdate(morning_call)
                 print(morning_call)
 
             except twitter.error.TwitterError:
                 print("存在しないIDを参照している可能性があります")
-                
-                
 
-    def id_for_screen_name(self, user_id):
+    def get_screen_name(self, user_id):
         user = self.api.GetUser(user_id = user_id)
         return user.screen_name
 
@@ -95,17 +93,16 @@ class MothersTwitter():
         # virtual_motherのuser_id
         status = self.api.VerifyCredentials()
         return status
-        
 
 
-        
+
 class UsersTwitter():
 # api.VerifyCredentials()でインスタンスを作ると、TwitterUserインスタンスになり、このインスタンスの中にあるid,screen_name,nameなどのキーを指定すると値が帰ってくる
     def __init__(self, access_token, access_token_secret):
-        self.api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
-                               consumer_secret=os.environ.get("CONSUMER_SECRET"),
-                               access_token_key=access_token,
-                               access_token_secret=access_token_secret)
+        self.api = twitter.Api(consumer_key    = os.environ.get("CONSUMER_KEY"),
+                               consumer_secret = os.environ.get("CONSUMER_SECRET"),
+                               access_token_key    = access_token,
+                               access_token_secret = access_token_secret)
         self.status = self.api.VerifyCredentials()
 
     def see_user_id(self):
@@ -119,5 +116,6 @@ class UsersTwitter():
     def see_user_name(self):
         user_name = self.status.name
         return user_name
+
 
 
