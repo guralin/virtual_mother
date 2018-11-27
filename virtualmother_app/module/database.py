@@ -28,12 +28,10 @@ class DBOperation():
         db.session.commit()
 
 
-    # 目覚ましの時間の変更       ←※ 機能してません
+    # 目覚ましの時間の変更       
     def update_get_up_time(self, user_id, get_up_time):
-        user_data = db.session.query(Table).filter_by(user_id = f'{user_id}').first()
-        print(user_data)
-        user_data.get_up_time = f'{get_up_time}'
-        db.session.add(user_data)
+        user_data = db.session.query(Table).filter(Table.user_id==user_id).first()
+        user_data.get_up_time = get_up_time
         db.session.commit()
 
     # 目覚まし解除
