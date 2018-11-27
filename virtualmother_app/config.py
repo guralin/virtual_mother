@@ -18,7 +18,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DEVELOP_DATABASE_URL') o
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 # Cookieの設定
-#app.config.update(SESSION_COOKIE_SECURE = True, SESSION_COOKIE_SAMESITE = 'Lax') #, SESSION_COOKIE_HTTPONLY = True)
+#app.config.update(SESSION_COOKIE_SECURE = True, SESSION_COOKIE_SAMESITE = 'Lax', SESSION_COOKIE_HTTPONLY = True)
 
 
 
