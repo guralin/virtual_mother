@@ -5,7 +5,11 @@ from datetime import time
 db = database.DBOperation(db)
 
 
-db.update_get_up_time('1049129656379535360',time(22,10))
+#db.update_get_up_time('1049129656379535360',time(6,20))
+
+db.db_add('1049129656379535360',time(6,20))
+
+#db.delete_get_up_time('1049129656379535360')
 
 do = tweet.MothersTwitter()
 

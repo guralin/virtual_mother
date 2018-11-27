@@ -22,7 +22,7 @@ class DBOperation():
         self.db = db
     
     # 目覚ましの時間を新規登録
-    def db_add(self, user_id, get_up_time):
+    def insert_get_up_time(self, user_id, get_up_time):
         user_data = SendData(user_id, get_up_time)
         db.session.add(user_data)
         db.session.commit()
@@ -36,7 +36,7 @@ class DBOperation():
 
     # 目覚まし解除
     def delete_get_up_time(self, user_id):
-        user_data = db.session.query(Table).filter_by(user_id = f'{user_id}').first()
+        user_data = db.session.query(Table).filter(Table.user_id==user_id).first()
         db.session.delete(user_data)
         db.session.commit()
 
