@@ -81,26 +81,34 @@ def do_register():
         api_co    = tweet.UsersTwitter(access_token, access_token_secret)
         user_id   = api_co.see_user_id()
         user_name = api_co.see_user_name()
+        do = database.DBOperation(db)
         
         if request.form['yesno'] == 'yes':
+            hour   = int(request.form['hour'])
+            minute = int(request.form['minute'])
+            get_up_time = time(hour, minute)
 
             try: # 登録する
-                do = database.DBOperation(db)
-                hour   = int(request.form['hour'])
-                minute = int(request.form['minute'])
-                get_up_time = time(hour, minute)
                 do.db_add(user_id, get_up_time)
                 title = "登録完了"
                 return render_template('register.html', title = title, user_name = user_name, hour = hour, minute = minute)
 
-            except sqlalchemy.exc.IntegrityError: # 登録済み
+            except sqlalchemy.exc.IntegrityError: # 登録済の時
+                #do.update_get_up_time(user_id, get_up_time)←更新したいけど上手くいかなかった
                 title = "登録済"
                 return render_template('register.html', title = title, user_name = user_name)
 
-        elif request.form['yesno'] == 'no':
-            ###ここにデータベースから削除する作業を追加する
+        elif request.form['yesno'] == 'no': # 解除する
+
+            try:
+                do.delete_get_up_time(user_id)
+                title = "目覚まし解除"
+
+            except:
+                title = "未登録"
+                pass
+
             message = "起こしてほしい時は言ってね"
-            title = "目覚まし解除"
             return render_template('register.html', title = title, user_name = user_name, message = message)
 
     except twitter.error.TwitterError: # セッション切れのとき
