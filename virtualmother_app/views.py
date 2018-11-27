@@ -9,7 +9,7 @@ from flask_sqlalchemy import sqlalchemy
 import twitter
 
 from virtualmother_app import app, db
-from virtualmother_app.module import tweet, token, database
+from virtualmother_app.module import tweet, token, database, response
 
 
 
@@ -21,7 +21,10 @@ def do_top():
     session.permanent = True
     app.permanent_session_lifetime = timedelta(minutes = 30)
     title = "ようこそ"
-    return render_template('top.html', title = title)
+
+    response_content = render_template('top.html', title = title)
+    content = response.Response.prepare_response(response_content)
+    return content
 
 
 
@@ -42,7 +45,10 @@ def check_token():
         user_name = api_co.see_user_name()
         # ユーザーページに進む
         title = f"{user_name} の部屋"
-        return render_template('user.html', title = title, user_name = user_name)
+
+        response_content = render_template('user.html', title = title, user_name = user_name)
+        content = response.Response.prepare_response(response_content)
+        return content
 
     else: # セッションが無いとき
         get_token      = token.Token()
@@ -57,8 +63,11 @@ def check_token():
             authenticate_url = 'https://twitter.com/oauth/authenticate'
             authorize_url    = '%s?oauth_token=%s' % (authenticate_url, request_token) 
             # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に進む
+
             print(f'認証ページに進む ({authorize_url})')
-            return redirect(authorize_url)
+            response_content = redirect(authorize_url)
+            content = response.Response.prepare_response(response_content)
+            return content
 
         else: # セッションに値を登録する
             print("セッションに値を登録する")
@@ -67,7 +76,10 @@ def check_token():
             access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
             session['access_token']        = str(access_token_and_secret[0])
             session['access_token_secret'] = str(access_token_and_secret[1])
-            return redirect('/user')
+
+            response_content = redirect('/user')
+            content = response.Response.prepare_response(response_content)
+            return content
 
 
 
