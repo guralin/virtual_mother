@@ -7,8 +7,8 @@ from flask import make_response
 
 class Response():
 
-    def prepare_response(data):
-        response = make_response(data)
+    def prepare_response(response_content):
+        response = make_response(response_content)
         # response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains' # httpsを強制
         response.headers['Content-Security-Policy'] = "default-src 'self' use.fontawesome.com" # 読み込みを許可するドメインを指定
         response.headers['X-Content-Type-Options'] = 'nosniff' # 指定したコンテントタイプを強制

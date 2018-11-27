@@ -103,12 +103,16 @@ def do_register():
             try: # 登録する
                 do.db_add(user_id, get_up_time)
                 title = "登録完了"
-                return render_template('register.html', title = title, user_name = user_name, hour = hour, minute = minute)
+                response_content = render_template('register.html', title = title, user_name = user_name, hour = hour, minute = minute)
+                content = response.Response.prepare_response(response_content)
+                return content
 
             except sqlalchemy.exc.IntegrityError: # 登録済の時
                 #do.update_get_up_time(user_id, get_up_time)←更新したいけど上手くいかなかった
                 title = "登録済"
-                return render_template('register.html', title = title, user_name = user_name)
+                response_content = render_template('register.html', title = title, user_name = user_name)
+                content = response.Response.prepare_response(response_content)
+                return content
 
         elif request.form['yesno'] == 'no': # 解除する
 
@@ -121,10 +125,14 @@ def do_register():
                 pass
 
             message = "起こしてほしい時は言ってね"
-            return render_template('register.html', title = title, user_name = user_name, message = message)
+            response_content = render_template('register.html', title = title, user_name = user_name, message = message)
+            content = response.Response.prepare_response(response_content)
+            return content
 
     except twitter.error.TwitterError: # セッション切れのとき
-        return redirect('/')
+        response_content = redirect('/')
+        content = response.Response.prepare_response(response_content)
+        return content
 
 
 
@@ -133,7 +141,9 @@ def do_register():
 def page_not_found(error):
 
     title = "ページが見つかりません"
-    return render_template('404-page.html', title = title)
+    response_content = render_template('404-page.html', title = title)
+    content = response.Response.prepare_response(response_content)
+    return content
 
 
 
