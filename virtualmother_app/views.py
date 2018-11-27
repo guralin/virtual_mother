@@ -89,7 +89,7 @@ def do_register():
             get_up_time = time(hour, minute)
 
             try: # 登録する
-                do.db_add(user_id, get_up_time)
+                do.insert_get_up_time(user_id, get_up_time)
                 title = "登録完了"
                 return render_template('register.html', title = title, user_name = user_name, hour = hour, minute = minute)
 
