@@ -30,8 +30,8 @@ def do_top():
 def check_token():
 
     try: # セッションがあったら値を代入
-        access_token        = session['access_token']
-        access_token_secret = session['access_token_secret']
+        access_token        = str(session['access_token'])
+        access_token_secret = str(session['access_token_secret'])
 
     except: # セッションが無いときはNoneを入れる
         access_token        = 'failed'
@@ -46,7 +46,7 @@ def check_token():
 
     else: # セッションが無いとき
         get_token      = token.Token()
-        oauth_token    = request.args.get('oauth_token', default = 'failed', type = str)
+        oauth_token    = request.args.get('oauth_token',    default = 'failed', type = str)
         oauth_verifier = request.args.get('oauth_verifier', default = 'failed', type = str)
         print(f'oauth_token = {oauth_token}, oauth_verifier = {oauth_verifier}')
 
@@ -65,8 +65,8 @@ def check_token():
             # アクセストークンとアクセストークンシークレットの取得
             # アクセストークンシークレットの取得
             access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
-            session['access_token']        = access_token_and_secret[0]
-            session['access_token_secret'] = access_token_and_secret[1]
+            session['access_token']        = str(access_token_and_secret[0])
+            session['access_token_secret'] = str(access_token_and_secret[1])
             return redirect('/user')
 
 
@@ -76,8 +76,8 @@ def check_token():
 def do_register():
 
     try:
-        access_token        = session.get('access_token')
-        access_token_secret = session.get('access_token_secret')
+        access_token        = str(session.get('access_token'))
+        access_token_secret = str(session.get('access_token_secret'))
         api_co    = tweet.UsersTwitter(access_token, access_token_secret)
         user_id   = api_co.see_user_id()
         user_name = api_co.see_user_name()
