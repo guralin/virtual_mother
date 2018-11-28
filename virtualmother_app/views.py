@@ -95,7 +95,8 @@ def do_register():
         access_token        = str(session.get('access_token'))
         access_token_secret = str(session.get('access_token_secret'))
         api_co    = tweet.UsersTwitter(access_token, access_token_secret)
-        user_id   = api_co.see_user_id()
+        # todo:user_idはdatabase側にstr型で渡さないといけなくなっています
+        user_id   = str(api_co.see_user_id())
         user_name = api_co.see_user_name()
         do = database.DBOperation(db)
         
