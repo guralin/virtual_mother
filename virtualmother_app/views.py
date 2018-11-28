@@ -9,7 +9,7 @@ from flask_sqlalchemy import sqlalchemy
 import twitter
 
 from virtualmother_app import app, db
-from virtualmother_app.module import tweet, token, database #, response
+from virtualmother_app.module import tweet, token, database, response
 
 
 
@@ -21,11 +21,11 @@ def do_top():
     session.permanent = True
     app.permanent_session_lifetime = timedelta(minutes = 30)
     title = "ようこそ"
-    return render_template('top.html', title = title)
+    #return render_template('top.html', title = title)
 
-    #response_content = render_template('top.html', title = title)
-    #content = response.Response.prepare_response(response_content)
-    #return content
+    response_content = render_template('top.html', title = title)
+    content = response.Response.prepare_response(response_content)
+    return content
 
 
 
@@ -46,11 +46,11 @@ def check_token():
         user_name = api_co.see_user_name()
         # ユーザーページに進む
         title = f"{user_name} の部屋"
-        return render_template('user.html', title = title, user_name = user_name)
+        #return render_template('user.html', title = title, user_name = user_name)
 
-        #response_content = render_template('user.html', title = title, user_name = user_name)
-        #content = response.Response.prepare_response(response_content)
-        #return content
+        response_content = render_template('user.html', title = title, user_name = user_name)
+        content = response.Response.prepare_response(response_content)
+        return content
 
     else: # セッションが無いとき
         get_token      = token.Token()
@@ -66,11 +66,11 @@ def check_token():
             authorize_url    = '%s?oauth_token=%s' % (authenticate_url, request_token) 
             # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に進む
             print(f'認証ページに進む ({authorize_url})')
-            return redirect(authorize_url)
+            #return redirect(authorize_url)
 
-            #response_content = redirect(authorize_url)
-            #content = response.Response.prepare_response(response_content)
-            #return content
+            response_content = redirect(authorize_url)
+            content = response.Response.prepare_response(response_content)
+            return content
 
         else: # セッションに値を登録する
             print("セッションに値を登録する")
@@ -79,11 +79,11 @@ def check_token():
             access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
             session['access_token']        = str(access_token_and_secret[0])
             session['access_token_secret'] = str(access_token_and_secret[1])
-            return redirect('/user')
+            #return redirect('/user')
 
-            #response_content = redirect('/user')
-            #content = response.Response.prepare_response(response_content)
-            #return content
+            response_content = redirect('/user')
+            content = response.Response.prepare_response(response_content)
+            return content
 
 
 
@@ -108,20 +108,20 @@ def do_register():
             try: # 登録する
                 do.insert_get_up_time(user_id, get_up_time)
                 title = "登録完了"
-                return render_template('register.html', title = title, user_name = user_name, hour = hour, minute = minute)
+                #return render_template('register.html', title = title, user_name = user_name, hour = hour, minute = minute)
 
-                #response_content = render_template('register.html', title = title, user_name = user_name, hour = hour, minute = minute)
-                #content = response.Response.prepare_response(response_content)
-                #return content
+                response_content = render_template('register.html', title = title, user_name = user_name, hour = hour, minute = minute)
+                content = response.Response.prepare_response(response_content)
+                return content
 
             except sqlalchemy.exc.IntegrityError: # 登録済の時
                 #do.update_get_up_time(user_id, get_up_time)←更新したいけど上手くいかなかった
                 title = "登録済"
-                return render_template('register.html', title = title, user_name = user_name)
+                #return render_template('register.html', title = title, user_name = user_name)
 
-                #response_content = render_template('register.html', title = title, user_name = user_name)
-                #content = response.Response.prepare_response(response_content)
-                #return content
+                response_content = render_template('register.html', title = title, user_name = user_name)
+                content = response.Response.prepare_response(response_content)
+                return content
 
         elif request.form['yesno'] == 'no': # 解除する
 
@@ -134,18 +134,18 @@ def do_register():
                 pass
 
             message = "起こしてほしい時は言ってね"
-            return render_template('register.html', title = title, user_name = user_name, message = message)
+            #return render_template('register.html', title = title, user_name = user_name, message = message)
 
-            #response_content = render_template('register.html', title = title, user_name = user_name, message = message)
-            #content = response.Response.prepare_response(response_content)
-            #return content
+            response_content = render_template('register.html', title = title, user_name = user_name, message = message)
+            content = response.Response.prepare_response(response_content)
+            return content
 
     except twitter.error.TwitterError: # セッション切れのとき
-        return redirect('/')
+        #return redirect('/')
 
-        #response_content = redirect('/')
-        #content = response.Response.prepare_response(response_content)
-        #return content
+        response_content = redirect('/')
+        content = response.Response.prepare_response(response_content)
+        return content
 
 
 
@@ -154,11 +154,11 @@ def do_register():
 def page_not_found(error):
 
     title = "ページが見つかりません"
-    return render_template('404-page.html', title = title)
+    #return render_template('404-page.html', title = title)
 
-    #response_content = render_template('404-page.html', title = title)
-    #content = response.Response.prepare_response(response_content)
-    #return content
+    response_content = render_template('404-page.html', title = title)
+    content = response.Response.prepare_response(response_content)
+    return content
 
 
 
