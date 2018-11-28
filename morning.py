@@ -3,36 +3,33 @@
 
 import os
 
-from flask import Flask
-from module import tweet
-from flask_sqlalchemy import SQLAlchemy
+from virtualmother_app import db
+from virtualmother_app.module import database, tweet
+from datetime import datetime,time
 
-app = Flask(__name__)
-app.debug = True
 
-#####データベース関連###############
-# テスト環境用の環境変数を読み込み、ない場合は本番環境として認識する
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DEVELOP_DATABASE_URL') or os.environ.get('MASTER_DATABASE_URL')
-# FSADeprecationWarning を消すため
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-db = SQLAlchemy(app)
+db = database.GetData()
+users = db.id_and_get_up()
 
-class Table(db.Model): # テーブルを指定
-    __tablename__ = "morning_call_twitter"
-    user_id = db.Column(db.Integer, primary_key=True) ### user_idをuser_indexに変更
-    user_name = db.Column(db.String(80), unique=True) ### user_nameをuser_idに変更
+# 今の時刻を10分に取得する
+now_time = datetime.now()
+now_hour   = now_time.hour
+now_minute = now_time.minute
+# herokuのスケジューラがたまに１分遅れるので切り捨ててる
+round_down_now_minute = int(now_minute / 10) * 10
 
-class GetData(Table): # カラムの指定
-    def __repr__(self):
-        return self.user_name ### user_nameをuser_idに変更
-####################################
+round_down_now_time = time(now_hour, round_down_now_minute)
+print(f"現在の時刻は{round_down_now_time}です")
 
-# データを取得
-do = GetData # GetDataクラスの呼び出し
-###（追加） user_idを使って、スクリーン名を取得して、user_nameに格納
-users = db.session.query(do).all() ###（変更）doをuser_nameに変更
+mother_tweet = tweet.MothersTwitter()
 
-# tweetする
-post = tweet.Twitter()
-post.screen_name_call(users)
+for user in users:
+    db_user_id     = user[0]
+    db_get_up_time = user[1]
+    if db_get_up_time == round_down_now_time:
+        mother_tweet.call_screen_name(db_user_id)
+    else:
+        print(f"not match > user_id:{db_user_id} の起きる時間は{db_get_up_time}です")
+
+
 
