@@ -148,6 +148,13 @@ def do_register():
         return content
 
 
+# 起きたよページ
+@app.route("/wakeup")
+def fhyrt():
+    click = tweet.MothersTwitter()
+    click.response('1045586841603170305')
+    return redirect('/')
+
 
 # 404ページ
 @app.errorhandler(404)

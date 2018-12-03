@@ -75,7 +75,12 @@ class MothersTwitter():
         for  user_id in users_id:
             word = words[str(randint(0, (len(words) - 1)))]
             morning_call = "もう{0}よ！{1}".format(self.time, word)
-            self.api.PostDirectMessage(users_id,morning_call)
+            self.api.PostDirectMessage(users_id, morning_call)
+
+    def response(self, user_id):
+        #word = words[str(randint(0, (len(words) - 1)))]
+        greeting = "おはよう"
+        self.api.PostDirectMessage(user_id, greeting)
 
 
 
