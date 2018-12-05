@@ -66,6 +66,28 @@ class Token():
         access_token_secret = dict_access_token_and_secret['oauth_token_secret']
         return access_token, access_token_secret
 
+# ======================================
+# /wakeup用
+
+    # リクエストトークンを取得
+    def get_request_token_wakeup(self):
+        # 環境によってcallback_urlを変える
+        if   os.environ.get("environ") == "master":
+            callback_url = 'https://virtualmother.herokuapp.com/wakeup' # 本番環境用
+
+        elif os.environ.get("environ") == "develop":
+            callback_url = 'https://virtualmother-develop.herokuapp.com/wakeup' # テスト環境用
+
+        else:
+            callback_url = 'http://127.0.0.1:5000/wakeup' # ローカル環境用
+
+        consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
+        client   = oauth.Client(consumer)
+        resp, content = client.request('%s?&oauth_callback=%s' % (request_token_url, callback_url))
+        url_content   = content.decode('utf-8')
+        request_token = dict(self.parse_qsl(url_content))
+        return request_token['oauth_token'] # リクエストトークンのみ
+
 
 
 

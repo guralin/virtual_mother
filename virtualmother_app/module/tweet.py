@@ -85,9 +85,9 @@ class MothersTwitter():
             morning_call = "もう{0}よ！{1} \n{2}".format(self.time, word, callback_url)
             self.api.PostDirectMessage(morning_call,user_id=user_id)
 
-    def response(self, user_id):
+    def response(self, user_id, user_name):
         #word = words[str(randint(0, (len(words) - 1)))]
-        greeting = "おはよう"
+        greeting = f"{user_name}\nおはよう (^_^)/\n遅刻しないようにね"
         self.api.PostDirectMessage(greeting, user_id)
 
 
