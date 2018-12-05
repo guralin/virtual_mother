@@ -69,11 +69,11 @@ class MothersTwitter():
         user = self.api.GetUser(user_id = user_id)
         return user.screen_name
 
-    def dm(self, users_id):
+    def dm(self, user_id):
         with open('virtualmother_app/module/json/morning_call.json') as morning_call_words:
             words = json.load(morning_call_words)
-        for  user_id in users_id:
             word = words[str(randint(0, (len(words) - 1)))]
+<<<<<<< HEAD
  # 環境によってcallback_urlを変える
             if   os.environ.get("environ") == "master":
                  callback_url = 'https://virtualmother.herokuapp.com/wakeup' # 本番環境用
@@ -90,6 +90,10 @@ class MothersTwitter():
         #word = words[str(randint(0, (len(words) - 1)))]
         greeting = "おはよう"
         self.api.PostDirectMessage(greeting, user_id)
+=======
+            morning_call = "もう{0}よ！{1}".format(self.time, word)
+            self.api.PostDirectMessage(morning_call,user_id=user_id)
+>>>>>>> develop
 
 
 

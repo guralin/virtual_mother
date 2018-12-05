@@ -13,7 +13,11 @@ from datetime import time
 
 do = tweet.MothersTwitter()
 
+
 do.response('1045586841603170305')
+
+do.dm(1049129656379535360)
+
 #do.call_screen_name("1049129656379535360")
 
 #print(do.call_screen_name("111111"))
