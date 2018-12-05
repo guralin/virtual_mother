@@ -69,6 +69,15 @@ class MothersTwitter():
         user = self.api.GetUser(user_id = user_id)
         return user.screen_name
 
+    def dm(self, users_id):
+        with open('virtualmother_app/module/json/morning_call.json') as morning_call_words:
+            words = json.load(morning_call_words)
+        for  user_id in users_id:
+            word = words[str(randint(0, (len(words) - 1)))]
+            morning_call = "もう{0}よ！{1}".format(self.time, word)
+            self.api.PostDirectMessage(users_id,morning_call)
+
+
 
 # テスト用
     def test_tweet(self, tweet_content):
