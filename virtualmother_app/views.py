@@ -37,7 +37,7 @@ def check_token():
         access_token        = str(session['access_token'])
         access_token_secret = str(session['access_token_secret'])
 
-    except: # セッションが無いときはNoneを入れる
+    except: # セッションが無いときは'failed'を入れる
         access_token        = 'failed'
         access_token_secret = 'failed'
 
@@ -148,12 +148,66 @@ def do_register():
         return content
 
 
-# 起きたよページ
+# DMのリンクがクリックされたら処理をして、Twitterのホームにリダイレクトする
 @app.route("/wakeup")
 def wakeup():
-    click = tweet.MothersTwitter()
-    click.response('1045586841603170305')
-    return redirect('/')
+
+    try: # セッションがあったら値を代入
+        access_token        = str(session['access_token'])
+        access_token_secret = str(session['access_token_secret'])
+
+    except: # セッションが無いときは'failed'を入れる
+        access_token        = 'failed'
+        access_token_secret = 'failed'
+
+    if access_token != 'failed' and access_token_secret != 'failed': # セッションがあったとき
+        # DMで返信する
+        api_co    = tweet.UsersTwitter(access_token, access_token_secret)
+        user_id   = api_co.see_user_id()
+        user_name = api_co.see_user_name()
+        click = tweet.MothersTwitter()
+        click.response(user_id, user_name)
+        # Twitterのホームに戻る
+        #return redirect('https://twitter.com')
+
+        response_content = redirect('https://twitter.com')
+        content = response.Response.prepare_response(response_content)
+        return content
+
+    else: # セッションが無いとき
+        get_token      = token.Token()
+        oauth_token    = request.args.get('oauth_token',    default = 'failed', type = str)
+        oauth_verifier = request.args.get('oauth_verifier', default = 'failed', type = str)
+        print(f'oauth_token = {oauth_token}, oauth_verifier = {oauth_verifier}')
+
+        if oauth_token == 'failed' or oauth_verifier == 'failed': # Oauth認証する
+            print("Oauth認証する")
+            request_token = get_token.get_request_token_wakeup() # リクエストトークンを取得する
+            # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン を作る
+            authenticate_url = 'https://twitter.com/oauth/authenticate'
+            authorize_url    = '%s?oauth_token=%s' % (authenticate_url, request_token) 
+            # https://twitter.com/oauth/authenticate?oauth_token=リクエストトークン に進む
+            print(f'認証ページに進む ({authorize_url})')
+            #return redirect(authorize_url)
+
+            response_content = redirect(authorize_url)
+            content = response.Response.prepare_response(response_content)
+            return content
+
+        else: # セッションに値を登録する
+            print("セッションに値を登録する")
+            # アクセストークンとアクセストークンシークレットの取得
+            # アクセストークンシークレットの取得
+            access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
+            session['access_token']        = str(access_token_and_secret[0])
+            session['access_token_secret'] = str(access_token_and_secret[1])
+            #return redirect('/wakeup')
+
+            response_content = redirect('/wakeup')
+            content = response.Response.prepare_response(response_content)
+            return content
+
+
 
 
 # 404ページ
