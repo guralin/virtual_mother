@@ -7,11 +7,13 @@ db = database.DBOperation(db)
 
 #db.update_get_up_time('1049129656379535360',time(6,20))
 
-db.db_add('1049129656379535360',time(6,20))
+#db.db_add('1049129656379535360',time(6,20))
 
 #db.delete_get_up_time('1049129656379535360')
 
 do = tweet.MothersTwitter()
+
+do.dm(1049129656379535360)
 
 #do.call_screen_name("1049129656379535360")
 
