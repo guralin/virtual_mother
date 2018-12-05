@@ -150,7 +150,7 @@ def do_register():
 
 # 起きたよページ
 @app.route("/wakeup")
-def fhyrt():
+def wakeup():
     click = tweet.MothersTwitter()
     click.response('1045586841603170305')
     return redirect('/')
