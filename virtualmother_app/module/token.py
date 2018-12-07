@@ -21,8 +21,8 @@ elif os.environ.get("environ") == "develop":
 else:
     callback_url = 'http://127.0.0.1:5000/user' # ローカル環境用
     
-consumer_key    = os.environ.get("CONSUMER_KEY")
-consumer_secret = os.environ.get("CONSUMER_SECRET")
+consumer_key    = os.environ.get("FOR_USER_CONSUMER_KEY")
+consumer_secret = os.environ.get("FOR_USER_CONSUMER_SECRET")
 
 
 
