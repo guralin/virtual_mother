@@ -83,7 +83,7 @@ class MothersTwitter():
             else:
                  callback_url = 'https://virtualmother-develop.herokuapp.com/wakeup' # ローカル環境用
             morning_call = "もう{0}よ！{1} \n{2}".format(self.time, word, callback_url)
-            self.api.PostDirectMessage(morning_call,user_id=user_id)
+            self.api.PostDirectMessage(morning_call, user_id = user_id)
 
     def response(self, user_id, user_name):
         #word = words[str(randint(0, (len(words) - 1)))]

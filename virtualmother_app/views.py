@@ -163,8 +163,8 @@ def wakeup():
     if access_token != 'failed' and access_token_secret != 'failed': # セッションがあったとき
         # DMで返信する
         api_co    = tweet.UsersTwitter(access_token, access_token_secret)
-        user_id   = api_co.see_user_id()
-        user_name = api_co.see_user_name()
+        user_id   = str(api_co.see_user_id())
+        user_name = str(api_co.see_user_name())
         click = tweet.MothersTwitter()
         click.response(user_id, user_name)
         # データベースの日付を更新
