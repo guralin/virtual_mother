@@ -6,7 +6,7 @@ db = database.DBOperation(db)
 
 
 #db.update_get_up_time('1049129656379535360',time(17,30))
-db.update_date('1049129656379535360')
+db.insert_date('1049129656379535360')
 
 #db.db_add('1049129656379535360',time(6,20))
 
