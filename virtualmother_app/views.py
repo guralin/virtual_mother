@@ -167,6 +167,9 @@ def wakeup():
         user_name = api_co.see_user_name()
         click = tweet.MothersTwitter()
         click.response(user_id, user_name)
+        # データベースの日付を更新
+        do = database.DBOperation(db)
+        do.update_date(user_id)
         # Twitterのホームに戻る
         #return redirect('https://twitter.com')
 

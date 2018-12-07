@@ -12,7 +12,7 @@ db = database.GetData()
 users = db.id_and_get_up()
 
 
-# 今の時刻を10分に取得する
+# 今の時刻を10分ごとに取得する
 now_time = datetime.now()
 now_hour   = now_time.hour
 now_minute = now_time.minute
