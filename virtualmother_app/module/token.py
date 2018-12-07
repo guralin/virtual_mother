@@ -64,6 +64,8 @@ class Token():
         dict_access_token_and_secret = dict(self.parse_qsl(access_token_and_secret))
         access_token        = dict_access_token_and_secret['oauth_token']
         access_token_secret = dict_access_token_and_secret['oauth_token_secret']
+        print(access_token)
+        print(access_token_secret)
         return access_token, access_token_secret
 
 # ======================================
