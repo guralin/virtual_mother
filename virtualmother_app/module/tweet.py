@@ -121,8 +121,8 @@ class MothersTwitter():
 class UsersTwitter():
 # api.VerifyCredentials()でインスタンスを作ると、TwitterUserインスタンスになり、このインスタンスの中にあるid,screen_name,nameなどのキーを指定すると値が帰ってくる
     def __init__(self, access_token, access_token_secret):
-        self.api = twitter.Api(consumer_key    = os.environ.get("CONSUMER_KEY"),
-                               consumer_secret = os.environ.get("CONSUMER_SECRET"),
+        self.api = twitter.Api(consumer_key    = os.environ.get("FOR_USER_CONSUMER_KEY"),
+                               consumer_secret = os.environ.get("FOR_USER_CONSUMER_SECRET"),
                                access_token_key    = access_token,
                                access_token_secret = access_token_secret)
         self.status = self.api.VerifyCredentials()

@@ -21,8 +21,8 @@ elif os.environ.get("environ") == "develop":
 else:
     callback_url = 'http://127.0.0.1:5000/user' # ローカル環境用
     
-consumer_key    = os.environ.get("CONSUMER_KEY")
-consumer_secret = os.environ.get("CONSUMER_SECRET")
+consumer_key    = os.environ.get("FOR_USER_CONSUMER_KEY")
+consumer_secret = os.environ.get("FOR_USER_CONSUMER_SECRET")
 
 
 
@@ -64,6 +64,8 @@ class Token():
         dict_access_token_and_secret = dict(self.parse_qsl(access_token_and_secret))
         access_token        = dict_access_token_and_secret['oauth_token']
         access_token_secret = dict_access_token_and_secret['oauth_token_secret']
+        print(access_token)
+        print(access_token_secret)
         return access_token, access_token_secret
 
 # ======================================
