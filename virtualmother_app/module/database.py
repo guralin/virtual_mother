@@ -19,8 +19,8 @@ class SendData(Table):
 
 class SendDate(Table):
     def __init__(self, user_id, date):
-        self.user_id     = user_id
-        self.date = date
+        self.user_id = user_id
+        self.date    = date
 
 
 
@@ -43,20 +43,20 @@ class DBOperation():
 
     # 目覚ましの時間の変更       
     def update_get_up_time(self, user_id, get_up_time):
-        user_data = db.session.query(Table).filter(Table.user_id==user_id).first()
+        user_data = db.session.query(Table).filter(Table.user_id == user_id).first()
         user_data.get_up_time = get_up_time
         db.session.commit()
 
     # 日付の更新（DMのリンクをクリックした時）
     def update_date(self, user_id):
-        user_data = db.session.query(Table).filter(Table.user_id==user_id).first()
+        user_data = db.session.query(Table).filter(Table.user_id == user_id).first()
         user_data.date = datetime.date.today() #(1600, 2, 4)
         print(user_data.date)
         db.session.commit()
 
     # 目覚まし解除
     def delete_get_up_time(self, user_id):
-        user_data = db.session.query(Table).filter(Table.user_id==user_id).first()
+        user_data = db.session.query(Table).filter(Table.user_id == user_id).first()
         db.session.delete(user_data)
         db.session.commit()
 
@@ -65,12 +65,8 @@ class DBOperation():
 # morning.py
 class GetData(Table): # カラムを指定してデータを取得
     def id_and_get_up(self):
-        users = db.session.query(Table.user_id,Table.get_up_time).all()
+        users = db.session.query(Table.user_id, Table.get_up_time).all()
         return users
     
-    
-
-    def __repr__(self):
-        return self.user_id
 
 

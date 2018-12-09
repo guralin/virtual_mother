@@ -55,7 +55,7 @@ class Token():
         consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
         token    = oauth.Token(oauth_token, oauth_verifier)
         client   = oauth.Client(consumer, token)
-        resp, content = client.request(access_token_url, "POST", body="oauth_verifier={0}".format(oauth_verifier))
+        resp, content = client.request(access_token_url, 'POST', body = 'oauth_verifier={0}'.format(oauth_verifier))
         return content
 
     # アクセストークンとアクセストークンシークレットを取得（２）　/authorize 認証済の時に使う
@@ -64,8 +64,7 @@ class Token():
         dict_access_token_and_secret = dict(self.parse_qsl(access_token_and_secret))
         access_token        = dict_access_token_and_secret['oauth_token']
         access_token_secret = dict_access_token_and_secret['oauth_token_secret']
-        print(access_token)
-        print(access_token_secret)
+        print(f'{ access_token } = access_token\n{ access_token_secret } = access_token_secret')
         return access_token, access_token_secret
 
 # ======================================
