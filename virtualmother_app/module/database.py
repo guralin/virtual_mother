@@ -80,3 +80,5 @@ class GetData(Table): # カラムを指定してデータを取得
     def update_date(self, user_id):
         user_data = db.session.query(Table).filter(Table.user_id==user_id).first()
         user_data.date = datetime.date.today()
+        db.session.commit()
+
