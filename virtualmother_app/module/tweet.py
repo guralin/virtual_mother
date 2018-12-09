@@ -125,7 +125,11 @@ class UsersTwitter():
                                consumer_secret = os.environ.get("FOR_USER_CONSUMER_SECRET"),
                                access_token_key    = access_token,
                                access_token_secret = access_token_secret)
-        self.status = self.api.VerifyCredentials()
+        try:
+            self.status = self.api.VerifyCredentials()
+        except twitter.error.TwitterError:
+            print("access_token_keyが間違っている可能性があります")
+
 
     def see_user_id(self):
         user_id = self.status.id
