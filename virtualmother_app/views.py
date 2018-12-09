@@ -166,7 +166,7 @@ def wakeup():
         api_co    = tweet.UsersTwitter(access_token, access_token_secret)
         user_id   = str(api_co.see_user_id())
         user_name = str(api_co.see_user_name())
-
+        print(user_id, user_name)
         #"""
         click = tweet.MothersTwitter()
         click.response(user_id, user_name)

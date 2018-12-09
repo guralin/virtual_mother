@@ -73,6 +73,8 @@ class Token():
 
     # リクエストトークンを取得
     def get_request_token_wakeup(self):
+        consumer_key    = os.environ.get("FOR_USER_CONSUMER_KEY")
+        consumer_secret = os.environ.get("FOR_USER_CONSUMER_SECRET")
         # 環境によってcallback_urlを変える
         if   os.environ.get("environ") == "master":
             callback_url = 'https://virtualmother.herokuapp.com/wakeup' # 本番環境用
@@ -83,7 +85,7 @@ class Token():
         else:
             callback_url = 'http://127.0.0.1:5000/wakeup' # ローカル環境用
 
-        consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
+        consumer = oauth.Consumer(key = consumer_key, secret = consumer_secret)
         client   = oauth.Client(consumer)
         resp, content = client.request('%s?&oauth_callback=%s' % (request_token_url, callback_url))
         url_content   = content.decode('utf-8')
