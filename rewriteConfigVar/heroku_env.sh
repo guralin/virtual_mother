@@ -4,6 +4,8 @@
 # ローカル環境、テスト環境、本番環境すべてが書き換わります
 # readはpythonでいうinput()。 引数に指定した変数に入力した値が格納される
 
+echo "caution! : herokuの環境変数が書き換わります。間違った値を入力するとHerokuが動かなくなります"
+
 echo "ACCESS_TOKENをコピペしてエンターキーを押してください"
 read access_token
 
