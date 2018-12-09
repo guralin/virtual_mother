@@ -153,20 +153,24 @@ def do_register():
 def wakeup():
 
     try: # セッションがあったら値を代入
-        access_token        = str(session['access_token'])
-        access_token_secret = str(session['access_token_secret'])
+        access_token        = str(session['user_access_token'])
+        access_token_secret = str(session['user_access_token_secret'])
 
     except: # セッションが無いときは'failed'を入れる
         access_token        = 'failed'
         access_token_secret = 'failed'
 
     if access_token != 'failed' and access_token_secret != 'failed': # セッションがあったとき
+        print(access_token, access_token_secret)
         # DMで返信する
         api_co    = tweet.UsersTwitter(access_token, access_token_secret)
         user_id   = str(api_co.see_user_id())
         user_name = str(api_co.see_user_name())
+
+        #"""
         click = tweet.MothersTwitter()
         click.response(user_id, user_name)
+        #"""
         # データベースの日付を更新
         do = database.DBOperation(db)
         do.update_date(user_id)
@@ -202,8 +206,8 @@ def wakeup():
             # アクセストークンとアクセストークンシークレットの取得
             # アクセストークンシークレットの取得
             access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
-            session['access_token']        = str(access_token_and_secret[0])
-            session['access_token_secret'] = str(access_token_and_secret[1])
+            session['user_access_token']        = str(access_token_and_secret[0])
+            session['user_access_token_secret'] = str(access_token_and_secret[1])
             #return redirect('/wakeup')
 
             response_content = redirect('/wakeup')
