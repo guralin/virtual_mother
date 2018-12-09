@@ -14,7 +14,7 @@ class Table(db.Model): # テーブルの指定
     get_up_time   = db.Column(db.DateTime, nullable = True) # 起きてツイートする時間
     date          = db.Column(db.DateTime, nullable = True) # ユーザーが最後にDMのリンクをクリックした日付
 
-    def __init__():
+    def __init__(self):
         db.create_all()
     # データベースを作るときは
     # ALTER TABLE morning_call_user_data ALTER get_up_time TYPE time without time zone;
