@@ -57,7 +57,7 @@ class DBOperation():
     # 目覚まし解除
     def delete_get_up_time(self, user_id):
         user_data = db.session.query(Table).filter(Table.user_id == user_id).first()
-        db.session.delete(user_data)
+        user_data.get_up_time = None
         db.session.commit()
 
 

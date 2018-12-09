@@ -105,37 +105,30 @@ def do_register():
             minute = int(request.form['minute'])
             get_up_time = time(hour, minute)
 
-            try: # 登録する
-                do.insert_get_up_time(user_id, get_up_time)
-
+            try: # 登録情報の更新
+                do.update_get_up_time(user_id, get_up_time)
                 title = "登録完了"
-                #return render_template('register.html', title = title, user_name = user_name, hour = hour, minute = minute)
-                response_content = render_template('register.html', title = title, user_name = user_name, hour = hour, minute = minute)
-                content = response.Response.prepare_response(response_content)
-                return content
 
-            except sqlalchemy.exc.IntegrityError: # 登録済の時
-                #do.update_get_up_time(user_id, get_up_time)←更新したいけど上手くいかなかった
+            except AttributeError: # 新規登録
+                do.insert_get_up_time(user_id, get_up_time)
+                title = "新規登録完了"
 
-                title = "登録済"
-                #return render_template('register.html', title = title, user_name = user_name)
-                response_content = render_template('register.html', title = title, user_name = user_name)
-                content = response.Response.prepare_response(response_content)
-                return content
+            #return render_template('register.html', title = title, user_name = user_name, hour = hour, minute = minute)
+            response_content = render_template('register.html', title = title, user_name = user_name, hour = hour, minute = minute)
+            content = response.Response.prepare_response(response_content)
+            return content
 
-        elif request.form['yesno'] == 'no': # 解除する
+        elif request.form['yesno'] == 'no': # 起こしてほしくない時
 
             try:
                 do.delete_get_up_time(user_id)
                 title = "目覚まし解除"
 
-            except:
+            except AttributeError:
                 title = "未登録"
-                pass
 
-            message = "起こしてほしい時は言ってね"
-            #return render_template('register.html', title = title, user_name = user_name, message = message)
-            response_content = render_template('register.html', title = title, user_name = user_name, message = message)
+            #return render_template('register.html', title = title, user_name = user_name)
+            response_content = render_template('register.html', title = title, user_name = user_name)
             content = response.Response.prepare_response(response_content)
             return content
 
@@ -159,7 +152,7 @@ def wakeup():
         access_token_secret = 'failed'
 
     if access_token != 'failed' and access_token_secret != 'failed': # セッションがあったとき
-        print(f'access_token = {access_token}\naccess_token_secret = {access_token_secret})
+        print(f'access_token = {access_token}\naccess_token_secret = {access_token_secret}')
         # DMで返信する
         api_co    = tweet.UsersTwitter(access_token, access_token_secret)
         user_id   = str(api_co.see_user_id())
