@@ -4,7 +4,6 @@
 from virtualmother_app import db
 from virtualmother_app.models import Table
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
 import datetime
 
 
@@ -65,8 +64,8 @@ class DBOperation():
 # morning.py
 class GetData(Table): # カラムを指定してデータを取得
     def id_and_get_up(self):
-        users = db.session.query(Table.user_id, Table.get_up_time).all()
-        return users
+        users_data = db.session.query(Table.user_id, Table.get_up_time, Table.date).all()
+        return users_data
     
 
 
