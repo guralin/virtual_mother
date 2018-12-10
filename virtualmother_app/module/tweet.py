@@ -45,7 +45,11 @@ class MothersTwitter():
                  link_url = 'https://virtualmother-develop.herokuapp.com/wakeup' # ローカル環境用
             morning_call = f'もう{self.time}よ！\n{word}\n{link_url}'
             print(f'===<Message>===\n{morning_call}\n===============')
-            self.api.PostDirectMessage(morning_call, user_id)
+            try:
+                self.api.PostDirectMessage(morning_call, user_id)
+            except KeyError:
+                print("存在しないIDを参照している可能性があります\nヒント：デバック用に変なIDを入れてないですか？")
+
 
 
     def response(self, user_id, user_name): # /wakeup (DMのリンクがクリックされた時)
@@ -72,11 +76,13 @@ class MothersTwitter():
 
         else:
             link_url = 'https://virtualmother-develop.herokuapp.com/wakeup' # ローカル環境用
-
-        user_name = self.get_screen_name(user_id)
-        morning_call = f'@{user_name}\nもう{self.time}よ！ 10分過ぎてるよ！\n{word}\n{link_url}'
-        print(f'===<Message>===\n{morning_call}\n===============')
-        self.api.PostUpdate(morning_call)
+        try:
+            user_name = self.get_screen_name(user_id)
+            morning_call = f'@{user_name}\nもう{self.time}よ！ 10分過ぎてるよ！\n{word}\n{link_url}'
+            print(f'===<Message>===\n{morning_call}\n===============')
+            self.api.PostUpdate(morning_call)
+        except KeyError:
+            print("存在しないIDを参照している可能性があります\nヒント：デバック用に変なIDを入れてないですか？")
 
 
 
@@ -86,9 +92,9 @@ class MothersTwitter():
         self.api.PostUpdate(tweet_content)
         print(tweet_content)
 
-    def test_dm(self, tweet_content, friend_id):
-        api.PostDirectMessage(tweet_content, screen_name = friend_id)
-        print(tweet_content, friend_id)
+    def test_dm(self, tweet_content, user_id):
+        self.api.PostDirectMessage(tweet_content, user_id = user_id)
+        print(tweet_content, user_id)
 
     def fetch_friend(self):
         users = self.api.GetFriends()
