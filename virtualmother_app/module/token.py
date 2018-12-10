@@ -21,8 +21,8 @@ elif os.environ.get("environ") == "develop":
 else:
     callback_url = 'http://127.0.0.1:5000/user' # ローカル環境用
     
-consumer_key    = os.environ.get("CONSUMER_KEY")
-consumer_secret = os.environ.get("CONSUMER_SECRET")
+consumer_key    = os.environ.get("FOR_USER_CONSUMER_KEY")
+consumer_secret = os.environ.get("FOR_USER_CONSUMER_SECRET")
 
 
 
@@ -55,7 +55,7 @@ class Token():
         consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
         token    = oauth.Token(oauth_token, oauth_verifier)
         client   = oauth.Client(consumer, token)
-        resp, content = client.request(access_token_url, "POST", body="oauth_verifier={0}".format(oauth_verifier))
+        resp, content = client.request(access_token_url, 'POST', body = 'oauth_verifier={0}'.format(oauth_verifier))
         return content
 
     # アクセストークンとアクセストークンシークレットを取得（２）　/authorize 認証済の時に使う
@@ -64,6 +64,7 @@ class Token():
         dict_access_token_and_secret = dict(self.parse_qsl(access_token_and_secret))
         access_token        = dict_access_token_and_secret['oauth_token']
         access_token_secret = dict_access_token_and_secret['oauth_token_secret']
+        print(f'{ access_token } = access_token\n{ access_token_secret } = access_token_secret')
         return access_token, access_token_secret
 
 # ======================================
@@ -71,6 +72,8 @@ class Token():
 
     # リクエストトークンを取得
     def get_request_token_wakeup(self):
+        consumer_key    = os.environ.get("FOR_USER_CONSUMER_KEY")
+        consumer_secret = os.environ.get("FOR_USER_CONSUMER_SECRET")
         # 環境によってcallback_urlを変える
         if   os.environ.get("environ") == "master":
             callback_url = 'https://virtualmother.herokuapp.com/wakeup' # 本番環境用
@@ -81,7 +84,7 @@ class Token():
         else:
             callback_url = 'http://127.0.0.1:5000/wakeup' # ローカル環境用
 
-        consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
+        consumer = oauth.Consumer(key = consumer_key, secret = consumer_secret)
         client   = oauth.Client(consumer)
         resp, content = client.request('%s?&oauth_callback=%s' % (request_token_url, callback_url))
         url_content   = content.decode('utf-8')
