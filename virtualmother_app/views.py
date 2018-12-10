@@ -17,10 +17,6 @@ from virtualmother_app.module import tweet, token, database, response
 @app.route('/')
 def do_top():
 
-    # セッションを30分に設定
-    session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes = 30)
-
     title = "ようこそ"
     #return render_template('top.html', title = title)
     response_content = render_template('top.html', title = title)
@@ -79,6 +75,9 @@ def check_token():
             access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
             session['access_token']        = str(access_token_and_secret[0])
             session['access_token_secret'] = str(access_token_and_secret[1])
+            # セッションを30分に設定
+            session.permanent = True
+            app.permanent_session_lifetime = timedelta(minutes = 30)
 
             #return redirect('/user')
             response_content = redirect('/user')
@@ -203,6 +202,14 @@ def wakeup():
             content = response.Response.prepare_response(response_content)
             return content
 
+
+
+# ログアウト
+@app.route("/logout")
+def logout():
+    # セッションを0秒に設定
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(seconds = 0)
 
 
 
