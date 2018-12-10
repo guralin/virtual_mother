@@ -76,11 +76,13 @@ class MothersTwitter():
 
         else:
             link_url = 'https://virtualmother-develop.herokuapp.com/wakeup' # ローカル環境用
-
-        user_name = self.get_screen_name(user_id)
-        morning_call = f'@{user_name}\nもう{self.time}よ！ 10分過ぎてるよ！\n{word}\n{link_url}'
-        print(f'===<Message>===\n{morning_call}\n===============')
-        self.api.PostUpdate(morning_call)
+        try:
+            user_name = self.get_screen_name(user_id)
+            morning_call = f'@{user_name}\nもう{self.time}よ！ 10分過ぎてるよ！\n{word}\n{link_url}'
+            print(f'===<Message>===\n{morning_call}\n===============')
+            self.api.PostUpdate(morning_call)
+        except KeyError:
+            print("存在しないIDを参照している可能性があります\nヒント：デバック用に変なIDを入れてないですか？")
 
 
 
