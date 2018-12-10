@@ -210,6 +210,7 @@ def logout():
     # セッションを0秒に設定
     session.permanent = True
     app.permanent_session_lifetime = timedelta(seconds = 0)
+    return redirect('/')
 
 
 
