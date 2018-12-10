@@ -1,3 +1,4 @@
 .python-version
 module/__pycache__
 __pycache__
+test.py
