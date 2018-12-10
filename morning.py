@@ -21,18 +21,18 @@ simple_now_minute = int(now_minute / 10) * 10
 # 現在の時刻
 simple_now_time = time(now_hour, simple_now_minute)
 print(f'現在の時刻は、およそ{ simple_now_time }です。')
+
 # 10分前の時刻(replyする時刻)
 ten_ago_time   = datetime.datetime.strptime(str(simple_now_time), '%H:%M:%S') + timedelta(minutes = -10)
 ten_ago_hour   = int('{:%H}'.format(ten_ago_time))
 ten_ago_minute = int('{:%M}'.format(ten_ago_time))
 reply_time     = time(ten_ago_hour, ten_ago_minute)
-print(reply_time)
 
+# 20分前の時刻(postする時刻)
 twenty_ago_time   = datetime.datetime.strptime(str(simple_now_time), '%H:%M:%S') + timedelta(minutes = -20)
 twenty_ago_hour   = int('{:%H}'.format(twenty_ago_time))
 twenty_ago_minute = int('{:%M}'.format(twenty_ago_time))
-post_time     = time(twenty_ago_hour, twenty_ago_minute)
-print(post_time)
+post_time         = time(twenty_ago_hour, twenty_ago_minute)
 
 
 mother_tweet = tweet.MothersTwitter()
