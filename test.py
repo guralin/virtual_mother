@@ -6,7 +6,7 @@ db = database.DBOperation(db)
 
 
 #db.update_get_up_time('1049129656379535360',time(17,30))
-db.update_get_up_time('1045586841603170305',time(22,50))
+#db.update_get_up_time('1045586841603170305',time(22,50))
 #db.update_date('1049129656379535360')
 #db.insert_date('1049129656379535360')
 
@@ -18,7 +18,7 @@ do = tweet.MothersTwitter()
 
 #print(do.self_profile())
 
-
+#do.test_dm("今日は寒いので体に気をつけてください","33333")
 #print(usr.see_user_id())
 
 #do.response('1045586841603170305', 'user_name')
