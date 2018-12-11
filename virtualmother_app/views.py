@@ -75,9 +75,6 @@ def check_token():
             access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
             session['access_token']        = str(access_token_and_secret[0])
             session['access_token_secret'] = str(access_token_and_secret[1])
-            # セッションを30分に設定
-            session.permanent = True
-            app.permanent_session_lifetime = timedelta(minutes = 30)
 
             #return redirect('/user')
             response_content = redirect('/user')
