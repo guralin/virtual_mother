@@ -1,8 +1,11 @@
 /*CSS*/
 
+
+
 /*===================*/
 /*=== default.css ===*/
 /*===================*/
+
 body{
     font-size: calc(100% + 0.3vw);
     background-color: #ffeef4;
@@ -84,15 +87,20 @@ footer{
     margin: 0 -8px;
     text-align: center;
 }
-/*
-img.mother{
-    filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.6))
+footer div.logout{
+    margin-bottom: 10px;
 }
-*/
+footer a{
+    color: white;
+    text-decoration: none;
+}
+
+
 
 /*===============*/
 /*=== top.css ===*/
 /*===============*/
+
 body.color{
     width: 100vw;
     height: 300vw;
@@ -220,9 +228,12 @@ article div.tap span{
     font-weight: bold;
 }
 
+
+
 /*================*/
 /*=== user.css ===*/
 /*================*/
+
 .button{/*
     font-size: calc(90% + 0.05vw);
     border: 0;
@@ -274,9 +285,12 @@ input.radio{
     transform: scale(1.5);
 }
 
+
+
 /*====================*/
 /*=== register.css ===*/
 /*====================*/
+
 .post_text{
     font-size: calc(15px + 0.5vw);
     padding-left: 15px;

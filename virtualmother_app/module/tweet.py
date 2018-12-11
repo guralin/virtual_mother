@@ -16,20 +16,25 @@ import twitter # python-twitterライブラリ
 class MothersTwitter():
 
     def __init__(self):
+
         self.api = twitter.Api(consumer_key    = os.environ.get('CONSUMER_KEY'),
                                consumer_secret = os.environ.get('CONSUMER_SECRET'),
                                access_token_key    = os.environ.get('ACCESS_TOKEN'),
                                access_token_secret = os.environ.get('ACCESS_TOKEN_SECRET'))
+
         hour   = datetime.now().hour
         minute = datetime.now().minute
         self.time = f'{ hour }時{ minute }分'
+
         try:
             self.status = self.api.VerifyCredentials()
+
         except twitter.error.TwitterError:
             print('access_token_keyが間違っている可能性があります')
 
 
     def morning_dm(self, user_id): # morning.py
+
         with open('virtualmother_app/module/json/morning_call.json') as morning_call_words:
             words = json.load(morning_call_words)
             word = words[str(randint(0, (len(words) - 1)))]
@@ -43,10 +48,13 @@ class MothersTwitter():
 
             else:
                  link_url = 'https://virtualmother-develop.herokuapp.com/wakeup' # ローカル環境用
+
             morning_call = f'もう{self.time}よ！\n{word}\n{link_url}'
             print(f'===<Message>===\n{morning_call}\n===============')
+
             try:
                 self.api.PostDirectMessage(morning_call, user_id)
+
             except KeyError:
                 print("存在しないIDを参照している可能性があります\nヒント：デバック用に変なIDを入れてないですか？")
 
@@ -58,11 +66,13 @@ class MothersTwitter():
 
 
     def get_screen_name(self, user_id):
+
         user = self.api.GetUser(user_id)
         return user.screen_name
 
 
     def morning_reply(self, user_id): # morning.py (10分以内に起きなかった時)
+
         with open('virtualmother_app/module/json/morning_call.json') as morning_call_words:
             words = json.load(morning_call_words)
             word = words[str(randint(0, (len(words) - 1)))]
@@ -76,13 +86,52 @@ class MothersTwitter():
 
         else:
             link_url = 'https://virtualmother-develop.herokuapp.com/wakeup' # ローカル環境用
+
         try:
             user_name = self.get_screen_name(user_id)
             morning_call = f'@{user_name}\nもう{self.time}よ！ 10分過ぎてるよ！\n{word}\n{link_url}'
             print(f'===<Message>===\n{morning_call}\n===============')
             self.api.PostUpdate(morning_call)
+
         except KeyError:
             print("存在しないIDを参照している可能性があります\nヒント：デバック用に変なIDを入れてないですか？")
+
+
+
+    def get_user_name(self, user_id):
+
+        user = self.api.GetUser(user_id)
+        return user.name
+
+
+
+    def public_post(self,user_id):
+
+        with open('virtualmother_app/module/json/public_call.json') as morning_call_words:
+            words = json.load(morning_call_words)
+            word = words[str(randint(0, (len(words) - 1)))]
+
+        # 環境によってリンクを変える
+        if   os.environ.get('environ') == 'master':
+            link_url = 'https://virtualmother.herokuapp.com/wakeup' # 本番環境用
+
+        elif os.environ.get('environ') == 'develop':
+            link_url = 'https://virtualmother-develop.herokuapp.com/wakeup' # テスト環境用
+
+        else:
+            link_url = 'https://virtualmother-develop.herokuapp.com/wakeup' # ローカル環境用
+
+        try:
+            user_name = self.get_user_name(user_id)
+            screen_name = self.get_screen_name(user_id)
+            morning_call = f'もう{self.time}よ！ 20分過ぎてるよ！\n{user_name}(@{screen_name}){word}'
+            print(f'===<Message>===\n{morning_call}\n===============')
+            self.api.PostUpdate(morning_call)
+
+        except KeyError:
+            print("存在しないIDを参照している可能性があります\nヒント：デバック用に変なIDを入れてないですか？")
+
+
 
 
 
@@ -102,7 +151,7 @@ class MothersTwitter():
 
     def return_user(self):
         users = self.api.GetUser(screen_name = "virtual_child")
-        print(users.screen_name)
+        print(users.name)
         
     def self_profile(self):
         status = self.api.VerifyCredentials()

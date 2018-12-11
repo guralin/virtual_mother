@@ -17,11 +17,7 @@ from virtualmother_app.module import tweet, token, database, response
 @app.route('/')
 def do_top():
 
-    # セッションを30分に設定
-    session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes = 30)
-
-    title = "ようこそ"
+    title = "おかえりなさい"
     #return render_template('top.html', title = title)
     response_content = render_template('top.html', title = title)
     content = response.Response.prepare_response(response_content)
@@ -139,6 +135,7 @@ def do_register():
         return content
 
 
+
 # DMのリンクがクリックされたら処理をして、Twitterのホームにリダイレクトする
 @app.route("/wakeup")
 def wakeup():
@@ -203,6 +200,20 @@ def wakeup():
             content = response.Response.prepare_response(response_content)
             return content
 
+
+
+# ログアウト
+@app.route("/logout")
+def logout():
+
+    # セッションを0秒に設定
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(seconds = 0)
+
+    #return redirect('/')
+    response_content = redirect('/')
+    content = response.Response.prepare_response(response_content)
+    return content
 
 
 

@@ -21,12 +21,19 @@ simple_now_minute = int(now_minute / 10) * 10
 # 現在の時刻
 simple_now_time = time(now_hour, simple_now_minute)
 print(f'現在の時刻は、およそ{ simple_now_time }です。')
+
 # 10分前の時刻(replyする時刻)
 ten_ago_time   = datetime.datetime.strptime(str(simple_now_time), '%H:%M:%S') + timedelta(minutes = -10)
 ten_ago_hour   = int('{:%H}'.format(ten_ago_time))
 ten_ago_minute = int('{:%M}'.format(ten_ago_time))
 reply_time     = time(ten_ago_hour, ten_ago_minute)
-print(reply_time)
+
+# 20分前の時刻(postする時刻)
+twenty_ago_time   = datetime.datetime.strptime(str(simple_now_time), '%H:%M:%S') + timedelta(minutes = -20)
+twenty_ago_hour   = int('{:%H}'.format(twenty_ago_time))
+twenty_ago_minute = int('{:%M}'.format(twenty_ago_time))
+post_time         = time(twenty_ago_hour, twenty_ago_minute)
+
 
 mother_tweet = tweet.MothersTwitter()
 db = database.GetData()
@@ -45,6 +52,13 @@ for user_data in users_data:
         if db_date != today: # まだ起きてない時
             print(f'2nd send > { db_user_id }に, replyを送ります')
             mother_tweet.morning_reply(db_user_id)
+        else: # 既に起きている時
+            print(f'not send > { db_user_id }は, 起きています')
+
+    elif db_get_up_time == post_time:
+        if db_date != today: # まだ起きてない時
+            print(f'3rd send > { db_user_id }に, postをします！')
+            mother_tweet.public_post(db_user_id)
         else: # 既に起きている時
             print(f'not send > { db_user_id }は, 起きています')
 
