@@ -32,7 +32,6 @@ class MothersTwitter():
         except twitter.error.TwitterError:
             print('access_token_keyが間違っている可能性があります')
 
-    def self_profile(self)
 
     def morning_dm(self, user_id): # morning.py
 
