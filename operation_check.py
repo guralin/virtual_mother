@@ -7,7 +7,7 @@ try:
     print(f"apiの定期チェック完了")
 except:
     print("apiが間違っている可能性があります。Lineにメッセージを送ります")
-# 私のLineにメッセージが飛ぶようになっています
+# tojoのLineにメッセージが飛ぶようになっています
 
     with urllib.request.urlopen("https://guraline.herokuapp.com/test") as res:
        html = res.read().decode("utf-8")
