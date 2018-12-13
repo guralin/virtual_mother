@@ -16,6 +16,8 @@ from virtualmother_app.module import tweet, token, database, response
 # トップページ
 @app.route('/')
 def do_top():
+# /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
+    app.permanent_session_lifetime = timedelta(minutes = 30)
 
     title = "おかえりなさい"
     #return render_template('top.html', title = title)
