@@ -7,6 +7,7 @@ from datetime import timedelta, time
 from flask import render_template, request, redirect, session
 from flask_sqlalchemy import sqlalchemy
 import twitter
+from time import sleep
 
 from virtualmother_app import app, db
 from virtualmother_app.module import tweet, token, database, response
@@ -17,7 +18,6 @@ from virtualmother_app.module import tweet, token, database, response
 @app.route('/')
 def do_top():
 # /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
-    app.permanent_session_lifetime = timedelta(minutes = 30)
 
     title = "おかえりなさい"
     #return render_template('top.html', title = title)
@@ -211,7 +211,10 @@ def logout():
     # セッションを0秒に設定
     session.permanent = True
     app.permanent_session_lifetime = timedelta(seconds = 0)
+    sleep(2)
 
+# /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
+    app.permanent_session_lifetime = timedelta(minutes = 30)
     #return redirect('/')
     response_content = redirect('/')
     content = response.Response.prepare_response(response_content)
