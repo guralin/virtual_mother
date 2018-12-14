@@ -218,6 +218,9 @@ def logout():
     app.permanent_session_lifetime = timedelta(seconds = 0)
     sleep(2)
 
+    session.pop('access_token', None)
+    session.pop('access_token_secret', None)
+
     #return redirect('/')
     response_content = redirect('/')
     content = response.Response.prepare_response(response_content)
