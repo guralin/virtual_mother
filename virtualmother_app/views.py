@@ -138,6 +138,12 @@ def do_register():
         content = response.Response.prepare_response(response_content)
         return content
 
+    except AttributeError: # セッションを上手く読めなかったとき
+        #return redirect('/user')
+        response_content = redirect('/user')
+        content = response.Response.prepare_response(response_content)
+        return content
+
 
 
 # DMのリンクがクリックされたら処理をして、Twitterのホームにリダイレクトする
@@ -216,7 +222,7 @@ def logout():
     # セッションを0秒に設定
     session.permanent = True
     app.permanent_session_lifetime = timedelta(seconds = 0)
-    sleep(2)
+    #sleep(2)
 
     session.pop('access_token', None)
     session.pop('access_token_secret', None)
