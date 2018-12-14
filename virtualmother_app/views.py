@@ -77,6 +77,8 @@ def check_token():
             access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
             session['access_token']        = str(access_token_and_secret[0])
             session['access_token_secret'] = str(access_token_and_secret[1])
+            # /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
+            app.permanent_session_lifetime = timedelta(minutes = 30)
 
             #return redirect('/user')
             response_content = redirect('/user')
@@ -196,6 +198,9 @@ def wakeup():
             access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
             session['user_access_token']        = str(access_token_and_secret[0])
             session['user_access_token_secret'] = str(access_token_and_secret[1])
+            # /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
+            app.permanent_session_lifetime = timedelta(minutes = 30)
+
 
             #return redirect('/wakeup')
             response_content = redirect('/wakeup')
@@ -213,12 +218,12 @@ def logout():
     app.permanent_session_lifetime = timedelta(seconds = 0)
     sleep(2)
 
-# /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
-    app.permanent_session_lifetime = timedelta(minutes = 30)
     #return redirect('/')
     response_content = redirect('/')
     content = response.Response.prepare_response(response_content)
     return content
+
+
 
 
 
