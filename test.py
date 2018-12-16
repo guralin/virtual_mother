@@ -4,8 +4,11 @@ from datetime import time
 
 db = database.DBOperation(db)
 
+look = database.GetData()
 
-db.update_get_up_time('1049129656379535360',time(19,50))
+look.get_up_time('1049129656379535360')
+
+#db.update_get_up_time('1049129656379535360',time(19,50))
 #db.update_get_up_time('1045586841603170305',time(22,50))
 #db.update_date('1049129656379535360')
 #db.insert_date('1049129656379535360')
@@ -14,7 +17,8 @@ db.update_get_up_time('1049129656379535360',time(19,50))
 
 #db.delete_get_up_time('1049129656379535360')
 
-do = tweet.MothersTwitter()
+
+#do = tweet.MothersTwitter()
 #print(do.return_user())
 #do.public_post(1049129656379535360) 
 
