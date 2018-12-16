@@ -33,7 +33,7 @@ def do_top():
 def check_token():
 
     try: # セッションがあったら値を代入
-        print(f"/user (セッションあった場合)セッションの有効期限:{app.permanent_session_lifetime}")
+        print(f"/user (is_session)セッションの有効期限:{app.permanent_session_lifetime}")
         access_token        = str(session['access_token'])
         access_token_secret = str(session['access_token_secret'])
 
