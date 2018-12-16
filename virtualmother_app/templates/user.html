@@ -6,10 +6,13 @@
         {{ user_name }}
     </p>
     <p>
-        毎日ちゃんと起きてる？
-    </p>
-    <p>
-        起こしてあげようか？
+        {% if get_up_text=="未設定" %}
+        まだ、{{ user_name }}の起きる時間がわからないよ！<br><br>
+        起きたい時間を教えてね！
+        {% else %}
+        今は{{get_up_text}}に起こすことになってるよ！<br><br>
+        起きる時間を変更する？
+        {% endif %}
     </p>
 <br>
     <form action='/register' method='POST'>

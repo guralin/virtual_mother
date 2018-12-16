@@ -64,8 +64,11 @@ class DBOperation():
 # morning.py
 class GetData(Table): # カラムを指定してデータを取得
     def id_and_get_up(self):
-        users_data = db.session.query(Table.user_id, Table.get_up_time, Table.date).all()
-        return users_data
+        self.users_data = db.session.query(Table.user_id, Table.get_up_time, Table.date).all()
+        return self.users_data
     
 
-
+    def get_up_time(self,search_user_id):
+        users = db.session.query(Table).filter(Table.user_id==search_user_id).first()   
+        return users.get_up_time
+    

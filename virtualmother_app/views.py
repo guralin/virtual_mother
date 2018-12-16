@@ -44,11 +44,25 @@ def check_token():
     if access_token != 'failed' and access_token_secret != 'failed': # セッションがあったとき
         api_co    = tweet.UsersTwitter(access_token, access_token_secret)
         user_name = api_co.see_user_name()
+        user_id   = str(api_co.see_user_id())
+        
+        try:
+            get_db      = database.GetData()
+            get_up_time = get_db.get_up_time(user_id)
+            get_up_text =f"{get_up_time.hour}時{get_up_time.minute}分"
+        except AttributeError:
+            get_up_text ="未設定" 
+
+        
+
+        
+
+
 
         # ユーザーページに進む
         title = f"{user_name} の部屋"
         #return render_template('user.html', title = title, user_name = user_name)
-        response_content = render_template('user.html', title = title, user_name = user_name)
+        response_content = render_template('user.html', title = title, user_name = user_name, get_up_text= get_up_text)
         content = response.Response.prepare_response(response_content)
         return content
 
