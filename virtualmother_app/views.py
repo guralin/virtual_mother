@@ -53,12 +53,6 @@ def check_token():
         except AttributeError:
             get_up_text ="未設定" 
 
-        
-
-        
-
-
-
         # ユーザーページに進む
         title = f"{user_name} の部屋"
         #return render_template('user.html', title = title, user_name = user_name)
