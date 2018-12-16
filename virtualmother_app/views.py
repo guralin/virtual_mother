@@ -19,7 +19,7 @@ from virtualmother_app.module import tweet, token, database, response
 def do_top():
 # /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
 
-    print(f"セッションの有効期限:{app.permanent_session_lifetime}")
+    print(f"/ セッションの有効期限:{app.permanent_session_lifetime}")
     title = "おかえりなさい"
     #return render_template('top.html', title = title)
     response_content = render_template('top.html', title = title)
@@ -33,7 +33,7 @@ def do_top():
 def check_token():
 
     try: # セッションがあったら値を代入
-        print(f"セッションの有効期限:{app.permanent_session_lifetime}")
+        print(f"/user (セッションあった場合)セッションの有効期限:{app.permanent_session_lifetime}")
         access_token        = str(session['access_token'])
         access_token_secret = str(session['access_token_secret'])
 
@@ -78,12 +78,12 @@ def check_token():
             # アクセストークンシークレットの取得
             access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
             # /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
-            print(f"セッションの有効期限:{app.permanent_session_lifetime}")
+            print(f"/user (session入力前)セッションの有効期限:{app.permanent_session_lifetime}")
             app.permanent_session_lifetime = timedelta(minutes = 30)
             session['access_token']        = str(access_token_and_secret[0])
             session['access_token_secret'] = str(access_token_and_secret[1])
+            print(f"/user (session入力後)セッションの有効期限:{app.permanent_session_lifetime}")
 
-            print(f"セッションの有効期限:{app.permanent_session_lifetime}")
             #return redirect('/user')
             response_content = redirect('/user')
             content = response.Response.prepare_response(response_content)
@@ -96,9 +96,10 @@ def check_token():
 def do_register():
 
     try:
-        print(f"セッションの有効期限:{app.permanent_session_lifetime}")
+        print(f"/register セッションの有効期限:{app.permanent_session_lifetime}")
         access_token        = str(session.get('access_token'))
         access_token_secret = str(session.get('access_token_secret'))
+# うまくセッションが渡せてないと"access_token_keyが間違っている可能性があります"と出る
         api_co    = tweet.UsersTwitter(access_token, access_token_secret)
         # todo:user_idはdatabase側にstr型で渡さないといけなくなっています
         user_id   = str(api_co.see_user_id())
@@ -225,12 +226,12 @@ def wakeup():
 def logout():
 
     # セッションを0秒に設定
-    print(f"セッションの有効期限:{app.permanent_session_lifetime}")
+    print(f"/logout セッションの有効期限:{app.permanent_session_lifetime}")
     session.permanent = True
     app.permanent_session_lifetime = timedelta(seconds = 0)
     #sleep(2)
 
-    print(f"セッションの有効期限:{app.permanent_session_lifetime}")
+    print(f"/logout (0秒適応)セッションの有効期限:{app.permanent_session_lifetime}")
     session.pop('access_token', None)
     session.pop('access_token_secret', None)
 
