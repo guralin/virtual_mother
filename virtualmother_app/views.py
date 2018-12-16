@@ -19,6 +19,7 @@ from virtualmother_app.module import tweet, token, database, response
 def do_top():
 # /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
 
+    print(f"セッションの有効期限:{app.permanent_session_lifetime}")
     title = "おかえりなさい"
     #return render_template('top.html', title = title)
     response_content = render_template('top.html', title = title)
@@ -75,10 +76,11 @@ def check_token():
             # アクセストークンとアクセストークンシークレットの取得
             # アクセストークンシークレットの取得
             access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
+            # /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
+            print(f"セッションの有効期限:{app.permanent_session_lifetime}")
+            app.permanent_session_lifetime = timedelta(minutes = 30)
             session['access_token']        = str(access_token_and_secret[0])
             session['access_token_secret'] = str(access_token_and_secret[1])
-            # /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
-            app.permanent_session_lifetime = timedelta(minutes = 30)
 
             #return redirect('/user')
             response_content = redirect('/user')
@@ -202,10 +204,10 @@ def wakeup():
             # アクセストークンとアクセストークンシークレットの取得
             # アクセストークンシークレットの取得
             access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
-            session['user_access_token']        = str(access_token_and_secret[0])
-            session['user_access_token_secret'] = str(access_token_and_secret[1])
             # /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
             app.permanent_session_lifetime = timedelta(minutes = 30)
+            session['user_access_token']        = str(access_token_and_secret[0])
+            session['user_access_token_secret'] = str(access_token_and_secret[1])
 
 
             #return redirect('/wakeup')
@@ -220,10 +222,12 @@ def wakeup():
 def logout():
 
     # セッションを0秒に設定
+    print(f"セッションの有効期限:{app.permanent_session_lifetime}")
     session.permanent = True
     app.permanent_session_lifetime = timedelta(seconds = 0)
     #sleep(2)
 
+    print(f"セッションの有効期限:{app.permanent_session_lifetime}")
     session.pop('access_token', None)
     session.pop('access_token_secret', None)
 
@@ -245,8 +249,5 @@ def page_not_found(error):
     response_content = render_template('404-page.html', title = title)
     content = response.Response.prepare_response(response_content)
     return content
-
-
-
 
 
