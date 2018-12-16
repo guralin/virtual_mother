@@ -33,6 +33,7 @@ def do_top():
 def check_token():
 
     try: # セッションがあったら値を代入
+        print(f"セッションの有効期限:{app.permanent_session_lifetime}")
         access_token        = str(session['access_token'])
         access_token_secret = str(session['access_token_secret'])
 
@@ -82,6 +83,7 @@ def check_token():
             session['access_token']        = str(access_token_and_secret[0])
             session['access_token_secret'] = str(access_token_and_secret[1])
 
+            print(f"セッションの有効期限:{app.permanent_session_lifetime}")
             #return redirect('/user')
             response_content = redirect('/user')
             content = response.Response.prepare_response(response_content)
@@ -94,6 +96,7 @@ def check_token():
 def do_register():
 
     try:
+        print(f"セッションの有効期限:{app.permanent_session_lifetime}")
         access_token        = str(session.get('access_token'))
         access_token_secret = str(session.get('access_token_secret'))
         api_co    = tweet.UsersTwitter(access_token, access_token_secret)
