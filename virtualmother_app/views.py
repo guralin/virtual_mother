@@ -162,7 +162,7 @@ def do_register():
 
 
 # DMのリンクがクリックされたら処理をして、Twitterのホームにリダイレクトする
-@app.route("/wakeup")
+@app.route('/wakeup')
 def wakeup():
 
     try: # セッションがあったら値を代入
@@ -231,7 +231,7 @@ def wakeup():
 
 
 # ログアウト
-@app.route("/logout")
+@app.route('/logout')
 def logout():
 
     # セッションを0秒に設定
@@ -250,22 +250,28 @@ def logout():
     return content
 
 
-@app.route("/todoapp", methods=['GET','POST'])
+
+# ToDo登録
+@app.route('/todoapp', methods=['GET','POST'])
 def todoapp():
     user_id = session['user_id']
-
     todo_db = database.TodoData()
     todos = todo_db.get_todolist_from_single_user(user_id)
     print(f"TodoList:{todos}")
+    title = '朝やることリスト'
+
     if request.method == 'GET':
-        return render_template('todoapp.html', todos=todos)
+        return render_template('todoapp.html', todos = todos, title = title)
 
     if request.method == 'POST':
+
         if 'add' in request.form.keys():
             todo = request.form['add']
+
             if todo in todos:
                 error = "そのTodoはすでにあるよー"
                 print(error)
+
             else:
                 todo_db.add_todo(user_id,todo)
 #表示に反映する用です。二重に加えているように見えますが
@@ -273,20 +279,23 @@ def todoapp():
                 todos.append(todo)
                 print(f"現在のTodoList:{todos}")
 
-            return render_template('todoapp.html', todos=todos)
+            return render_template('todoapp.html', todos = todos, title = title)
+
         if 'delete' in request.form.keys():
             todo = request.form['delete']
+            error = None
 
-            error =None
             if  not todo in todos:
                 error = "todoないよー"
                 print(error)
+
             else:   
                 todo_db.delete_todo(user_id,todo)
                 # 同じく表示用
                 todos.remove(todo)
                 print(f"現在のTodoList:{todos}")
-            return render_template('todoapp.html', todos=todos)
+
+            return render_template('todoapp.html', todos = todos, title = title)
 
 
 # 404ページ
