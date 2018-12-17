@@ -256,7 +256,7 @@ def todoapp():
 
     todo_db = database.TodoData()
     todos = todo_db.get_todolist_from_single_user(user_id)
-    print(todos)
+    print(f"TodoList:{todos}")
     if request.method == 'GET':
         return render_template('todoapp.html', todos=todos)
 
@@ -271,6 +271,7 @@ def todoapp():
 #表示に反映する用です。二重に加えているように見えますが
 #最読み込み時にdatabaseから改めてtodosに代入するので問題ありません。
                 todos.append(todo)
+                print(f"現在のTodoList:{todos}")
 
             return render_template('todoapp.html', todos=todos)
         if 'delete' in request.form.keys():
@@ -284,6 +285,7 @@ def todoapp():
                 todo_db.delete_todo(user_id,todo)
                 # 同じく表示用
                 todos.remove(todo)
+                print(f"現在のTodoList:{todos}")
             return render_template('todoapp.html', todos=todos)
 
 
