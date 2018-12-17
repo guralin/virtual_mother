@@ -1,0 +1,26 @@
+{% extends 'body.html' %}
+
+{% block article %}
+
+    <form action="{{url_for('todoapp')}}" method="POST">
+        <input type="text" name="add" required>
+        <!-- <button>は初期値でtype="submit"がついてるので送信してくれる-->
+        <input type='submit' value='追加' class='button small'>
+    </form>
+    <p>
+    <ul>
+    {% for todo in todos %}
+        <li>{{todo}}
+            <form action="{{url_for('todoapp')}}" method="POST">
+            <!-- {{todo}}が重複してたりする場合変な挙動になる
+            拡張性がないのでこの実装は好ましくない-->
+                <input type="hidden" name="delete" value="{{todo}}">
+                <input type='submit' value='削除' class='button small'>
+            </form>
+        </li>
+        
+    {% endfor %}
+
+{% endblock %}
+
+

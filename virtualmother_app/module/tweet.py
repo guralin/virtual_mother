@@ -8,7 +8,7 @@ from random import randint
 import json
 from collections import OrderedDict
 import pprint
-
+from virtualmother_app.module import database,token_check
 import twitter # python-twitterライブラリ
 
 
@@ -31,6 +31,10 @@ class MothersTwitter():
 
         except twitter.error.TwitterError:
             print('access_token_keyが間違っている可能性があります')
+            oc = token_check.OperationCheck()
+            oc.send_line_message()
+
+            
 
 
     def morning_dm(self, user_id): # morning.py
@@ -61,7 +65,33 @@ class MothersTwitter():
 
 
     def response(self, user_id, user_name): # /wakeup (DMのリンクがクリックされた時)
-        greeting = f'{ user_name }\nおはよう (^_^)/\n遅刻しないでね'
+        todo_db = database.TodoData()
+        todos= todo_db.get_todolist_from_single_user(user_id)
+
+        """ 
+            表示されるtodo_wordsの例
+            <user_name>おはよう！
+            しっかり起きられて偉いわ！
+            教えてもらったことを確認するわね
+            <todo>
+            <todo>
+            ...
+            大丈夫？忘れていることはない？
+        """
+        todo_words= "教えてもらったことを確認するわね\n"
+
+            #listのtodosの中身が空である場合はfalseを返すみたいです
+        if todos:
+            for todo in todos:
+                todo ="・" + todo + "\n"
+                todo_words += todo
+            todo_words +="大丈夫？忘れていることはない？"
+        else:
+            todo_words +="・・・\nそういえばまだ教えてもらってなかったわね\n"
+            todo_words +="朝忘れそうなことがあったら私に教えてね"
+
+
+        greeting = f'{ user_name }\nおはよう (^_^)/\nしっかり起きられて偉いわ！\n {todo_words}'
         self.api.PostDirectMessage(greeting, user_id)
 
 
