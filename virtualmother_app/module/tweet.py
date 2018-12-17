@@ -8,7 +8,7 @@ from random import randint
 import json
 from collections import OrderedDict
 import pprint
-
+from virtualmother_app.module import database
 import twitter # python-twitterライブラリ
 
 
@@ -61,7 +61,28 @@ class MothersTwitter():
 
 
     def response(self, user_id, user_name): # /wakeup (DMのリンクがクリックされた時)
-        greeting = f'{ user_name }\nおはよう (^_^)/\n遅刻しないでね'
+        todo_db = database.TodoData()
+        todos= todo_db.get_todolist_from_single_user(user_id)
+
+        """ 
+            表示されるtodo_words
+            <user_name>おはよう！
+            しっかり起きられて偉いわ！
+            教えてもらったことを確認するわね
+            <todo>
+            <todo>
+            ...
+            大丈夫？忘れていることはない？
+        """
+        todo_words= "教えてもらったことを確認するわね\n"
+        for todo in todos:
+            todo ="・" + todo + "\n"
+            todo_words += todo
+        
+        todo_words +="大丈夫？忘れていることはない？"
+
+
+        greeting = f'{ user_name }\nおはよう (^_^)/\nしっかり起きられて偉いわ！\n {todo_words}'
         self.api.PostDirectMessage(greeting, user_id)
 
 
