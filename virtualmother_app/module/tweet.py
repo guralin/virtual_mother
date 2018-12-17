@@ -8,7 +8,7 @@ from random import randint
 import json
 from collections import OrderedDict
 import pprint
-from virtualmother_app.module import database
+from virtualmother_app.module import database,token_check
 import twitter # python-twitterライブラリ
 
 
@@ -31,6 +31,10 @@ class MothersTwitter():
 
         except twitter.error.TwitterError:
             print('access_token_keyが間違っている可能性があります')
+            oc = token_check.OperationCheck()
+            oc.send_line_message()
+
+            
 
 
     def morning_dm(self, user_id): # morning.py
