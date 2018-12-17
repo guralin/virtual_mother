@@ -45,6 +45,7 @@ def check_token():
         api_co    = tweet.UsersTwitter(access_token, access_token_secret)
         user_name = api_co.see_user_name()
         user_id   = str(api_co.see_user_id())
+        session['user_id'] = user_id
         
         try:
             get_db      = database.GetData()
@@ -85,9 +86,9 @@ def check_token():
             # アクセストークンとアクセストークンシークレットの取得
             # アクセストークンシークレットの取得
             access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
-            # /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
+            # /logoutにてセッションの有効期限を0秒にしたのを25日に直しています
             print(f"/user (session入力前)セッションの有効期限:{app.permanent_session_lifetime}")
-            app.permanent_session_lifetime = timedelta(minutes = 30)
+            app.permanent_session_lifetime = timedelta(days = 25)
             session['access_token']        = str(access_token_and_secret[0])
             session['access_token_secret'] = str(access_token_and_secret[1])
             print(f"/user (session入力後)セッションの有効期限:{app.permanent_session_lifetime}")
@@ -216,8 +217,8 @@ def wakeup():
             # アクセストークンとアクセストークンシークレットの取得
             # アクセストークンシークレットの取得
             access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
-            # /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
-            app.permanent_session_lifetime = timedelta(minutes = 30)
+            # /logoutにてセッションの有効期限を0秒にしたのを25日に直しています
+            app.permanent_session_lifetime = timedelta(days = 25)
             session['user_access_token']        = str(access_token_and_secret[0])
             session['user_access_token_secret'] = str(access_token_and_secret[1])
 
@@ -249,7 +250,41 @@ def logout():
     return content
 
 
+@app.route("/todoapp", methods=['GET','POST'])
+def todoapp():
+    user_id = session['user_id']
 
+    todo_db = database.TodoData()
+    todos = todo_db.get_todolist_from_single_user(user_id)
+    print(todos)
+    if request.method == 'GET':
+        return render_template('todoapp.html', todos=todos)
+
+    if request.method == 'POST':
+        if 'add' in request.form.keys():
+            todo = request.form['add']
+            if todo in todos:
+                error = "そのTodoはすでにあるよー"
+                print(error)
+            else:
+                todo_db.add_todo(user_id,todo)
+#表示に反映する用です。二重に加えているように見えますが
+#最読み込み時にdatabaseから改めてtodosに代入するので問題ありません。
+                todos.append(todo)
+
+            return render_template('todoapp.html', todos=todos)
+        if 'delete' in request.form.keys():
+            todo = request.form['delete']
+
+            error =None
+            if  not todo in todos:
+                error = "todoないよー"
+                print(error)
+            else:   
+                todo_db.delete_todo(user_id,todo)
+                # 同じく表示用
+                todos.remove(todo)
+            return render_template('todoapp.html', todos=todos)
 
 
 # 404ページ

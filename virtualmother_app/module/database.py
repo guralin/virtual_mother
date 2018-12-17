@@ -2,7 +2,7 @@
 # coding: utf-8
 
 from virtualmother_app import db
-from virtualmother_app.models import Table
+from virtualmother_app.models import Table,TodoTable
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 
@@ -71,4 +71,39 @@ class GetData(Table): # カラムを指定してデータを取得
     def get_up_time(self,search_user_id):
         users = db.session.query(Table).filter(Table.user_id==search_user_id).first()   
         return users.get_up_time
+
+
+####################################
+# todoapp用のtable
+class AddTodo(TodoTable):
+    def __init__(self,user_id,todo):
+        self.user_id = user_id
+        self.todo    = todo
+
+
+class TodoData(TodoTable):
+
+    def get_todo_from_all_user(self):
+        users_data = db.session.query(TodoTable.user_id,TodoTable.todo).all()
+        return users_data
+
+    def get_todolist_from_single_user(self,user_id):
+        users_data = db.session.query(TodoTable.user_id,TodoTable.todo).filter(TodoTable.user_id == user_id).all()
+        todolist = []
+        for todo_row in users_data:
+            todo = todo_row[1] # [1]はdatabaseのtodo列
+            todolist.append(todo)
+        return todolist
     
+    def add_todo(self,user_id,todo):
+        todo_data=AddTodo(user_id,todo)
+        db.session.add(todo_data)
+        db.session.commit()
+
+        
+
+    def delete_todo(self,user_id,todo):
+        user_data = db.session.query(TodoTable).filter(TodoTable.user_id== user_id).filter(TodoTable.todo == todo).delete()
+        db.session.commit()
+
+        
