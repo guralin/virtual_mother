@@ -69,7 +69,7 @@ class MothersTwitter():
         todos= todo_db.get_todolist_from_single_user(user_id)
 
         """ 
-            表示されるtodo_words
+            表示されるtodo_wordsの例
             <user_name>おはよう！
             しっかり起きられて偉いわ！
             教えてもらったことを確認するわね
@@ -79,11 +79,16 @@ class MothersTwitter():
             大丈夫？忘れていることはない？
         """
         todo_words= "教えてもらったことを確認するわね\n"
-        for todo in todos:
-            todo ="・" + todo + "\n"
-            todo_words += todo
-        
-        todo_words +="大丈夫？忘れていることはない？"
+
+            #listのtodosの中身が空である場合はfalseを返すみたいです
+        if todos:
+            for todo in todos:
+                todo ="・" + todo + "\n"
+                todo_words += todo
+            todo_words +="大丈夫？忘れていることはない？"
+        else:
+            todo_words +="・・・\nそういえばまだ教えてもらってなかったわね\n"
+            todo_words +="朝忘れそうなことがあったら私に教えてね"
 
 
         greeting = f'{ user_name }\nおはよう (^_^)/\nしっかり起きられて偉いわ！\n {todo_words}'
