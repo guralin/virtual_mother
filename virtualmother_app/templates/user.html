@@ -6,10 +6,13 @@
         {{ user_name }}
     </p>
     <p>
-        毎日ちゃんと起きてる？
-    </p>
-    <p>
-        起こしてあげようか？
+        {% if get_up_text=="未設定" %}
+        まだ、{{ user_name }}の起きる時間がわからないよ！<br><br>
+        起きたい時間を教えてね！
+        {% else %}
+        今は{{get_up_text}}に起こすことになってるよ！<br><br>
+        起きる時間を変更する？
+        {% endif %}
     </p>
 <br>
     <form action='/register' method='POST'>
@@ -23,8 +26,13 @@
                 <option value='8'>8</option>
                 <option value='9'>9</option>
                 <option value='10'>10</option>
+                <option value='11'>11</option>
+                <option value='12'>12</option>
+                <option value='13'>13</option>
+                <option value='14'>14</option>
                 <option value='15'>15</option>
-                <!--option value='17'>17</option-->
+                <option value='16'>16</option>
+                <option value='17'>17</option>
             </select>
             時
             <select name='minute' class='button'>
@@ -40,40 +48,11 @@
         <p>に起こしてもらう</p>
         <input type='submit' value='登録' class='button'>
     </form>
-
+    <br>
+    <form action='/todoapp'>
+        <button>朝連絡してほしいことはコチラで教えてね</button>
+    </form>
 {% endblock %}
-
-
-<!--
-    <form action="{{url_for('do_register')}}" method="POST">
-        <input type="hidden" name="user_id" value="{{user_id}}">
-        <input type="hidden" name="user_name" value="{{user_name}}">
-
-        <button class="button">起こしてもらう</button>
-    </form>
-</div>
-    <h2>現在の時刻をツイートしてみよう (^<span class="red">_</span>^)y
-    <button onclick="location.href='post'" class="button">投稿する</button></h2>
-<br>
-<br>
-    <h2>友達に時間を教えてあげよう</h2>
-    <form action="/reply" method="POST">
-        <p class="explain">友達のTwitterユーザー名：<i class="fas fa-at"></i>
-        <input type="text" name="reply_name" class="form">
-        <input type="submit" value="投稿する" class="button"></p>
-    </form>
-<br>
-    <h2>AM7:00目覚まし時計に自分のユーザー名を登録しよう</h2>
-    <form action="/register" method="POST">
-        <p class="explain">自分のTwitterユーザー名：<i class="fas fa-at"></i>
-        <input type="text" name="user_name" class="form">
-        <input type="submit" value="登録する" class="button"></p>
-    </form>
-
-<br>
-<br>
-<br>
--->
 
 
 

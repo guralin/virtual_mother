@@ -44,11 +44,20 @@ def check_token():
     if access_token != 'failed' and access_token_secret != 'failed': # セッションがあったとき
         api_co    = tweet.UsersTwitter(access_token, access_token_secret)
         user_name = api_co.see_user_name()
+        user_id   = str(api_co.see_user_id())
+        session['user_id'] = user_id
+        
+        try:
+            get_db      = database.GetData()
+            get_up_time = get_db.get_up_time(user_id)
+            get_up_text =f"{get_up_time.hour}時{get_up_time.minute}分"
+        except AttributeError:
+            get_up_text ="未設定" 
 
         # ユーザーページに進む
         title = f"{user_name} の部屋"
         #return render_template('user.html', title = title, user_name = user_name)
-        response_content = render_template('user.html', title = title, user_name = user_name)
+        response_content = render_template('user.html', title = title, user_name = user_name, get_up_text= get_up_text)
         content = response.Response.prepare_response(response_content)
         return content
 
@@ -77,9 +86,9 @@ def check_token():
             # アクセストークンとアクセストークンシークレットの取得
             # アクセストークンシークレットの取得
             access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
-            # /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
+            # /logoutにてセッションの有効期限を0秒にしたのを25日に直しています
             print(f"/user (session入力前)セッションの有効期限:{app.permanent_session_lifetime}")
-            app.permanent_session_lifetime = timedelta(minutes = 30)
+            app.permanent_session_lifetime = timedelta(days = 25)
             session['access_token']        = str(access_token_and_secret[0])
             session['access_token_secret'] = str(access_token_and_secret[1])
             print(f"/user (session入力後)セッションの有効期限:{app.permanent_session_lifetime}")
@@ -153,7 +162,7 @@ def do_register():
 
 
 # DMのリンクがクリックされたら処理をして、Twitterのホームにリダイレクトする
-@app.route("/wakeup")
+@app.route('/wakeup')
 def wakeup():
 
     try: # セッションがあったら値を代入
@@ -208,8 +217,8 @@ def wakeup():
             # アクセストークンとアクセストークンシークレットの取得
             # アクセストークンシークレットの取得
             access_token_and_secret = get_token.get_access_token_and_secret(oauth_token, oauth_verifier)
-            # /logoutにてセッションの有効期限を0秒にしたのを30分に直しています
-            app.permanent_session_lifetime = timedelta(minutes = 30)
+            # /logoutにてセッションの有効期限を0秒にしたのを25日に直しています
+            app.permanent_session_lifetime = timedelta(days = 25)
             session['user_access_token']        = str(access_token_and_secret[0])
             session['user_access_token_secret'] = str(access_token_and_secret[1])
 
@@ -222,7 +231,7 @@ def wakeup():
 
 
 # ログアウト
-@app.route("/logout")
+@app.route('/logout')
 def logout():
 
     # セッションを0秒に設定
@@ -242,6 +251,51 @@ def logout():
 
 
 
+# ToDo登録
+@app.route('/todoapp', methods=['GET','POST'])
+def todoapp():
+    user_id = session['user_id']
+    todo_db = database.TodoData()
+    todos = todo_db.get_todolist_from_single_user(user_id)
+    print(f"TodoList:{todos}")
+    title = '朝やることリスト'
+
+    if request.method == 'GET':
+        return render_template('todoapp.html', todos = todos, title = title)
+
+    if request.method == 'POST':
+
+        if 'add' in request.form.keys():
+            todo = request.form['add']
+
+            if todo in todos:
+                error = "そのTodoはすでにあるよー"
+                print(error)
+
+            else:
+                todo_db.add_todo(user_id,todo)
+#表示に反映する用です。二重に加えているように見えますが
+#最読み込み時にdatabaseから改めてtodosに代入するので問題ありません。
+                todos.append(todo)
+                print(f"現在のTodoList:{todos}")
+
+            return render_template('todoapp.html', todos = todos, title = title)
+
+        if 'delete' in request.form.keys():
+            todo = request.form['delete']
+            error = None
+
+            if  not todo in todos:
+                error = "todoないよー"
+                print(error)
+
+            else:   
+                todo_db.delete_todo(user_id,todo)
+                # 同じく表示用
+                todos.remove(todo)
+                print(f"現在のTodoList:{todos}")
+
+            return render_template('todoapp.html', todos = todos, title = title)
 
 
 # 404ページ

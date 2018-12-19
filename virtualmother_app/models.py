@@ -14,6 +14,12 @@ class Table(db.Model): # テーブルの指定
     get_up_time   = db.Column(db.DateTime, nullable = True) # 起きてツイートする時間
     date          = db.Column(db.DateTime, nullable = True) # ユーザーが最後にDMのリンクをクリックした日付
 
+class TodoTable(db.Model):
+    __tablename__ = "user_todo_list"
+    user_index    = db.Column(db.Integer, primary_key=True)
+    user_id       = db.Column(db.String(20))
+    todo         = db.Column(db.String(120), nullable = True) #朝連絡してほしいこと
+
     def __init__(self):
         db.create_all()
     # データベースを作るときは
