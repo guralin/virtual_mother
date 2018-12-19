@@ -237,12 +237,13 @@ def logout():
     # セッションを0秒に設定
     print(f"/logout セッションの有効期限:{app.permanent_session_lifetime}")
     session.permanent = True
-    app.permanent_session_lifetime = timedelta(seconds = 0)
+    #app.permanent_session_lifetime = timedelta(seconds = 0)
     #sleep(2)
 
     print(f"/logout (0秒適応)セッションの有効期限:{app.permanent_session_lifetime}")
     session.pop('access_token', None)
     session.pop('access_token_secret', None)
+    session.pop('user_id', None)
 
     #return redirect('/')
     response_content = redirect('/')
@@ -254,48 +255,52 @@ def logout():
 # ToDo登録
 @app.route('/todoapp', methods=['GET','POST'])
 def todoapp():
-    user_id = session['user_id']
-    todo_db = database.TodoData()
-    todos = todo_db.get_todolist_from_single_user(user_id)
-    print(f"TodoList:{todos}")
-    title = '朝やることリスト'
+    try:
+        user_id = session['user_id']
+        todo_db = database.TodoData()
+        todos = todo_db.get_todolist_from_single_user(user_id)
+        print(f"TodoList:{todos}")
+        title = '朝やることリスト'
 
-    if request.method == 'GET':
-        return render_template('todoapp.html', todos = todos, title = title)
-
-    if request.method == 'POST':
-
-        if 'add' in request.form.keys():
-            todo = request.form['add']
-
-            if todo in todos:
-                error = "そのTodoはすでにあるよー"
-                print(error)
-
-            else:
-                todo_db.add_todo(user_id,todo)
-#表示に反映する用です。二重に加えているように見えますが
-#最読み込み時にdatabaseから改めてtodosに代入するので問題ありません。
-                todos.append(todo)
-                print(f"現在のTodoList:{todos}")
-
+        if request.method == 'GET':
             return render_template('todoapp.html', todos = todos, title = title)
 
-        if 'delete' in request.form.keys():
-            todo = request.form['delete']
-            error = None
+        if request.method == 'POST':
 
-            if  not todo in todos:
-                error = "todoないよー"
-                print(error)
+            if 'add' in request.form.keys():
+                todo = request.form['add']
 
-            else:   
-                todo_db.delete_todo(user_id,todo)
-                # 同じく表示用
-                todos.remove(todo)
-                print(f"現在のTodoList:{todos}")
+                if todo in todos:
+                    error = "そのTodoはすでにあるよー"
+                    print(error)
 
-            return render_template('todoapp.html', todos = todos, title = title)
+                else:
+                    todo_db.add_todo(user_id,todo)
+                #表示に反映する用です。二重に加えているように見えますが
+                #最読み込み時にdatabaseから改めてtodosに代入するので問題ありません。
+                    todos.append(todo)
+                    print(f"現在のTodoList:{todos}")
+
+                return render_template('todoapp.html', todos = todos, title = title)
+
+            if 'delete' in request.form.keys():
+                todo = request.form['delete']
+                error = None
+
+                if  not todo in todos:
+                    error = "todoないよー"
+                    print(error)
+
+                else:   
+                    todo_db.delete_todo(user_id,todo)
+                    # 同じく表示用
+                    todos.remove(todo)
+                    print(f"現在のTodoList:{todos}")
+
+                return render_template('todoapp.html', todos = todos, title = title)
+
+    except:
+        return redirect('/user')
 
 
 # 404ページ
