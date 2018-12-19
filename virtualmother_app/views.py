@@ -237,12 +237,13 @@ def logout():
     # セッションを0秒に設定
     print(f"/logout セッションの有効期限:{app.permanent_session_lifetime}")
     session.permanent = True
-    app.permanent_session_lifetime = timedelta(seconds = 0)
+    #app.permanent_session_lifetime = timedelta(seconds = 0)
     #sleep(2)
 
     print(f"/logout (0秒適応)セッションの有効期限:{app.permanent_session_lifetime}")
     session.pop('access_token', None)
     session.pop('access_token_secret', None)
+    session.pop('user_id', None)
 
     #return redirect('/')
     response_content = redirect('/')
