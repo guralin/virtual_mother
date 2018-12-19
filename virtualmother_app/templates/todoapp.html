@@ -3,7 +3,7 @@
 {% block article %}
 
     <form action="{{url_for('todoapp')}}" method="POST">
-        <input type="text" name="add" required><br>
+        <input type="text" name="add" required maxlength='51'><br>
         <!-- <button>は初期値でtype="submit"がついてるので送信してくれる-->
         <input type='submit' value='追加' class='button small' style='margin-top:10px'>
     </form>
