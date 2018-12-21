@@ -78,14 +78,14 @@ class MothersTwitter():
             ...
             大丈夫？忘れていることはない？
         """
-        todo_words= "教えてもらったことを確認するわね\n"
+        todo_words= ""
 
             #listのtodosの中身が空である場合はfalseを返すみたいです
         if todos:
             for todo in todos:
-                todo ="・" + todo + "\n"
+                todo ="「" + todo + "」"
                 todo_words += todo
-            todo_words +="大丈夫？忘れていることはない？"
+            todo_words +="って言っていたけど大丈夫？忘れていることはない？"
         else:
             todo_words +="・・・\nそういえばまだ教えてもらってなかったわね\n"
             todo_words +="朝忘れそうなことがあったら私に教えてね"
