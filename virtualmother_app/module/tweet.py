@@ -87,8 +87,8 @@ class MothersTwitter():
                 todo_words += todo
             todo_words +="って言っていたけど大丈夫？忘れていることはない？"
         else:
-            todo_words +="・・・\n朝忘れそうなことがあったら私に教えてね\n"
-            todo_words +="次から教えるわよ\n"
+            todo_words +="・・・\n朝忘れそうなことがあったらお母さんに教えてね\n"
+            todo_words +="明日から伝えるわ\n"
             todo_words +="つ https://virtualmother.herokuapp.com/todoapp"
 
 
